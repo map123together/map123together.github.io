@@ -1,4 +1,4 @@
-const baseUrl = 'https://1and2.xyz:8000/';
+const baseUrl = 'https://1and2.xyz/';
 const mapid = getAllUrlParams().mapid;
 
 getExistingMtMap(mapid);
