@@ -3,10 +3,10 @@ const mapid   = getAllUrlParams().mapid; // Current Map ID
 
 getExistingMtMap(mapid);
 
-function getExistingMtMap(mapId) {
+function getExistingMtMap(mapid) {
 
   let method = 'GET';
-  let dir = 'map/id/' + mapId;
+  let dir = 'map/id/' + mapid;
 
   let parseRes = (response) => {
     let mtMap = {};

@@ -97,34 +97,6 @@ function displayExistingMarkers(markers, gMap) {
     });
 }
 
-function storeMarkerJson(markersJson) {
-    let req = new XMLHttpRequest();
-
-    req.onreadystatechange = () => {
-        if (req.readyState == XMLHttpRequest.DONE) {
-            //console.log(req.responseText);
-        }
-    };
-
-    req.open("PUT", "https://api.jsonbin.io/b/614d2432aa02be1d444d907f", true);
-    req.setRequestHeader("Content-Type", "application/json");
-    req.setRequestHeader("secret-key", "$2a$10$m2JwCOPaSuOe3oTrm.5M8.of6auH0WcpmoYnjxukpRNmVcQGOamW6");
-    req.send(markersJson);
-}
-
-function removeMarkerFromMarkers(markerTobeDelPos, markers) {
-
-    for (let index = 0; index < markers.length; index++) {
-        if (markerTobeDelPos.position.lat == markers[index].position.lat &&
-            markerTobeDelPos.position.lng == markers[index].position.lng) {
-            markers.splice(index, 1);
-            console.log("Removed " + index);
-        }
-
-    }
-    return markers;
-}
-
 /* ========================= Other Functions ========================= */
 
 function makeInfoBox(controlDiv) {
