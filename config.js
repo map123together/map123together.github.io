@@ -30,7 +30,7 @@ function initMap() {
     var logoBox = document.createElement('div');
     makeInfoBox(logoBox);
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
-    
+
     var userBox = document.createElement('div');
     makeUserBox(userBox);
     gMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(userBox);
@@ -42,7 +42,7 @@ function initMap() {
         position.lat = e.latLng.lat();
         position.lng = e.latLng.lng();
         addMarker(position, gMap);
-        
+
         console.log(position);
     });
 }
@@ -51,9 +51,9 @@ function initMap() {
 function addMarker(position, gMap) {
     // Add the marker at the clicked location, and add the next-available label
     // from the array of alphabetical characters.
-    
+
     let markerLabel = labelIndex.toString();
-    
+
     labelIndex++;
 
     let newMarker = new google.maps.Marker({
@@ -62,25 +62,20 @@ function addMarker(position, gMap) {
         map: gMap,
     });
 
-    newMarker.addListener("dblclick", function (e) {
-        console.log("DBClick");
-
-        let markerTobeDelPos = { "position": { "lat": this.position.lat, "lng": this.position.lng } };
-        markers = removeMarkerFromMarkers(markerTobeDelPos, markers);
-        markersJson = JSON.stringify(markers);
-        storeMarkerJson(markersJson);
-
+    // Double-click Listener
+    newMarker.addListener("dblclick", function (e) { // Remove Marker
+        console.log("DBClick on Marker");
+        let markerPos = { "position": { "lat": this.getPosition().lat(), "lng": this.getPosition().lng() } };
+        console.log(markerPos);
+        removeMtMarker(markerPos);
         this.setMap(null);
     })
 
     // Prepare Json for DB
     let timestamp = Date.now();
-    let markerPos = { "position": position, "label": markerLabel, "timestamp": timestamp };
+    let marker = {"position": position, "label": markerLabel, "timestamp": timestamp };
 
-    markers.push(markerPos);
-
-    markersJson = JSON.stringify(markers);
-    storeMarkerJson(markersJson);
+    addMtMarker(marker);
 }
 
 function displayExistingMarkers(markers, gMap) {
@@ -92,15 +87,11 @@ function displayExistingMarkers(markers, gMap) {
         });
 
         // Double-click Listener
-        newMarker.addListener("dblclick", function (e) {
-            console.log("Existing marker DBClick");
-
-            let markerTobeDelPos = { "position": { "lat": this.getPosition().lat(), "lng": this.getPosition().lng() } };
-            console.log(this.position);
-            markers = removeMarkerFromMarkers(markerTobeDelPos, markers);
-            markersJson = JSON.stringify(markers);
-            //storeMarkerJson(markersJson);
-
+        newMarker.addListener("dblclick", function (e) { // Remove Marker
+            console.log("DBClick on Marker");
+            let markerPos = { "position": { "lat": this.getPosition().lat(), "lng": this.getPosition().lng() } };
+            console.log(markerPos);
+            removeMtMarker(markerPos);
             this.setMap(null);
         })
     });
@@ -122,6 +113,7 @@ function storeMarkerJson(markersJson) {
 }
 
 function removeMarkerFromMarkers(markerTobeDelPos, markers) {
+
     for (let index = 0; index < markers.length; index++) {
         if (markerTobeDelPos.position.lat == markers[index].position.lat &&
             markerTobeDelPos.position.lng == markers[index].position.lng) {
