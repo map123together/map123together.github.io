@@ -111,14 +111,15 @@ function makeInfoBox(controlDiv) {
         margin-bottom: 22px;
         text-align : center;
         height: 37px;
+        width:37px;
         ">
         <a href="maps.html">
             <img style="
             margin-left: auto;
             margin-right: auto;
-            width: 100%;
             height: auto;
             height: 37px;
+            width:37px;
             "
             src="./ms-icon-144x144.png"/>
             </a>
@@ -140,16 +141,15 @@ function makeUserBox(controlDiv) {
         margin-bottom: 22px;
         text-align : center;
         height: 37px;
+        width: 37px;
         ">
             <a href="">
             <img style="
             margin-left: auto;
             margin-right: auto;
-            width: 100%;
             height: auto;
             height: 37px;
-            width: 37px;
-            "
+            width: 37px;"
             src="https://lh3.googleusercontent.com/a-/AOh14Giqx3_1q2THz1Z8M0KBOSBhKuWJROQL-3RA8T6iBqA=s96-c"/>
             </a>
           
