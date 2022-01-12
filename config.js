@@ -149,7 +149,7 @@ function makeInfoBox(controlDiv) {
         height: 37px;
         ">
             <div style="
-            "><a href="">
+            "><a href="maps.html">
                 <img style="
                 margin-left: auto;
                 margin-right: auto;
@@ -188,7 +188,7 @@ function makeUserBox(controlDiv) {
                 height: 37px;
                 width: 37px;
                 "
-                src="./user.jpeg"/>
+                src="https://lh3.googleusercontent.com/a-/AOh14Giqx3_1q2THz1Z8M0KBOSBhKuWJROQL-3RA8T6iBqA=s96-c"/>
                 </a>
              </div>
     </div>`;//   font-size:18px;padding:6px;
