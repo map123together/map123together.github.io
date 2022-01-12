@@ -53,7 +53,7 @@ function addMarker(position, gMap) {
     labelIndex++;
     let newMarker = new google.maps.Marker({
         position: position,
-        label: markerLabel,
+        label: '', //markerLabel,
         map: gMap,
     });
 
@@ -75,7 +75,7 @@ function displayExistingMarkers(markers, gMap) {
     markers.forEach(marker => {
         let newMarker = new google.maps.Marker({
             position: marker.position,
-            label: marker.label,
+            label: '', //marker.label,
             map: gMap,
         });
         // Double-click Listener
