@@ -42,20 +42,15 @@ function initMap() {
         position.lat = e.latLng.lat();
         position.lng = e.latLng.lng();
         addMarker(position, gMap);
-
-        console.log(position);
     });
 }
 
 // Adds a marker to the map.
 function addMarker(position, gMap) {
-    // Add the marker at the clicked location, and add the next-available label
-    // from the array of alphabetical characters.
-
+    // Add the marker at the clicked location
     let markerLabel = labelIndex.toString();
 
     labelIndex++;
-
     let newMarker = new google.maps.Marker({
         position: position,
         label: markerLabel,
@@ -64,16 +59,14 @@ function addMarker(position, gMap) {
 
     // Double-click Listener
     newMarker.addListener("dblclick", function (e) { // Remove Marker
-        console.log("DBClick on Marker");
         let markerPos = { "position": { "lat": this.getPosition().lat(), "lng": this.getPosition().lng() } };
-        console.log(markerPos);
         removeMtMarker(markerPos);
         this.setMap(null);
     })
 
     // Prepare Json for DB
     let timestamp = Date.now();
-    let marker = {"position": position, "label": markerLabel, "timestamp": timestamp };
+    let marker = { "position": position, "label": markerLabel, "timestamp": timestamp };
 
     addMtMarker(marker);
 }
@@ -85,12 +78,9 @@ function displayExistingMarkers(markers, gMap) {
             label: marker.label,
             map: gMap,
         });
-
         // Double-click Listener
         newMarker.addListener("dblclick", function (e) { // Remove Marker
-            console.log("DBClick on Marker");
             let markerPos = { "position": { "lat": this.getPosition().lat(), "lng": this.getPosition().lng() } };
-            console.log(markerPos);
             removeMtMarker(markerPos);
             this.setMap(null);
         })
@@ -101,59 +91,55 @@ function displayExistingMarkers(markers, gMap) {
 
 function makeInfoBox(controlDiv) {
     let logoBox = `
-    <div style="
-        border: 2px solid #ffffff;
-        border-radius: 2px;
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
-        background-color:#ffffff;
-        margin-top: 10px;
-        margin-left: 10px;
-        margin-bottom: 22px;
-        text-align : center;
-        height: 37px;
-        width:37px;
-        ">
-        <a href="maps.html">
-            <img style="
-            margin-left: auto;
-            margin-right: auto;
-            height: auto;
-            height: 37px;
-            width:37px;
-            "
-            src="./ms-icon-144x144.png"/>
+        <div style="
+            border: 0px solid #ffffff;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
+            background-color:#ffffff;
+            margin-top: 10px;
+            margin-left: 10px;
+            margin-bottom: 22px;
+            text-align : center;
+            height: 40px;
+            width:40px;">
+            <a href="maps.html">
+                <img style="
+                margin-left: auto;
+                margin-right: auto;
+                height: auto;
+                height: 40px;
+                width:40px;
+                "
+                src="./ms-icon-144x144.png"/>
             </a>
-        
-    </div>`;//   font-size:18px;padding:6px;
+        </div>`;
     let controlUI = createElementFromHTML(logoBox);
     controlDiv.appendChild(controlUI);
 }
 
 function makeUserBox(controlDiv) {
     let userBox = `
-    <div style="
-        border: 2px solid #ffffff;
-        border-radius: 2px;
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
-        background-color:#ffffff;
-        margin-top: 10px;
-        margin-right: 10px;
-        margin-bottom: 22px;
-        text-align : center;
-        height: 37px;
-        width: 37px;
-        ">
-            <a href="">
-            <img style="
-            margin-left: auto;
-            margin-right: auto;
-            height: auto;
-            height: 37px;
-            width: 37px;"
-            src="https://lh3.googleusercontent.com/a-/AOh14Giqx3_1q2THz1Z8M0KBOSBhKuWJROQL-3RA8T6iBqA=s96-c"/>
-            </a>
-          
-    </div>`;//   font-size:18px;padding:6px;
+        <div style="
+            border: 0px solid #ffffff;
+            border-radius: 2px;
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
+            background-color:#ffffff;
+            margin-top: 10px;
+            margin-right: 10px;
+            margin-bottom: 22px;
+            text-align : center;
+            height: 40px;
+            width: 40px;">
+            <div data-bs-toggle="modal" data-bs-target="#logoutModal" onMouseOver="this.style.cursor='pointer'">
+                <img style="
+                margin-left: auto;
+                margin-right: auto;
+                height: auto;
+                height: 40px;
+                width: 40px;"
+                src="default-user.png"/>
+            </div>
+        </div>`;
     let controlUI = createElementFromHTML(userBox);
     controlDiv.appendChild(controlUI);
 }
@@ -161,7 +147,6 @@ function makeUserBox(controlDiv) {
 function createElementFromHTML(htmlString) {
     var div = document.createElement('div');
     div.innerHTML = htmlString.trim();
-
     // Change this to div.childNodes to support multiple top-level nodes
     return div.firstChild;
 }
