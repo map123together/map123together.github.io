@@ -1,5 +1,4 @@
 let labelIndex = 1; // Marker Index
-let markers = []; // Markers
 let gMap; // Google Map
 
 /**
@@ -41,12 +40,15 @@ function initMap() {
         var position = {};
         position.lat = e.latLng.lat();
         position.lng = e.latLng.lng();
+        position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
+        position.zoom = gMap.zoom;
         addMarker(position, gMap);
     });
 }
 
 // Adds a marker to the map.
 function addMarker(position, gMap) {
+    const image = 'blue-pin.png';
     // Add the marker at the clicked location
     let markerLabel = labelIndex.toString();
 
@@ -55,11 +57,22 @@ function addMarker(position, gMap) {
         position: position,
         label: '', //markerLabel,
         map: gMap,
+        icon: image
     });
 
     // Double-click Listener
     newMarker.addListener("dblclick", function (e) { // Remove Marker
-        let markerPos = { "position": { "lat": this.getPosition().lat(), "lng": this.getPosition().lng() } };
+        let markerPos = {
+            "position": {
+                "lat": this.getPosition().lat(),
+                "lng": this.getPosition().lng()
+            },
+            "zoom": gMap.zoom,
+            "center": {
+                "lat": gMap.center.lat(),
+                "lng": gMap.center.lng()
+            }
+        };
         removeMtMarker(markerPos);
         this.setMap(null);
     })
@@ -72,15 +85,28 @@ function addMarker(position, gMap) {
 }
 
 function displayExistingMarkers(markers, gMap) {
+    const image = 'blue-pin.png';
     markers.forEach(marker => {
         let newMarker = new google.maps.Marker({
             position: marker.position,
             label: '', //marker.label,
             map: gMap,
+            icon: image
         });
+
         // Double-click Listener
         newMarker.addListener("dblclick", function (e) { // Remove Marker
-            let markerPos = { "position": { "lat": this.getPosition().lat(), "lng": this.getPosition().lng() } };
+            let markerPos = {
+                "position": {
+                    "lat": this.getPosition().lat(),
+                    "lng": this.getPosition().lng()
+                },
+                "zoom": gMap.zoom,
+                "center": {
+                    "lat": gMap.center.lat(),
+                    "lng": gMap.center.lng()
+                }
+            };
             removeMtMarker(markerPos);
             this.setMap(null);
         })

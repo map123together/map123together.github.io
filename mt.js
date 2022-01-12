@@ -1,9 +1,11 @@
 const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
 const mapid   = getAllUrlParams().mapid; // Current Map ID
 
-getExistingMtMap(mapid);
+getExistingMtMap();
 
-function getExistingMtMap(mapid) {
+//setInterval(getExistingMtMap, 5000);
+
+function getExistingMtMap() {
 
   let method = 'GET';
   let dir = 'map/id/' + mapid;
@@ -17,10 +19,7 @@ function getExistingMtMap(mapid) {
 
       // Markers
       displayExistingMarkers(existingMarkers, gMap);
-      markers = existingMarkers;
-      labelIndex = markers.length + 1;
-
-      console.log(labelIndex);
+      console.log(existingMarkers.length);
 
     }
   };
