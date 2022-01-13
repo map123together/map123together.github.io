@@ -42,31 +42,6 @@
         </div>
     </nav>
 
-    <!-- User Icon -->
-    <!--div style="z-index: 0; position: absolute; left: 0px; top: 0px;">
-        <div style="
-        border: 0px solid #ffffff;
-        border-radius: 2px;
-        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-        background-color:#ffffff;
-        margin-top: 66px;
-        margin-left: 10px;
-        margin-bottom: 22px;
-        text-align : center;
-        height: 40px;
-        width: 40px;
-        " data-bs-toggle="modal" data-bs-target="#logoutModal" onMouseOver="this.style.cursor='pointer'">
-            <div></div>
-            <img style="
-                margin-left: auto;
-                margin-right: auto;
-                height: auto;
-                height: 40px;
-                width: 40px;"
-                src="https://lh3.googleusercontent.com/a-/AOh14Giqx3_1q2THz1Z8M0KBOSBhKuWJROQL-3RA8T6iBqA=s96-c">
-        </div>
-    </div-->
-
     <div class="container-fluid">
         <div class="row"><div class="col">
             <p></p>
@@ -74,7 +49,9 @@
         <div class="row">
             <div class="col-md-auto">
                 <div class="card" style="width: 13rem;">
-                    <img src="map-icon.png" class="card-img-top" alt="default map icon">
+                    <img src="https://maps.googleapis.com/maps/api/staticmap?center=Boston,ma&zoom=14&size=200x200&key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8" 
+                    onerror="event.target.src = 'new-map-icon.png';"
+                    class="card-img-top" alt="default map icon">
                     <div class="card-body">
                         <h5 class="card-title">Boston Trip</h5>
                         <p class="card-text">Last Edit: 1/10/2022 2:45 pm</p>
@@ -84,7 +61,9 @@
             </div>
             <div class="col-md-auto">
                 <div class="card" style="width: 13rem;">
-                    <img src="map-icon.png" class="card-img-top" alt="default map icon">
+                    <img src="https://maps.googleapis.com/maps/api/staticmap?center=Iowa,IA&zoom=8&size=200x200&key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8" 
+                    onerror="event.target.src = 'new-map-icon.png';"
+                    class="card-img-top" alt="default map icon">
                     <div class="card-body">
                         <h5 class="card-title">Iowa Trip</h5>
                         <p class="card-text">Last Edit: 1/11/2022 3:15 pm</p>
@@ -97,8 +76,8 @@
                 <div class="card" style="width: 13rem;">
                     <img src="new-map-icon.png" class="card-img-top" alt="default map icon">
                     <div class="card-body">
-                        <h5 class="card-title">New Map</h5>
-                        <p class="card-text">Create a new map</p>
+                        <h5 class="card-title">Create New Map</h5>
+                        <p class="card-text">Start with an empty map</p>
                         <a href="map.html?mapid=" class="btn btn-primary">Create</a>
                     </div>
                 </div>
