@@ -26,13 +26,13 @@ function initMap() {
 
     // Create the DIV to hold the control and call the makeInfoBox() constructor
     // passing in this DIV.
-    var logoBox = document.createElement('div');
-    makeInfoBox(logoBox);
-    gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
+    //var logoBox = document.createElement('div');
+    //makeInfoBox(logoBox);
+    //gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
 
-    var userBox = document.createElement('div');
-    makeUserBox(userBox);
-    gMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(userBox);
+    //var userBox = document.createElement('div');
+    //makeUserBox(userBox);
+    //gMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(userBox);
 
 
     // Listen for clicks and add the marker of the click.
