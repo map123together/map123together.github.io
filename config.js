@@ -26,13 +26,13 @@ function initMap() {
 
     // Create the DIV to hold the control and call the makeInfoBox() constructor
     // passing in this DIV.
-    //var logoBox = document.createElement('div');
-    //makeInfoBox(logoBox);
-    //gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
+    var logoBox = document.createElement('div');
+    makeInfoBox(logoBox);
+    gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
 
-    //var userBox = document.createElement('div');
-    //makeUserBox(userBox);
-    //gMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(userBox);
+    var userBox = document.createElement('div');
+    makeUserBox(userBox);
+    gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
 
 
     // Listen for clicks and add the marker of the click.
@@ -127,18 +127,18 @@ function makeInfoBox(controlDiv) {
             margin-bottom: 22px;
             text-align : center;
             height: 40px;
-            width:40px;">
+            width:auto;">
             <a href="maps.html">
                 <img style="
                 margin-left: auto;
                 margin-right: auto;
                 height: auto;
                 height: 40px;
-                width:40px;
-                "
-                src="./ms-icon-144x144.png"/>
+                width:auto;
+                " src="./Banner.png"
+                />
             </a>
-        </div>`;
+        </div>`;//src="./ms-icon-144x144.png"
     let controlUI = createElementFromHTML(logoBox);
     controlDiv.appendChild(controlUI);
 }
@@ -151,6 +151,7 @@ function makeUserBox(controlDiv) {
             box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
             background-color:#ffffff;
             margin-top: 10px;
+            margin-left: 10px;
             margin-right: 10px;
             margin-bottom: 22px;
             text-align : center;
