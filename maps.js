@@ -1,60 +1,22 @@
 const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
 const mapid   = getAllUrlParams().mapid; // Current Map ID
 
-getExistingMtMap();
+getMyMaps();
 
-function getExistingMtMap() {
+function getMyMaps() {
 
   let method = 'GET';
-  let dir = 'map/id/' + mapid;
+  let dir = 'map/maps';
 
   let parseRes = (response) => {
-    let mtMap = {};
+    let myMaps = [];
     let resposeJson = JSON.parse(response);
-    if (resposeJson[0]) {
-      mtMap = resposeJson[0];
-      existingMarkers = mtMap.markers;
-
-      // Markers
-      displayExistingMarkers(existingMarkers, gMap);
-      console.log(existingMarkers.length);
-
-    }
+    console.log(resposeJson);
   };
 
   sendMtRequest(method, dir, null, parseRes);
 }
 
-
-function addMtMarker(marker) {
-
-  let method = 'POST';
-  let dir = 'map/id/' + mapid + '/add-marker';
-
-  let parseRes = (response) => {
-    let resposeJson = JSON.parse(response);
-    if (resposeJson) {
-      console.log(resposeJson);
-    }
-  };
-
-  sendMtRequest(method, dir, marker, null);
-}
-
-function removeMtMarker(markerPos) {
-
-  let method = 'POST';
-  let dir = 'map/id/' + mapid + '/delete-marker';
-
-  let parseRes = (response) => {
-    let resposeJson = JSON.parse(response);
-    if (resposeJson) {
-      console.log(resposeJson);
-    }
-  };
-
-  sendMtRequest(method, dir, markerPos, null);
-}
 
 /* ========================= Helper Functions ========================= */
 
