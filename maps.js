@@ -1,12 +1,41 @@
 const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
-const mapid   = getAllUrlParams().mapid; // Current Map ID
+const mapid = getAllUrlParams().mapid; // Current Map ID
 
-getMyMaps();
 
-function getMyMaps() {
+verifyLogin();
 
-  let method = 'GET';
+function verifyLogin() {
+
+  let method = 'POST';
+  let dir = 'login';
+  let gUserCredential = readCookie('gUserCredential');
+  let reqBody = { "gUserCredential": gUserCredential };
+
+  let parseRes = (response) => {
+    let resposeJson = JSON.parse(response);
+
+    if (!resposeJson.verified) {
+      window.location.href = "index.html";
+    } else {
+      if (resposeJson.picture) {
+        document.getElementById("mt-user-picture").src = resposeJson.picture;
+      }
+
+      if (resposeJson.uid) {
+        getMyMaps(resposeJson.uid);
+      }
+    }
+  };
+
+  sendMtRequest(method, dir, reqBody, parseRes);
+}
+
+function getMyMaps(uid) {
+
+  let method = 'POST';
   let dir = 'map/maps';
+  console.log(uid);
+  let reqBody = { "uid": uid };
 
   let parseRes = (response) => {
     let myMaps = [];
@@ -14,18 +43,33 @@ function getMyMaps() {
     console.log(resposeJson);
   };
 
-  sendMtRequest(method, dir, null, parseRes);
+  sendMtRequest(method, dir, reqBody, parseRes);
 }
 
 
 /* ========================= Helper Functions ========================= */
+function readCookie(cookieName) {
+  var allcookies = document.cookie;
+  // Get all the cookies pairs in an array
+  cookiearray = allcookies.split(';');
+
+  // Now take key value pair out of this array
+  for (var i = 0; i < cookiearray.length; i++) {
+    let tempCookieName = cookiearray[i].split('=')[0];
+    let tempCookieValue = cookiearray[i].split('=')[1];
+    if (cookieName == tempCookieName.trim()) {
+      return tempCookieValue.trim();
+    }
+  }
+  return '';
+}
 
 function sendMtRequest(method, directory, requestBody, callback) {
   let req = new XMLHttpRequest();
 
   req.onreadystatechange = () => {
     if (req.readyState == XMLHttpRequest.DONE) {
-      if(callback){
+      if (callback) {
         callback(req.responseText);
       }
     }
