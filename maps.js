@@ -46,7 +46,7 @@ function getMyMaps(uid) {
     myMaps.forEach(mtMap => {
       console.log(mtMap);
       //console.log(document.getElementById('mapCardsRow'));
-      document.getElementById('mapCardsRow').insertAdjacentHTML('afterbegin', createMapCard(mtMap));
+      document.getElementById('mapCardsRow').insertAdjacentHTML('beforeend', createMapCard(mtMap));
     });
   };
 
@@ -58,7 +58,8 @@ function createMapCard(mtMap) {
   let htmlStr = `
     <div class="col-md-auto">
         <div class="card" style="width: 13rem;">
-            <img src="https://maps.googleapis.com/maps/api/staticmap?center=${mtMap.center.lat},${mtMap.center.lng}&zoom=${mtMap.zoom}&size=200x200&key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8" 
+            <img src="https://maps.googleapis.com/maps/api/staticmap?center=${mtMap.center.lat},${mtMap.center.lng}
+            &zoom=${mtMap.zoom}&size=200x200&key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8" 
             onerror="event.target.src = 'new-map-icon.png';"
             class="card-img-top" alt="default map icon">
             <div class="card-body">
