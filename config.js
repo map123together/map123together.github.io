@@ -1,5 +1,6 @@
 let labelIndex = 1; // Marker Index
 let gMap; // Google Map
+let markerPositions = [];
 
 /**
  * Creates a map object with a click listener and a heatmap.
@@ -64,19 +65,17 @@ function addMarker(position, gMap) {
         icon: image
     });
 
+    addMarkerPosition(position);
+
     // Double-click Listener
     newMarker.addListener("dblclick", function (e) { // Remove Marker
         let markerPos = {
             "position": {
                 "lat": this.getPosition().lat(),
                 "lng": this.getPosition().lng()
-            },
-            "zoom": gMap.zoom,
-            "center": {
-                "lat": gMap.center.lat(),
-                "lng": gMap.center.lng()
             }
         };
+        removeMarkerPosition(markerPos.position);
         removeMtMarker(markerPos);
         this.setMap(null);
     })
@@ -88,9 +87,9 @@ function addMarker(position, gMap) {
     addMtMarker(marker);
 }
 
-function displayExistingMarkers(markers, gMap) {
+function displayExistingMarkers(mtMarkers, gMap) {
     const image = 'blue-pin.png';
-    markers.forEach(marker => {
+    mtMarkers.forEach(marker => {
         let newMarker = new google.maps.Marker({
             position: marker.position,
             label: '', //marker.label,
@@ -98,25 +97,87 @@ function displayExistingMarkers(markers, gMap) {
             icon: image
         });
 
+        addMarkerPosition(marker.position);
+
         // Double-click Listener
         newMarker.addListener("dblclick", function (e) { // Remove Marker
             let markerPos = {
                 "position": {
                     "lat": this.getPosition().lat(),
                     "lng": this.getPosition().lng()
-                },
-                "zoom": gMap.zoom,
-                "center": {
-                    "lat": gMap.center.lat(),
-                    "lng": gMap.center.lng()
                 }
             };
+            removeMarkerPosition(markerPos.position);
             removeMtMarker(markerPos);
             this.setMap(null);
         })
     });
 }
 
+function syncMtMarkers(mtMarkers, gMap) {
+    const image = 'blue-pin.png';
+
+    console.log(mtMarkers);
+
+    mtMarkers.forEach(mtMarker => {
+        let isExMarker = false;
+        markerPositions.forEach(pos => {
+            if (mtMarker.position.lat == pos.lat && mtMarker.position.lng == pos.lng) {
+                isExMarker = true;
+            }
+        });
+        if (!isExMarker) {
+            let newMarker = new google.maps.Marker({
+                position: mtMarker.position,
+                label: '', //marker.label,
+                map: gMap,
+                icon: image
+            });
+
+            addMarkerPosition(mtMarker.position);
+
+            // Double-click Listener
+            newMarker.addListener("dblclick", function (e) { // Remove Marker
+                let markerPos = {
+                    "position": {
+                        "lat": this.getPosition().lat(),
+                        "lng": this.getPosition().lng()
+                    }
+                };
+                removeMtMarker(markerPos);
+                this.setMap(null);
+            })
+        }
+        
+        // Remove old markers
+        //https://developers.google.com/maps/documentation/javascript/examples/marker-remove
+    });
+}
+
+function removeMarkerPosition(position) {
+    let newMarkerPositions = []
+    markerPositions.forEach(pos => {
+        if (position.lat != pos.lat || position.lng != pos.lng) {
+            newMarkerPositions.push(pos);
+        }
+    });
+    markerPositions = newMarkerPositions;
+    console.log(markerPositions);
+}
+
+function addMarkerPosition(position) {
+    let isExMarker = false;
+    markerPositions.forEach(pos => {
+        if (position.lat == pos.lat && position.lng == pos.lng) {
+            isExMarker = true;
+        }
+    });
+    if (!isExMarker) {
+        markerPositions.push(position);
+    }
+
+    console.log(markerPositions);
+}
 /* ========================= Other Functions ========================= */
 
 function makeInfoBox(controlDiv) {
