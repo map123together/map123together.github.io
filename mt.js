@@ -88,7 +88,6 @@ function sendMtRequest(method, directory, requestBody, callback) {
 
 }
 
-
 function getAllUrlParams(url) {
 
   // get query string from url (optional) or window

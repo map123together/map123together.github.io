@@ -34,16 +34,42 @@ function getMyMaps(uid) {
 
   let method = 'POST';
   let dir = 'map/maps';
-  console.log(uid);
+
   let reqBody = { "uid": uid };
 
   let parseRes = (response) => {
     let myMaps = [];
     let resposeJson = JSON.parse(response);
     console.log(resposeJson);
+    myMaps = resposeJson;
+  
+    myMaps.forEach(mtMap => {
+      console.log(mtMap);
+      //console.log(document.getElementById('mapCardsRow'));
+      document.getElementById('mapCardsRow').insertAdjacentHTML('afterbegin', createMapCard(mtMap));
+    });
   };
 
   sendMtRequest(method, dir, reqBody, parseRes);
+}
+
+function createMapCard(mtMap) {
+  let last_update_at = new Date(mtMap.last_mod_time).toLocaleString("en-US");
+  let htmlStr = `
+    <div class="col-md-auto">
+        <div class="card" style="width: 13rem;">
+            <img src="https://maps.googleapis.com/maps/api/staticmap?center=${mtMap.center.lat},${mtMap.center.lng}&zoom=${mtMap.zoom}&size=200x200&key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8" 
+            onerror="event.target.src = 'new-map-icon.png';"
+            class="card-img-top" alt="default map icon">
+            <div class="card-body">
+                <h5 class="card-title">${mtMap.name}</h5>
+                <p class="card-text">Last Edit: ${last_update_at}</p>
+                <a href="map.html?mapid=${mtMap.mapId}" class="btn btn-primary">Open</a>
+            </div>
+        </div>
+    </div>
+  `;
+  return htmlStr;
 }
 
 
