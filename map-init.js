@@ -118,7 +118,7 @@ function makeLogoBox(controlDiv) {
             background-color:#ffffff;
             margin-top: 10px;
             margin-left: 10px;
-            margin-bottom: 22px;
+            margin-bottom: 10px;
             text-align : center;
             height: 40px;
             width:auto;">
@@ -147,7 +147,7 @@ function makeUserBox(controlDiv) {
             margin-top: 10px;
             margin-left: 10px;
             margin-right: 10px;
-            margin-bottom: 22px;
+            margin-bottom: 10px;
             text-align : center;
             height: 40px;
             width: 40px;">
@@ -178,7 +178,7 @@ function makeTopToolBox(controlDiv) {
             margin-top: 10px;
             margin-left: 10px;
             margin-right: 10px;
-            margin-bottom: 22px;
+            margin-bottom: 10px;
             height: 40px;
             width: 185px;">
             <div style="padding-top:5px; margin-left: 5px;"
