@@ -46,23 +46,14 @@ function initMap() { // Creates a map object with a click listener
 
 function displayMtMarkers(mtMarkers, gMap) { // Add MT markers to the map
     mtMarkers.forEach(mtMarker => {
-        let isExMarker = false;
-        markers.forEach(marker => {
-            if (mtMarker.position.lat == marker.getPosition().lat()
-                && mtMarker.position.lng == marker.getPosition().lng()) {
-                isExMarker = true;
-            }
-        });
-        if (!isExMarker) {
-            addMarker(mtMarker.position, gMap, false);
-        }
+        addMarker(mtMarker.position, gMap, false);
     });
 }
 
 function addMarker(newMarkerPos, gMap, needUpdateMt) {
     let image = './images/blue-pin.png';
     let isExMarker = false;
-    markers.forEach(marker => {
+    markers.forEach(marker => { //
         if (newMarkerPos.lat == marker.getPosition().lat()
             && newMarkerPos.lng == marker.getPosition().lng()) {
             isExMarker = true;
