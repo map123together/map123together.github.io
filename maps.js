@@ -15,7 +15,7 @@ function verifyLogin() {
     let resposeJson = JSON.parse(response);
 
     if (!resposeJson.verified) {
-      window.location.href = "index.html";
+      window.location.href = 'index.html';
     } else {
       if (resposeJson.picture) {
         document.getElementById("mt-user-picture").src = resposeJson.picture;

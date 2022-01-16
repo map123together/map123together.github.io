@@ -1,6 +1,7 @@
 const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
 const mapid = getAllUrlParams().mapid; // Current Map ID
 
+verifyLogin();
 getExistingMtMap();
 
 setInterval(getExistingMtMap, 5000);
@@ -53,4 +54,27 @@ function removeMtMarker(markerPos) {
   };
 
   sendMtRequest(method, dir, markerPos, null);
+}
+
+function verifyLogin() {
+
+  let method = 'POST';
+  let dir = 'login';
+  let gUserCredential = readCookie('gUserCredential');
+  let reqBody = { "gUserCredential": gUserCredential };
+
+  let parseRes = (response) => {
+    let resposeJson = JSON.parse(response);
+
+    if (!resposeJson.verified) {
+      window.location.href = "index.html?openmap="+mapid;
+      document.cookie = "gUserCredential=;gUserPicture=";
+    } else {
+      if (resposeJson.picture) {
+        document.cookie = "gUserPicture=" + resposeJson.picture;
+      }
+    }
+  };
+
+  sendMtRequest(method, dir, reqBody, parseRes);
 }

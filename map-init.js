@@ -107,7 +107,7 @@ function removeMarker(oldMarker) {
     console.log("After Removal: " + markers.length);
 }
 
-/* ========================= Other Functions ========================= */
+/* ========================= UI Functions ========================= */
 
 function makeLogoBox(controlDiv) {
     let logoBox = `
@@ -137,6 +137,7 @@ function makeLogoBox(controlDiv) {
 }
 
 function makeUserBox(controlDiv) {
+    let pictureUrl = readCookie('gUserPicture');
     let userBox = `
         <div style="
             border: 0px solid #ffffff;
@@ -151,13 +152,15 @@ function makeUserBox(controlDiv) {
             height: 40px;
             width: 40px;">
             <div data-bs-toggle="modal" data-bs-target="#logoutModal" onMouseOver="this.style.cursor='pointer'">
-                <img style="
+                <img
+                id="mt-user-picture" 
+                style="
                 margin-left: auto;
                 margin-right: auto;
                 margin-top: 1px;
                 height: 37px;
                 width: 37px;"
-                src="https://lh3.googleusercontent.com/a-/AOh14Giqx3_1q2THz1Z8M0KBOSBhKuWJROQL-3RA8T6iBqA=s96-c"
+                src="${pictureUrl}"
                 onerror="event.target.src = './images/default-user.png';"/>
             </div>
         </div>`;

@@ -37,8 +37,8 @@
                   <div class="col-4">
                      <div id="g_id_onload"
                         data-client_id="830441803592-akdqipgoripfd6vt3ra95g5pmeujvj7c.apps.googleusercontent.com"
-                        data-state_cookie_domain="localhost"
-                        data-callback="setCookieLoginInfo" data-auto_prompt="false">
+                        data-state_cookie_domain="localhost" data-callback="setCookieLoginInfo"
+                        data-auto_prompt="false">
                      </div><!--  data-login_uri="https://1and2.xyz/login" -->
                      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
                         data-text="sign_in_with" data-shape="rectangular" data-logo_alignment="center">
@@ -60,12 +60,17 @@
       </div>
    </div>
 </body>
-
+<script src="helpers.js"></script>
 <script>
    function setCookieLoginInfo(gInfo) {
-      if(gInfo.credential){
+      if (gInfo.credential) {
          document.cookie = "gUserCredential=" + gInfo.credential;
-          window.location.href = "maps.html";
+         let mapid = getAllUrlParams().openmap;
+         if (mapid) {
+            window.location.href = "map.html?mapid=" + mapid;
+         } else {
+            window.location.href = "maps.html";
+         }
       } else {
          document.cookie = "gUserCredential=";
       }
