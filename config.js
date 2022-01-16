@@ -1,10 +1,7 @@
 let gMap; // Google Map
 let markers = []; // Google Map Markers
 
-/**
- * Creates a map object with a click listener and a heatmap.
- */
-function initMap() {
+function initMap() { // Creates a map object with a click listener
     gMap = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 42.36902628214271, lng: -71.10770241353738 },
         zoom: 12,
@@ -27,7 +24,7 @@ function initMap() {
     // Create the DIV to hold the control and call the makeInfoBox() constructor
     // passing in this DIV.
     var logoBox = document.createElement('div');
-    makeInfoBox(logoBox);
+    makeLogoBox(logoBox);
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
 
     var userBox = document.createElement('div');
@@ -47,13 +44,7 @@ function initMap() {
     });
 }
 
-function displayExistingMarkers(mtMarkers, gMap) {
-    mtMarkers.forEach(mtMarker => {
-        addMarker(mtMarker.position, gMap, false);
-    });
-}
-
-function displayMtMarkers(mtMarkers, gMap) {
+function displayMtMarkers(mtMarkers, gMap) { // Add MT markers to the map
     mtMarkers.forEach(mtMarker => {
         let isExMarker = false;
         markers.forEach(marker => {
@@ -87,7 +78,7 @@ function addMarker(newMarkerPos, gMap, needUpdateMt) {
         });
         markers.push(newMarker);
         console.log("After Adding: " + markers.length);
-        
+
         // Double-click Listener: Remove Marker
         newMarker.addListener("dblclick", function (e) {
             removeMarker(this);
@@ -128,7 +119,7 @@ function removeMarker(oldMarker) {
 
 /* ========================= Other Functions ========================= */
 
-function makeInfoBox(controlDiv) {
+function makeLogoBox(controlDiv) {
     let logoBox = `
         <div style="
             border: 0px solid #ffffff;

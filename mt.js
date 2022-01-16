@@ -2,7 +2,8 @@ const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
 const mapid   = getAllUrlParams().mapid; // Current Map ID
 
 getExistingMtMap();
-setInterval(getExistingMtMap, 3000);
+
+setInterval(getExistingMtMap, 5000);
 
 function getExistingMtMap() {
 
