@@ -1,5 +1,5 @@
 const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
-const mapid   = getAllUrlParams().mapid; // Current Map ID
+const mapid = getAllUrlParams().mapid; // Current Map ID
 
 getExistingMtMap();
 
@@ -15,11 +15,10 @@ function getExistingMtMap() {
     let resposeJson = JSON.parse(response);
     if (resposeJson[0]) {
       mtMap = resposeJson[0];
-      existingMarkers = mtMap.markers;
-
-      // Markers
-      displayMtMarkers(existingMarkers, gMap);
-      console.log("Fetched MT Markers: " + existingMarkers.length);
+      if (mtMap.markers) {
+        displayMtMarkers(mtMap.markers, gMap);
+        console.log("Fetched MT Markers: " + mtMap.markers.length);
+      }
     }
   };
 
@@ -63,7 +62,7 @@ function sendMtRequest(method, directory, requestBody, callback) {
 
   req.onreadystatechange = () => {
     if (req.readyState == XMLHttpRequest.DONE) {
-      if(callback){
+      if (callback) {
         callback(req.responseText);
       }
     }
@@ -84,17 +83,15 @@ function sendMtRequest(method, directory, requestBody, callback) {
     default:
       break;
   }
-
-
 }
 
 function getAllUrlParams(url) {
 
   // get query string from url (optional) or window
-  var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+  let queryString = url ? url.split('?')[1] : window.location.search.slice(1);
 
   // we'll store the parameters here
-  var obj = {};
+  let obj = {};
 
   // if query string exists
   if (queryString) {
@@ -103,15 +100,15 @@ function getAllUrlParams(url) {
     queryString = queryString.split('#')[0];
 
     // split our query string into its component parts
-    var arr = queryString.split('&');
+    let arr = queryString.split('&');
 
-    for (var i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
       // separate the keys and the values
-      var a = arr[i].split('=');
+      let a = arr[i].split('=');
 
       // set parameter name and value (use 'true' if empty)
-      var paramName = a[0];
-      var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+      let paramName = a[0];
+      let paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
 
       // (optional) keep case consistent
       paramName = paramName.toLowerCase();
@@ -121,13 +118,13 @@ function getAllUrlParams(url) {
       if (paramName.match(/\[(\d+)?\]$/)) {
 
         // create key if it doesn't exist
-        var key = paramName.replace(/\[(\d+)?\]/, '');
+        let key = paramName.replace(/\[(\d+)?\]/, '');
         if (!obj[key]) obj[key] = [];
 
         // if it's an indexed array e.g. colors[2]
         if (paramName.match(/\[\d+\]$/)) {
           // get the index value and add the entry at the appropriate position
-          var index = /\[(\d+)\]/.exec(paramName)[1];
+          let index = /\[(\d+)\]/.exec(paramName)[1];
           obj[key][index] = paramValue;
         } else {
           // otherwise add the value to the end of the array

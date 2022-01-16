@@ -23,21 +23,21 @@ function initMap() { // Creates a map object with a click listener
 
     // Create the DIV to hold the control and call the makeInfoBox() constructor
     // passing in this DIV.
-    var logoBox = document.createElement('div');
+    let logoBox = document.createElement('div');
     makeLogoBox(logoBox);
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
 
-    var userBox = document.createElement('div');
+    let userBox = document.createElement('div');
     makeUserBox(userBox);
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
 
-    var topToolBox = document.createElement('div');
+    let topToolBox = document.createElement('div');
     makeTopToolBox(topToolBox);
     gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(topToolBox);
 
     // Listen for clicks and add the marker of the click.
     google.maps.event.addListener(gMap, "click", (e) => {
-        var position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+        let position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
         //position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
         //position.zoom = gMap.zoom;
         addMarker(position, gMap, true);
@@ -202,7 +202,7 @@ function makeTopToolBox(controlDiv) {
 }
 
 function createElementFromHTML(htmlString) {
-    var div = document.createElement('div');
+    let div = document.createElement('div');
     div.innerHTML = htmlString.trim();
     // Change this to div.childNodes to support multiple top-level nodes
     return div.firstChild;
