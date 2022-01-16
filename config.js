@@ -1,6 +1,5 @@
-let labelIndex = 1; // Marker Index
 let gMap; // Google Map
-let markerPositions = [];
+let markers = []; // Google Map Markers
 
 /**
  * Creates a map object with a click listener and a heatmap.
@@ -39,145 +38,95 @@ function initMap() {
     makeTopToolBox(topToolBox);
     gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(topToolBox);
 
-
     // Listen for clicks and add the marker of the click.
     google.maps.event.addListener(gMap, "click", (e) => {
-        var position = {};
-        position.lat = e.latLng.lat();
-        position.lng = e.latLng.lng();
-        position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
-        position.zoom = gMap.zoom;
-        addMarker(position, gMap);
+        var position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+        //position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
+        //position.zoom = gMap.zoom;
+        addMarker(position, gMap, true);
     });
-}
-
-// Adds a marker to the map.
-function addMarker(position, gMap) {
-    const image = 'blue-pin.png';
-    // Add the marker at the clicked location
-    let markerLabel = labelIndex.toString();
-
-    labelIndex++;
-    let newMarker = new google.maps.Marker({
-        position: position,
-        label: '', //markerLabel,
-        map: gMap,
-        icon: image
-    });
-
-    addMarkerPosition(position);
-
-    // Double-click Listener
-    newMarker.addListener("dblclick", function (e) { // Remove Marker
-        let markerPos = {
-            "position": {
-                "lat": this.getPosition().lat(),
-                "lng": this.getPosition().lng()
-            }
-        };
-        removeMarkerPosition(markerPos.position);
-        removeMtMarker(markerPos);
-        this.setMap(null);
-    })
-
-    // Prepare Json for DB
-    let timestamp = Date.now();
-    let marker = { "position": position, "label": markerLabel, "timestamp": timestamp };
-
-    addMtMarker(marker);
 }
 
 function displayExistingMarkers(mtMarkers, gMap) {
-    const image = 'blue-pin.png';
-    mtMarkers.forEach(marker => {
-        let newMarker = new google.maps.Marker({
-            position: marker.position,
-            label: '', //marker.label,
-            map: gMap,
-            icon: image
-        });
-
-        addMarkerPosition(marker.position);
-
-        // Double-click Listener
-        newMarker.addListener("dblclick", function (e) { // Remove Marker
-            let markerPos = {
-                "position": {
-                    "lat": this.getPosition().lat(),
-                    "lng": this.getPosition().lng()
-                }
-            };
-            removeMarkerPosition(markerPos.position);
-            removeMtMarker(markerPos);
-            this.setMap(null);
-        })
+    mtMarkers.forEach(mtMarker => {
+        addMarker(mtMarker.position, gMap, false);
     });
 }
 
-function syncMtMarkers(mtMarkers, gMap) {
+function displayMtMarkers(mtMarkers, gMap) {
     const image = 'blue-pin.png';
-
-    console.log(mtMarkers);
-
     mtMarkers.forEach(mtMarker => {
         let isExMarker = false;
-        markerPositions.forEach(pos => {
-            if (mtMarker.position.lat == pos.lat && mtMarker.position.lng == pos.lng) {
+        markers.forEach(marker => {
+            if (mtMarker.position.lat == marker.getPosition().lat()
+                && mtMarker.position.lng == marker.getPosition().lng()) {
                 isExMarker = true;
             }
         });
         if (!isExMarker) {
-            let newMarker = new google.maps.Marker({
-                position: mtMarker.position,
-                label: '', //marker.label,
-                map: gMap,
-                icon: image
-            });
-
-            addMarkerPosition(mtMarker.position);
-
-            // Double-click Listener
-            newMarker.addListener("dblclick", function (e) { // Remove Marker
-                let markerPos = {
-                    "position": {
-                        "lat": this.getPosition().lat(),
-                        "lng": this.getPosition().lng()
-                    }
-                };
-                removeMtMarker(markerPos);
-                this.setMap(null);
-            })
+            addMarker(mtMarker.position, gMap, false);
         }
-        
-        // Remove old markers
-        //https://developers.google.com/maps/documentation/javascript/examples/marker-remove
     });
 }
 
-function removeMarkerPosition(position) {
-    let newMarkerPositions = []
-    markerPositions.forEach(pos => {
-        if (position.lat != pos.lat || position.lng != pos.lng) {
-            newMarkerPositions.push(pos);
-        }
-    });
-    markerPositions = newMarkerPositions;
-    console.log(markerPositions);
-}
-
-function addMarkerPosition(position) {
+function addMarker(newMarkerPos, gMap, needUpdateMt) {
+    const image = 'blue-pin.png';
     let isExMarker = false;
-    markerPositions.forEach(pos => {
-        if (position.lat == pos.lat && position.lng == pos.lng) {
+    markers.forEach(marker => {
+        if (newMarkerPos.lat == marker.getPosition().lat()
+            && newMarkerPos.lng == marker.getPosition().lng()) {
             isExMarker = true;
         }
     });
-    if (!isExMarker) {
-        markerPositions.push(position);
-    }
 
-    console.log(markerPositions);
+    if (!isExMarker) {
+        let newMarker = new google.maps.Marker({
+            position: newMarkerPos,
+            label: '',
+            map: gMap,
+            icon: image
+        });
+        markers.push(newMarker);
+        console.log("After Adding: " + markers.length);
+        
+        // Double-click Listener: Remove Marker
+        newMarker.addListener("dblclick", function (e) {
+            removeMarker(this);
+        })
+
+        if (needUpdateMt) { // update MT database
+            let mtMarker = { "position": newMarkerPos, "timestamp": Date.now() };
+            addMtMarker(mtMarker);
+        }
+
+        return newMarker;
+    } else {
+        return null;
+    }
 }
+
+function removeMarker(oldMarker) {
+    let newMarkers = [];
+    markers.forEach(marker => {
+        if (oldMarker.getPosition().lat() == marker.getPosition().lat()
+            && oldMarker.getPosition().lng() == marker.getPosition().lng()) {
+            marker.setMap(null);
+            let mtMarker = {
+                "position": {
+                    "lat": oldMarker.getPosition().lat(),
+                    "lng": oldMarker.getPosition().lng()
+                }
+            };
+            removeMtMarker(mtMarker);
+        } else {
+            newMarkers.push(marker);
+        }
+    });
+    markers = newMarkers;
+    console.log("After Removal: " + markers.length);
+}
+
+
 /* ========================= Other Functions ========================= */
 
 function makeInfoBox(controlDiv) {

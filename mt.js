@@ -2,8 +2,7 @@ const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
 const mapid   = getAllUrlParams().mapid; // Current Map ID
 
 getExistingMtMap();
-setInterval(getUpdatedMtMap, 3000);
-
+setInterval(getExistingMtMap, 3000);
 
 function getExistingMtMap() {
 
@@ -18,28 +17,8 @@ function getExistingMtMap() {
       existingMarkers = mtMap.markers;
 
       // Markers
-      displayExistingMarkers(existingMarkers, gMap);
-      console.log(existingMarkers.length);
-
-    }
-  };
-
-  sendMtRequest(method, dir, null, parseRes);
-}
-
-function getUpdatedMtMap(){
-  let method = 'GET';
-  let dir = 'map/id/' + mapid;
-
-  let parseRes = (response) => {
-    let mtMap = {};
-    let resposeJson = JSON.parse(response);
-    if (resposeJson[0]) {
-      mtMap = resposeJson[0];
-      mtMarkers = mtMap.markers;
-
-      // Markers
-      syncMtMarkers(mtMarkers, gMap);
+      displayMtMarkers(existingMarkers, gMap);
+      console.log("Fetched MT Markers: " + existingMarkers.length);
     }
   };
 
