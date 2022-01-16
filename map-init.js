@@ -1,5 +1,6 @@
 let gMap; // Google Map
 let markers = []; // Google Map Markers
+let isEditing = false; // UI Update Lock
 
 function initMap() { // Creates a map object with a click listener
     gMap = new google.maps.Map(document.getElementById('map'), {
@@ -79,7 +80,6 @@ function addMarker(newMarkerPos, gMap, needUpdateMt) {
             let mtMarker = { "position": newMarkerPos, "timestamp": Date.now() };
             addMtMarker(mtMarker);
         }
-
         return newMarker;
     } else {
         return null;

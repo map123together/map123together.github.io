@@ -22,8 +22,10 @@ function getExistingMtMap() {
       }
     }
   };
-
-  sendMtRequest(method, dir, null, parseRes);
+  console.log("isEditing: "+ isEditing);
+  if(!isEditing){
+    sendMtRequest(method, dir, null, parseRes);
+  }
 }
 
 function addMtMarker(marker) {
@@ -32,13 +34,14 @@ function addMtMarker(marker) {
   let dir = 'map/id/' + mapid + '/add-marker';
 
   let parseRes = (response) => {
+    isEditing = false;
     let resposeJson = JSON.parse(response);
     if (resposeJson) {
-      console.log(resposeJson);
+      //console.log(resposeJson);
     }
   };
-
-  sendMtRequest(method, dir, marker, null);
+  isEditing = true;
+  sendMtRequest(method, dir, marker, parseRes);
 }
 
 function removeMtMarker(markerPos) {
@@ -47,13 +50,14 @@ function removeMtMarker(markerPos) {
   let dir = 'map/id/' + mapid + '/delete-marker';
 
   let parseRes = (response) => {
+    isEditing = false;
     let resposeJson = JSON.parse(response);
     if (resposeJson) {
-      console.log(resposeJson);
+      //console.log(resposeJson);
     }
   };
-
-  sendMtRequest(method, dir, markerPos, null);
+  isEditing = true;
+  sendMtRequest(method, dir, markerPos, parseRes);
 }
 
 function verifyLogin() {
