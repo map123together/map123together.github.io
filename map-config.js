@@ -107,7 +107,6 @@ function removeMarker(oldMarker) {
     console.log("After Removal: " + markers.length);
 }
 
-
 /* ========================= Other Functions ========================= */
 
 function makeLogoBox(controlDiv) {
