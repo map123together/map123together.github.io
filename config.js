@@ -54,7 +54,6 @@ function displayExistingMarkers(mtMarkers, gMap) {
 }
 
 function displayMtMarkers(mtMarkers, gMap) {
-    const image = 'blue-pin.png';
     mtMarkers.forEach(mtMarker => {
         let isExMarker = false;
         markers.forEach(marker => {
@@ -70,7 +69,7 @@ function displayMtMarkers(mtMarkers, gMap) {
 }
 
 function addMarker(newMarkerPos, gMap, needUpdateMt) {
-    const image = 'blue-pin.png';
+    let image = './images/blue-pin.png';
     let isExMarker = false;
     markers.forEach(marker => {
         if (newMarkerPos.lat == marker.getPosition().lat()
@@ -148,7 +147,7 @@ function makeInfoBox(controlDiv) {
                 margin-right: auto;
                 height: 40px;
                 width: auto;
-                " src="./Banner-sm.png"
+                " src="./images/Banner-sm.png"
                 />
             </a>
         </div>`;//src="./ms-icon-144x144.png"
@@ -178,7 +177,7 @@ function makeUserBox(controlDiv) {
                 height: 37px;
                 width: 37px;"
                 src="https://lh3.googleusercontent.com/a-/AOh14Giqx3_1q2THz1Z8M0KBOSBhKuWJROQL-3RA8T6iBqA=s96-c"
-                onerror="event.target.src = 'default-user.png';"/>
+                onerror="event.target.src = './images/default-user.png';"/>
             </div>
         </div>`;
     let controlUI = createElementFromHTML(userBox);
