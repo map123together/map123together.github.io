@@ -22,10 +22,8 @@ function getExistingMtMap() {
       }
     }
   };
-  console.log("isEditing: "+ isEditing);
-  if(!isEditing){
-    sendMtRequest(method, dir, null, parseRes);
-  }
+
+  sendMtRequest(method, dir, null, parseRes);
 }
 
 function addMtMarker(marker) {
