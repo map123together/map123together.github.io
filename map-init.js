@@ -1,6 +1,7 @@
 let gMap; // Google Map
 let markers = []; // Google Map Markers
 let isEditing = false; // UI Update Lock
+let syncingQueue = { "markerAdds": [], "markerRemovals": [] };
 
 function initMap() { // Creates a map object with a click listener
     gMap = new google.maps.Map(document.getElementById('map'), {
@@ -77,8 +78,9 @@ function addMarker(newMarkerPos, gMap, needUpdateMt) {
         })
 
         if (needUpdateMt) { // update MT database
-            let mtMarker = { "position": newMarkerPos, "timestamp": Date.now() };
-            addMtMarker(mtMarker);
+            let mtMarker = { "position": newMarkerPos };
+            //addMtMarker(mtMarker);
+            syncingQueue["markerAdds"].push(mtMarker);
         }
         return newMarker;
     } else {
@@ -98,7 +100,8 @@ function removeMarker(oldMarker) {
                     "lng": oldMarker.getPosition().lng()
                 }
             };
-            removeMtMarker(mtMarker);
+            //removeMtMarker(mtMarker);
+            syncingQueue["markerRemovals"].push(mtMarker);
         } else {
             newMarkers.push(marker);
         }

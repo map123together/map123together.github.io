@@ -4,7 +4,26 @@ const mapid = getAllUrlParams().mapid; // Current Map ID
 verifyLogin();
 getExistingMtMap();
 
-setInterval(getExistingMtMap, 5000);
+setInterval(syncMt, 10000);
+
+function syncMt(){
+  console.log("Sync");
+  let method = 'POST';
+  let dir = 'map/id/' + mapid + '/sync-markers';
+
+  let parseRes = (response) => {
+    isEditing = false;
+    let resposeJson = JSON.parse(response);
+    if (resposeJson) {
+      //console.log(resposeJson);
+    }
+  };
+
+  sendMtRequest(method, dir, syncingQueue, parseRes);
+  syncingQueue = { "markerAdds": [], "markerRemovals": [] };
+
+}
+
 
 function getExistingMtMap() {
 
@@ -18,7 +37,7 @@ function getExistingMtMap() {
       mtMap = resposeJson[0];
       if (mtMap.markers) {
         displayMtMarkers(mtMap.markers, gMap);
-        console.log("Fetched MT Markers: " + mtMap.markers.length);
+        console.log("Fetched Marker: " + mtMap.markers.length);
       }
     }
   };
@@ -38,7 +57,7 @@ function addMtMarker(marker) {
       //console.log(resposeJson);
     }
   };
-  isEditing = true;
+
   sendMtRequest(method, dir, marker, parseRes);
 }
 
@@ -54,7 +73,7 @@ function removeMtMarker(markerPos) {
       //console.log(resposeJson);
     }
   };
-  isEditing = true;
+
   sendMtRequest(method, dir, markerPos, parseRes);
 }
 
