@@ -10,6 +10,7 @@ function initMap() { // Creates a map object with a click listener
         zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT_CENTER,
         },
+        fullscreenControl: false,
         styles: [{
             featureType: 'poi',
             stylers: [{ visibility: 'off' }]  // Turn off POI.
@@ -35,6 +36,43 @@ function initMap() { // Creates a map object with a click listener
     let topToolBox = document.createElement('div');
     makeTopToolBox(topToolBox);
     gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(topToolBox);
+
+    // Create the search box and link it to the UI element.
+    const searchInput = document.getElementById("pac-input");
+    const searchBox = new google.maps.places.SearchBox(searchInput);
+
+    gMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(searchInput);
+
+    // Bias the SearchBox results towards current map's viewport.
+    gMap.addListener("bounds_changed", () => {
+        searchBox.setBounds(gMap.getBounds());
+    });
+
+    searchBox.addListener("places_changed", () => {
+        const places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+            return;
+        }
+
+        // For each place, get the icon, name and location.
+        const bounds = new google.maps.LatLngBounds();
+
+        places.forEach((place) => {
+            if (!place.geometry || !place.geometry.location) {
+                console.log("Returned place contains no geometry");
+                return;
+            }
+
+            if (place.geometry.viewport) {
+                // Only geocodes have viewport.
+                bounds.union(place.geometry.viewport);
+            } else {
+                bounds.extend(place.geometry.location);
+            }
+        });
+        gMap.fitBounds(bounds);
+    });
 
     // Listen for clicks and add the marker of the click.
     google.maps.event.addListener(gMap, "click", (e) => {
@@ -114,7 +152,7 @@ function makeLogoBox(controlDiv) {
         <div style="
             border: 0px solid #ffffff;
             border-radius: 2px;
-            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
             background-color:#ffffff;
             margin-top: 10px;
             margin-left: 10px;
