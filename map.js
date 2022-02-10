@@ -58,6 +58,22 @@ function removeMtMarker(markerPos) {
   sendMtRequest(method, dir, markerPos, parseRes);
 }
 
+function updateMtCenter(position) {
+
+  let method = 'POST';
+  let dir = 'map/id/' + mapid + '/update-center';
+
+  let parseRes = (response) => {
+    isEditing = false;
+    let resposeJson = JSON.parse(response);
+    if (resposeJson) {
+      //console.log(resposeJson);
+    }
+  };
+  isEditing = true;
+  sendMtRequest(method, dir, position, parseRes);
+}
+
 function verifyLogin() {
 
   let method = 'POST';

@@ -37,7 +37,7 @@ function initMap() { // Creates a map object with a click listener
     makeTopToolBox(topToolBox);
     gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(topToolBox);
 
-    // Create the search box and link it to the UI element.
+    // Search box
     const searchInput = document.getElementById("pac-input");
     const searchBox = new google.maps.places.SearchBox(searchInput);
 
@@ -74,12 +74,23 @@ function initMap() { // Creates a map object with a click listener
         gMap.fitBounds(bounds);
     });
 
-    // Listen for clicks and add the marker of the click.
+    // When clicks
     google.maps.event.addListener(gMap, "click", (e) => {
         let position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
         //position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
         //position.zoom = gMap.zoom;
         addMarker(position, gMap, true);
+    });
+
+    // When Center Changed
+    google.maps.event.addListener(gMap, "idle", (e) => {
+        let position = {};
+        position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
+        position.zoom = gMap.zoom;
+
+        console.log(position);
+        //addMarker(position, gMap, true);
+        updateMtCenter(position);
     });
 }
 
