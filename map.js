@@ -2,12 +2,12 @@ const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
 const mapid = getAllUrlParams().mapid; // Current Map ID
 
 verifyLogin();
-getExistingMtInitView();
-getExistingMtMarkers();
+initMtMap();
 
-setInterval(getExistingMtMarkers, 5000);
+//getExistingMtMarkers();
+//setInterval(getExistingMtMarkers, 5000);
 
-function getExistingMtInitView() {
+function initMtMap() {
 
   let method = 'GET';
   let dir = 'map/id/' + mapid;
@@ -20,7 +20,13 @@ function getExistingMtInitView() {
       if (mtMap) {
         panToMapCenter(mtMap.center, mtMap.zoom, gMap);
       }
+    } else {
+      panToMapCenter(initPosition.center, initPosition.zoom, gMap);
     }
+    
+    getExistingMtMarkers();
+    setInterval(getExistingMtMarkers, 5000);
+
   };
 
   sendMtRequest(method, dir, null, parseRes);
