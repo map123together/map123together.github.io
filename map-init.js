@@ -4,8 +4,8 @@ let isEditing = false; // UI Update Lock
 
 function initMap() { // Creates a map object with a click listener
     gMap = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 42.36902628214271, lng: -71.10770241353738 },
-        zoom: 12,
+        center: { lat: 41.35576312110632, lng: -101.91683651331762 },
+        zoom: 4,
         mapTypeControl: false,
         zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT_CENTER,
@@ -98,6 +98,12 @@ function displayMtMarkers(mtMarkers, gMap) { // Add MT markers to the map
     mtMarkers.forEach(mtMarker => {
         addMarker(mtMarker.position, gMap, false);
     });
+}
+
+function panToMapCenter(center, zoom, gMap) { // Pan to center
+    let googleLatAndLong = new google.maps.LatLng(center.lat, center.lng);
+    gMap.setCenter(googleLatAndLong);
+    gMap.setZoom(zoom);
 }
 
 function addMarker(newMarkerPos, gMap, needUpdateMt) {
