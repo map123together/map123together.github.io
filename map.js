@@ -32,11 +32,7 @@ function initMtMap() {
     setInterval(updateMtCenter, 7000);
   };
 
-
   sendMtRequest(method, dir, null, afterMapViewSet);
-
-
-  console.log('hide');
 }
 
 function getExistingMtMarkers() {
@@ -99,8 +95,6 @@ function updateMtCenter() {
   let position = {};
   position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
   position.zoom = gMap.zoom;
-
-  console.log("New Center: " + position);
 
   let parseRes = (response) => {
     isEditing = false;

@@ -110,7 +110,6 @@ function addMarker(newMarkerPos, gMap, needUpdateMt) {
             icon: image
         });
         markers.push(newMarker);
-        //console.log("After Adding: " + markers.length);
 
         // Double-click Listener: Remove Marker
         newMarker.addListener("dblclick", function (e) {
@@ -145,7 +144,6 @@ function removeMarker(oldMarker) {
         }
     });
     markers = newMarkers;
-    console.log("After Removal: " + markers.length);
 }
 
 /* ========================= UI Functions ========================= */
