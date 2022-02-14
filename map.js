@@ -16,17 +16,20 @@ function initMtMap() {
       mtMap = resposeJson[0];
 
       if (mtMap) {
+        // Get existing markers
         displayMtMarkers(mtMap.markers, gMap);
         console.log("Init MT Markers: " + mtMap.markers.length);
+        // Pan to the last position
         panToMapCenter(mtMap.center, mtMap.zoom, gMap);
       }
     } else {
+      // Pan to the default position
       panToMapCenter(initPosition.center, initPosition.zoom, gMap);
     }
 
     //getExistingMtMarkers(); // Debug
-    setInterval(getExistingMtMarkers, 10000);
-    setInterval(updateMtCenter, 5000);
+    setInterval(getExistingMtMarkers, 5000);
+    setInterval(updateMtCenter, 7000);
   };
 
 
