@@ -5,8 +5,6 @@ let initPosition = { center: { lat: 41.35576312110632, lng: -101.91683651331762 
 
 function initMap() { // Creates a map object with a click listener
     gMap = new google.maps.Map(document.getElementById('map'), {
-        //center: initPosition.center,//{ lat: 41.35576312110632, lng: -101.91683651331762 },
-        //zoom: initPosition.zoom,//4,
         mapTypeControl: false,
         zoomControlOptions: {
             position: google.maps.ControlPosition.RIGHT_CENTER,
@@ -78,20 +76,7 @@ function initMap() { // Creates a map object with a click listener
     // When clicks
     google.maps.event.addListener(gMap, "click", (e) => {
         let position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
-        //position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
-        //position.zoom = gMap.zoom;
         addMarker(position, gMap, true);
-    });
-
-    // When Center Changed
-    google.maps.event.addListener(gMap, "idle", (e) => {
-        let position = {};
-        position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
-        position.zoom = gMap.zoom;
-
-        console.log(position);
-        //addMarker(position, gMap, true);
-        updateMtCenter(position);
     });
 }
 
@@ -125,7 +110,7 @@ function addMarker(newMarkerPos, gMap, needUpdateMt) {
             icon: image
         });
         markers.push(newMarker);
-        console.log("After Adding: " + markers.length);
+        //console.log("After Adding: " + markers.length);
 
         // Double-click Listener: Remove Marker
         newMarker.addListener("dblclick", function (e) {

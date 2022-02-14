@@ -1,35 +1,39 @@
 const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
 const mapid = getAllUrlParams().mapid; // Current Map ID
 
-verifyLogin();
+//verifyLogin(); // TODO
 initMtMap();
-
-//getExistingMtMarkers();
-//setInterval(getExistingMtMarkers, 5000);
 
 function initMtMap() {
 
   let method = 'GET';
   let dir = 'map/id/' + mapid;
 
-  let parseRes = (response) => {
+  let afterMapViewSet = (response) => {
     let mtMap = {};
     let resposeJson = JSON.parse(response);
     if (resposeJson[0]) {
       mtMap = resposeJson[0];
+
       if (mtMap) {
+        displayMtMarkers(mtMap.markers, gMap);
+        console.log("Init MT Markers: " + mtMap.markers.length);
         panToMapCenter(mtMap.center, mtMap.zoom, gMap);
       }
     } else {
       panToMapCenter(initPosition.center, initPosition.zoom, gMap);
     }
-    
-    getExistingMtMarkers();
-    setInterval(getExistingMtMarkers, 5000);
 
+    //getExistingMtMarkers(); // Debug
+    setInterval(getExistingMtMarkers, 10000);
+    setInterval(updateMtCenter, 5000);
   };
 
-  sendMtRequest(method, dir, null, parseRes);
+
+  sendMtRequest(method, dir, null, afterMapViewSet);
+
+
+  console.log('hide');
 }
 
 function getExistingMtMarkers() {
@@ -84,10 +88,16 @@ function removeMtMarker(markerPos) {
   sendMtRequest(method, dir, markerPos, parseRes);
 }
 
-function updateMtCenter(position) {
+function updateMtCenter() {
 
   let method = 'POST';
   let dir = 'map/id/' + mapid + '/update-center';
+
+  let position = {};
+  position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
+  position.zoom = gMap.zoom;
+
+  console.log("New Center: " + position);
 
   let parseRes = (response) => {
     isEditing = false;
@@ -110,8 +120,8 @@ function verifyLogin() {
   let parseRes = (response) => {
     let resposeJson = JSON.parse(response);
 
-    if (!resposeJson.verified) {
-      window.location.href = "index.html?openmap="+mapid;
+    if (!resposeJson || !resposeJson.verified) {
+      window.location.href = "index.html?openmap=" + mapid;
       document.cookie = "gUserCredential=;gUserPicture=";
     } else {
       if (resposeJson.picture) {

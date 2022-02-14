@@ -14,7 +14,7 @@ function verifyLogin() {
   let parseRes = (response) => {
     let resposeJson = JSON.parse(response);
 
-    if (!resposeJson.verified) {
+    if (!resposeJson || !resposeJson.verified) {
       window.location.href = 'index.html';
     } else {
       if (resposeJson.picture) {
