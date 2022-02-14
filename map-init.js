@@ -73,7 +73,7 @@ function initMap() { // Creates a map object with a click listener
         gMap.fitBounds(bounds);
     });
 
-    // When clicks
+    // When clicks, add markers
     google.maps.event.addListener(gMap, "click", (e) => {
         let position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
         addMarker(position, gMap, true);
