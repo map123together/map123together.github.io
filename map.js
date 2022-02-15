@@ -23,12 +23,11 @@ function initMtMap() {
         panToMapCenter(mtMap.center, mtMap.zoom, gMap);
       }
     } else {
-      // Pan to the default position
-      panToMapCenter(initPosition.center, initPosition.zoom, gMap);
+      window.location.href = 'maps.html';
     }
 
     //setInterval(getExistingMtMarkers, 5000);
-    setInterval(updateMtCenter, 5000);
+    //setInterval(updateMtCenter, 5000);
   };
 
   sendMtRequest(method, dir, null, afterMapViewSet);
@@ -63,6 +62,7 @@ function addMtMarker(marker) {
     isEditing = false;
     let resposeJson = JSON.parse(response);
     if (resposeJson) {
+      // TODO: Get Current Markers
       //console.log(resposeJson);
     }
   };
@@ -79,6 +79,7 @@ function removeMtMarker(markerPos) {
     isEditing = false;
     let resposeJson = JSON.parse(response);
     if (resposeJson) {
+      // TODO: Get Current Markers
       //console.log(resposeJson);
     }
   };

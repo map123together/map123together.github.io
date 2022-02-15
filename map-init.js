@@ -42,25 +42,6 @@ function initMap() { // Creates a map object with a click listener
     drawingManager.setMap(gMap);
     drawingManager.setDrawingMode(null);
 
-    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-
-        let newShape = event.overlay;
-        newShape.type = event.type;
-        google.maps.event.addListener(newShape, 'dblclick', () => {
-            newShape.setMap(null);
-        });
-        if (event.type == google.maps.drawing.OverlayType.MARKER) {
-            // Save Marker
-            let position = { lat: event.overlay.getPosition().lat(), lng: event.overlay.getPosition().lng() };
-            let mtMarker = { "position": position, "timestamp": Date.now() };
-            addMtMarker(mtMarker);
-        }
-
-        if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
-            // Save Polyline
-            console.log(event.overlay.getPath().getArray());
-        }
-    });
     // Create the DIV to hold the control and call the makeInfoBox() constructor
     // passing in this DIV.
     //--------------------------------------------------------------------------------------------
@@ -72,25 +53,6 @@ function initMap() { // Creates a map object with a click listener
     let userBox = document.createElement('div');
     makeUserBox(userBox);
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
-
-    //--------------------------------------------------------------------------------------------
-    let toolBox = document.getElementById('toolbox');
-    gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(toolBox);
-
-    // Add Button Function ------------------------------------------
-    document.getElementById("btnradio0").addEventListener("click", () => {
-        drawingManager.setDrawingMode(null);
-    });
-
-    // Add Button Function ------------------------------------------
-    document.getElementById("btnradio1").addEventListener("click", () => {
-        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
-    });
-
-    // Add Button Function  ------------------------------------------ 
-    document.getElementById("btnradio2").addEventListener("click", () => {
-        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
-    });
 
     // Search box --------------------------------------------------------------------------------------------
     const searchInput = document.getElementById("pac-input");
@@ -128,13 +90,47 @@ function initMap() { // Creates a map object with a click listener
         });
         gMap.fitBounds(bounds);
     });
-    // End of Search box --------------------------------------------------------------------------------------------
-}
 
-function panToMapCenter(center, zoom, gMap) { // Pan to center
-    let googleLatAndLong = new google.maps.LatLng(center.lat, center.lng);
-    gMap.setCenter(googleLatAndLong);
-    gMap.setZoom(zoom);
+    // Tool Box --------------------------------------------------------------------------------------------
+    let toolBox = document.getElementById('toolbox');
+    gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(toolBox);
+
+    // Add Button Function ------------------------------------------
+    document.getElementById("btnradio0").addEventListener("click", () => {
+        drawingManager.setDrawingMode(null);
+    });
+
+    // Add Button Function ------------------------------------------
+    document.getElementById("btnradio1").addEventListener("click", () => {
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
+    });
+
+    // Add Button Function  ------------------------------------------ 
+    document.getElementById("btnradio2").addEventListener("click", () => {
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
+    });
+
+    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+
+        let newShape = event.overlay;
+        google.maps.event.addListener(newShape, 'dblclick', () => {
+            newShape.setMap(null);
+            removeMarker(newShape); // LOCAL
+        });
+
+        if (event.type == google.maps.drawing.OverlayType.MARKER) {
+            // Save Marker
+            let position = { lat: newShape.getPosition().lat(), lng: newShape.getPosition().lng() };
+            let mtMarker = { "position": position, "timestamp": Date.now() };
+            addMtMarker(mtMarker); // DB
+            markers.push(newShape); // LOCAL
+        }
+
+        if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
+            // Save Polyline
+            console.log(newShape.getPath().getArray());
+        }
+    });
 }
 
 function displayMtMarkers(mtMarkers, gMap) {
@@ -183,7 +179,13 @@ function removeMarker(oldMarker) {
     markers = newMarkers;
 }
 
-/* ========================= UI Functions ========================= */
+function panToMapCenter(center, zoom, gMap) { // Pan to center
+    let googleLatAndLong = new google.maps.LatLng(center.lat, center.lng);
+    gMap.setCenter(googleLatAndLong);
+    gMap.setZoom(zoom);
+}
+
+/* ========================= UI Elements ========================= */
 
 function makeLogoBox(controlDiv) {
     let logoBox = `
@@ -238,42 +240,6 @@ function makeUserBox(controlDiv) {
                 width: 37px;"
                 src="${pictureUrl}"
                 onerror="event.target.src = './images/default-user.png';"/>
-            </div>
-        </div>`;
-    let controlUI = createElementFromHTML(userBox);
-    controlDiv.appendChild(controlUI);
-}
-
-function makeToolBox(controlDiv) {
-    let userBox = `
-        <div style="
-            border: 0px solid #ffffff;
-            border-radius: 2px;
-            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
-            background-color:#ffffff;
-            margin-top: 10px;
-            margin-left: 10px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            height: 40px;
-            width: 185px;">
-            <div style="padding-top:5px; margin-left: 5px;"
-                class="btn-group-sm" role="group" aria-label="Basic radio toggle button group">
-                
-                <input type="button" class="btn-check" name="btnradio" id="btnradio0" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio0"><i class="bi bi-arrows-move"></i></label>
-
-                <input type="button" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio1"><i class="bi bi-dot"></i></label>
-            
-                <input type="button" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio2"><i class="bi bi-dash-lg"></i></label>
-            
-                <input type="button" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio4"><i class="bi bi-cursor-text"></i></label>
-            |
-                <input type="button" class="btn-check" id="btnradio5" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio5"><i class="bi bi-send"></i></label>
             </div>
         </div>`;
     let controlUI = createElementFromHTML(userBox);
