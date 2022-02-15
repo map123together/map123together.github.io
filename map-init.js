@@ -2,6 +2,7 @@ let gMap; // Google Map
 let markers = []; // Google Map Markers
 let isEditing = false; // UI Update Lock
 let initPosition = { center: { lat: 41.35576312110632, lng: -101.91683651331762 }, zoom: 4 };
+let drawingManager;
 
 function initMap() { // Creates a map object with a click listener
     gMap = new google.maps.Map(document.getElementById('map'), {
@@ -23,9 +24,9 @@ function initMap() { // Creates a map object with a click listener
     });
 
     // Init Drawing tools
-    const drawingManager = new google.maps.drawing.DrawingManager({
+    drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: google.maps.drawing.OverlayType.MARKER,
-        drawingControl: true,
+        drawingControl: false,
         drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_CENTER,
             drawingModes: [
@@ -36,21 +37,20 @@ function initMap() { // Creates a map object with a click listener
         polylineOptions: {
             strokeColor: "#3389e5",
             strokeWeight: 5,
-            editable: true,
         }
     });
     drawingManager.setMap(gMap);
+    drawingManager.setDrawingMode(null);
 
     google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
 
         let newShape = event.overlay;
         newShape.type = event.type;
-        google.maps.event.addListener(newShape, 'dblclick', function () {
+        google.maps.event.addListener(newShape, 'dblclick', () => {
             newShape.setMap(null);
         });
         if (event.type == google.maps.drawing.OverlayType.MARKER) {
             // Save Marker
-            console.log(event.overlay.getPosition().lat());
             let position = { lat: event.overlay.getPosition().lat(), lng: event.overlay.getPosition().lng() };
             let mtMarker = { "position": position, "timestamp": Date.now() };
             addMtMarker(mtMarker);
@@ -72,6 +72,25 @@ function initMap() { // Creates a map object with a click listener
     let userBox = document.createElement('div');
     makeUserBox(userBox);
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
+
+    //--------------------------------------------------------------------------------------------
+    let toolBox = document.getElementById('toolbox');
+    gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(toolBox);
+
+    // Add Button Function ------------------------------------------
+    document.getElementById("btnradio0").addEventListener("click", () => {
+        drawingManager.setDrawingMode(null);
+    });
+
+    // Add Button Function ------------------------------------------
+    document.getElementById("btnradio1").addEventListener("click", () => {
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
+    });
+
+    // Add Button Function  ------------------------------------------ 
+    document.getElementById("btnradio2").addEventListener("click", () => {
+        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
+    });
 
     // Search box --------------------------------------------------------------------------------------------
     const searchInput = document.getElementById("pac-input");
@@ -111,7 +130,6 @@ function initMap() { // Creates a map object with a click listener
     });
     // End of Search box --------------------------------------------------------------------------------------------
 }
-
 
 function panToMapCenter(center, zoom, gMap) { // Pan to center
     let googleLatAndLong = new google.maps.LatLng(center.lat, center.lng);
@@ -226,7 +244,7 @@ function makeUserBox(controlDiv) {
     controlDiv.appendChild(controlUI);
 }
 
-function makeTopToolBox(controlDiv) {
+function makeToolBox(controlDiv) {
     let userBox = `
         <div style="
             border: 0px solid #ffffff;
@@ -241,19 +259,20 @@ function makeTopToolBox(controlDiv) {
             width: 185px;">
             <div style="padding-top:5px; margin-left: 5px;"
                 class="btn-group-sm" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
+                
+                <input type="button" class="btn-check" name="btnradio" id="btnradio0" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio0"><i class="bi bi-arrows-move"></i></label>
+
+                <input type="button" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
                 <label class="btn btn-outline-primary" for="btnradio1"><i class="bi bi-dot"></i></label>
             
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <input type="button" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
                 <label class="btn btn-outline-primary" for="btnradio2"><i class="bi bi-dash-lg"></i></label>
             
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio3"><i class="bi bi-diamond"></i></label>
-            
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+                <input type="button" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
                 <label class="btn btn-outline-primary" for="btnradio4"><i class="bi bi-cursor-text"></i></label>
             |
-                <input type="button" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+                <input type="button" class="btn-check" id="btnradio5" autocomplete="off">
                 <label class="btn btn-outline-primary" for="btnradio5"><i class="bi bi-send"></i></label>
             </div>
         </div>`;
