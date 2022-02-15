@@ -28,7 +28,7 @@ function initMtMap() {
     }
 
     //setInterval(getExistingMtMarkers, 5000);
-    //setInterval(updateMtCenter, 7000);
+    setInterval(updateMtCenter, 5000);
   };
 
   sendMtRequest(method, dir, null, afterMapViewSet);

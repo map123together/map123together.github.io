@@ -55,7 +55,7 @@ function getMyMaps(uid) {
 
 function createMapCard(mtMap) {
   let lastUpdate = new Date(mtMap.last_mod_time).toLocaleString("en-US");
-  let mapName = mtMap.name.substring(0, 11) + ' ...'; console.log(mapName);
+  let mapName = mtMap.name.substring(0, 20) + ' ...'; console.log(mapName);
   let htmlStr = `
   <div class="col-auto">
         <div class="card" style="width: 15rem; margin-bottom: 1rem;">
@@ -73,6 +73,10 @@ function createMapCard(mtMap) {
                       <i class="bi bi-three-dots"></i>
                     </button>
                     <ul class="dropdown-menu">
+                    <li><button class="dropdown-item share-btn" data-mapid="${mtMap.mapId}">
+                        <i class="bi bi-input-cursor-text"></i> Rename
+                          </button>
+                      </li>
                       <li><button class="dropdown-item share-btn" data-mapid="${mtMap.mapId}">
                             <i class="bi bi-share"></i> Share
                           </button>
