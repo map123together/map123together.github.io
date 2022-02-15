@@ -22,21 +22,58 @@ function initMap() { // Creates a map object with a click listener
         streetViewControl: false,
     });
 
+    // Init Drawing tools
+    const drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.MARKER,
+        drawingControl: true,
+        drawingControlOptions: {
+            position: google.maps.ControlPosition.TOP_CENTER,
+            drawingModes: [
+                google.maps.drawing.OverlayType.MARKER,
+                google.maps.drawing.OverlayType.POLYLINE
+            ],
+        },
+        polylineOptions: {
+            strokeColor: "#3389e5",
+            strokeWeight: 5,
+            editable: true,
+        }
+    });
+    drawingManager.setMap(gMap);
+
+    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+
+        let newShape = event.overlay;
+        newShape.type = event.type;
+        google.maps.event.addListener(newShape, 'dblclick', function () {
+            newShape.setMap(null);
+        });
+        if (event.type == google.maps.drawing.OverlayType.MARKER) {
+            // Save Marker
+            console.log(event.overlay.getPosition().lat());
+            let position = { lat: event.overlay.getPosition().lat(), lng: event.overlay.getPosition().lng() };
+            let mtMarker = { "position": position, "timestamp": Date.now() };
+            addMtMarker(mtMarker);
+        }
+
+        if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
+            // Save Polyline
+            console.log(event.overlay.getPath().getArray());
+        }
+    });
     // Create the DIV to hold the control and call the makeInfoBox() constructor
     // passing in this DIV.
+    //--------------------------------------------------------------------------------------------
     let logoBox = document.createElement('div');
     makeLogoBox(logoBox);
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
 
+    //--------------------------------------------------------------------------------------------
     let userBox = document.createElement('div');
     makeUserBox(userBox);
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
 
-    let topToolBox = document.createElement('div');
-    makeTopToolBox(topToolBox);
-    gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(topToolBox);
-
-    // Search box
+    // Search box --------------------------------------------------------------------------------------------
     const searchInput = document.getElementById("pac-input");
     const searchBox = new google.maps.places.SearchBox(searchInput);
 
@@ -72,19 +109,9 @@ function initMap() { // Creates a map object with a click listener
         });
         gMap.fitBounds(bounds);
     });
-
-    // When clicks
-    google.maps.event.addListener(gMap, "click", (e) => {
-        let position = { lat: e.latLng.lat(), lng: e.latLng.lng() };
-        addMarker(position, gMap, true);
-    });
+    // End of Search box --------------------------------------------------------------------------------------------
 }
 
-function displayMtMarkers(mtMarkers, gMap) { // Add MT markers to the map
-    mtMarkers.forEach(mtMarker => {
-        addMarker(mtMarker.position, gMap, false);
-    });
-}
 
 function panToMapCenter(center, zoom, gMap) { // Pan to center
     let googleLatAndLong = new google.maps.LatLng(center.lat, center.lng);
@@ -92,38 +119,30 @@ function panToMapCenter(center, zoom, gMap) { // Pan to center
     gMap.setZoom(zoom);
 }
 
-function addMarker(newMarkerPos, gMap, needUpdateMt) {
-    let image = './images/blue-pin.png';
-    let isExMarker = false;
-    markers.forEach(marker => { //
-        if (newMarkerPos.lat == marker.getPosition().lat()
-            && newMarkerPos.lng == marker.getPosition().lng()) {
-            isExMarker = true;
+function displayMtMarkers(mtMarkers, gMap) {
+    mtMarkers.forEach(mtMarker => {
+        let isExMarker = false;
+        markers.forEach(marker => {
+            if (mtMarker.position.lat == marker.getPosition().lat()
+                && mtMarker.position.lng == marker.getPosition().lng()) {
+                isExMarker = true;
+            }
+        });
+
+        if (!isExMarker) {
+            let newMarker = new google.maps.Marker({
+                position: mtMarker.position,
+                label: '',
+                map: gMap,
+            });
+            markers.push(newMarker);
+
+            // Double-click Listener: Remove Marker
+            newMarker.addListener("dblclick", function (e) {
+                removeMarker(this);
+            })
         }
     });
-
-    if (!isExMarker) {
-        let newMarker = new google.maps.Marker({
-            position: newMarkerPos,
-            label: '',
-            map: gMap,
-            icon: image
-        });
-        markers.push(newMarker);
-
-        // Double-click Listener: Remove Marker
-        newMarker.addListener("dblclick", function (e) {
-            removeMarker(this);
-        })
-
-        if (needUpdateMt) { // update MT database
-            let mtMarker = { "position": newMarkerPos, "timestamp": Date.now() };
-            addMtMarker(mtMarker);
-        }
-        return newMarker;
-    } else {
-        return null;
-    }
 }
 
 function removeMarker(oldMarker) {

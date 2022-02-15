@@ -27,9 +27,8 @@ function initMtMap() {
       panToMapCenter(initPosition.center, initPosition.zoom, gMap);
     }
 
-    //getExistingMtMarkers(); // Debug
-    setInterval(getExistingMtMarkers, 5000);
-    setInterval(updateMtCenter, 7000);
+    //setInterval(getExistingMtMarkers, 5000);
+    //setInterval(updateMtCenter, 7000);
   };
 
   sendMtRequest(method, dir, null, afterMapViewSet);

@@ -15,6 +15,13 @@
 
     <title>Map Together - My Maps</title>
 
+    <style>
+        .gmnoprint[role="menubar"] {
+            top: 10px !important;
+        }
+        
+    </style>
+
 </head>
 
 <body>
@@ -47,8 +54,8 @@
     <script src="helpers.js"></script>
     <script src="map-init.js"></script>
     <script defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8&libraries=visualization,places&callback=initMap">
-    </script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8&libraries=visualization,places,drawing&callback=initMap">
+        </script>
     <script src="map.js"></script>
 </body>
 
