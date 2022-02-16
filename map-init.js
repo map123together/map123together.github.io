@@ -23,7 +23,7 @@ function initMap() { // Creates a map object with a click listener
         streetViewControl: false,
     });
 
-    // Init Drawing tools
+    // Init Drawing Tools --------------------------------------------------
     drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: google.maps.drawing.OverlayType.MARKER,
         drawingControl: false,
@@ -41,9 +41,10 @@ function initMap() { // Creates a map object with a click listener
     });
     drawingManager.setMap(gMap);
     drawingManager.setDrawingMode(null);
-
-    // Create the DIV to hold the control and call the makeInfoBox() constructor
-    // passing in this DIV.
+    
+    // Init Direction Service --------------------------------------------------
+    
+    
     //--------------------------------------------------------------------------------------------
     let logoBox = document.createElement('div');
     makeLogoBox(logoBox);
