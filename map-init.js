@@ -43,8 +43,9 @@ function initMap() { // Creates a map object with a click listener
     drawingManager.setDrawingMode(null);
     
     // Init Direction Service --------------------------------------------------
-    
-    
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsRenderer.setMap(gMap);
     //--------------------------------------------------------------------------------------------
     let logoBox = document.createElement('div');
     makeLogoBox(logoBox);
@@ -125,6 +126,8 @@ function initMap() { // Creates a map object with a click listener
             let mtMarker = { "position": position, "timestamp": Date.now() };
             addMtMarker(mtMarker); // DB
             markers.push(newShape); // LOCAL
+
+            calculateAndDisplayRoute(directionsService, directionsRenderer);
         }
 
         if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
@@ -133,6 +136,24 @@ function initMap() { // Creates a map object with a click listener
         }
     });
 }
+
+function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+
+    directionsService
+      .route({
+        origin: {
+          query:  "Wellesley, MA",
+        },
+        destination: {
+          query:  "Boston, MA" ,
+        },
+        travelMode: google.maps.TravelMode.DRIVING,
+      })
+      .then((response) => {
+        directionsRenderer.setDirections(response);
+      })
+      .catch((e) => console.log("Directions Request Failed"));
+  }
 
 function displayMtMarkers(mtMarkers, gMap) {
     mtMarkers.forEach(mtMarker => {
