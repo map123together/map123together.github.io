@@ -52,6 +52,9 @@ function getMyMaps(uid) {
     let myMaps = [];
     let resposeJson = JSON.parse(response);
     myMaps = resposeJson;
+    if(myMaps.length >= 10){
+      document.getElementById("newMapCard").style.display = "none";
+    }
     myMaps.forEach(mtMap => {
       document.getElementById('mapCardsRow').insertAdjacentHTML('beforeend', generateMapCard(mtMap));
     });
