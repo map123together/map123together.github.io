@@ -49,15 +49,46 @@ function getMyMaps(uid) {
     });
 
     //Rename-Btn
-    var renameBtns = document.getElementsByClassName('rename-btn');
+    let renameBtns = document.getElementsByClassName('rename-btn');
     for (let i = 0; i < renameBtns.length; i++) {
       renameBtns[i].addEventListener("click", function () {
         defineRenameBtn(this);
       });
     }
+    
+    //Delete-Btn
+    let deleteBtns = document.getElementsByClassName('delete-btn');
+    for (let i = 0; i < deleteBtns.length; i++) {
+      deleteBtns[i].addEventListener("click", function () {
+        defineDeleteBtn(this);
+      });
+    }
   };
 
   sendMtRequest(method, dir, reqBody, parseRes);
+}
+
+function defineDeleteBtn(button) {
+  let mapid = button.dataset.mapid;
+
+  var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'), {});
+  deleteModal.show();
+  
+  let method = 'GET';
+  let dir = 'map/id/' + mapid;
+  
+  let parseRes = (response) => {
+    let mtMap = {};
+    let resposeJson = JSON.parse(response);
+    if (resposeJson[0]) {
+      mtMap = resposeJson[0];
+      let mapName = mtMap.name;
+      document.getElementById("tobeDeletedMapName").innerText = mapName;
+    }
+  };
+
+  sendMtRequest(method, dir, null, parseRes);
+
 }
 
 function defineRenameBtn(button) {
@@ -81,7 +112,6 @@ function defineRenameBtn(button) {
   sendMtRequest(method, dir, null, parseRes);
 
 }
-
 function createMapCard(mtMap) {
   let lastUpdate = new Date(mtMap.last_mod_time).toLocaleString("en-US");
   let mapName = mtMap.name.substring(0, 20) + ' ...';
