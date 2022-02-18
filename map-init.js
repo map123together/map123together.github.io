@@ -84,6 +84,24 @@ function initMap() { // Creates a map object with a click listener
                 console.log("Returned place contains no geometry");
                 return;
             }
+            const icon = {
+                url: place.icon,
+                size: new google.maps.Size(71, 71),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(25, 25),
+            };
+
+            let searchReMarker = new google.maps.Marker({
+                map: gMap,
+                icon,
+                title: place.name,
+                position: place.geometry.location,
+            });
+
+            searchReMarker.addListener("dblclick", function (e) {
+                this.setMap(null);
+            })
 
             if (place.geometry.viewport) {
                 // Only geocodes have viewport.
@@ -92,6 +110,7 @@ function initMap() { // Creates a map object with a click listener
                 bounds.extend(place.geometry.location);
             }
         });
+
         gMap.fitBounds(bounds);
     });
 
