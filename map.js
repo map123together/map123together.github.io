@@ -26,8 +26,8 @@ function initMtMap() {
       window.location.href = 'maps.html';
     }
 
-    //setInterval(getExistingMtMarkers, 5000);
-    //setInterval(updateMtCenter, 5000);
+    setInterval(getExistingMtMarkers, 5000);
+    setInterval(updateMtCenter, 5000);
   };
 
   sendMtRequest(method, dir, null, afterMapViewSet);

@@ -129,7 +129,7 @@ function initMap() { // Creates a map object with a click listener
             addMtMarker(mtMarker); // DB
             markers.push(newShape); // LOCAL
 
-            calculateAndDisplayRoute(directionsService, directionsRenderer, markers[markers.length - 2].getPosition(), position);
+            //calculateAndDisplayRoute(directionsService, directionsRenderer, markers[markers.length - 2].getPosition(), position);
         }
 
         if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
