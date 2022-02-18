@@ -40,22 +40,51 @@ function getMyMaps(uid) {
   let parseRes = (response) => {
     let myMaps = [];
     let resposeJson = JSON.parse(response);
-    console.log(resposeJson);
+    //console.log(resposeJson);
     myMaps = resposeJson;
 
     myMaps.forEach(mtMap => {
-      console.log(mtMap);
-      //console.log(document.getElementById('mapCardsRow'));
+      //console.log(mtMap);
       document.getElementById('mapCardsRow').insertAdjacentHTML('beforeend', createMapCard(mtMap));
     });
+
+    //Rename-Btn
+    var renameBtns = document.getElementsByClassName('rename-btn');
+    for (let i = 0; i < renameBtns.length; i++) {
+      renameBtns[i].addEventListener("click", function () {
+        defineRenameBtn(this);
+      });
+    }
   };
 
   sendMtRequest(method, dir, reqBody, parseRes);
 }
 
+function defineRenameBtn(button) {
+  let mapid = button.dataset.mapid;
+  var renameModal = new bootstrap.Modal(document.getElementById('renameModal'), {});
+  renameModal.show();
+  
+  let method = 'GET';
+  let dir = 'map/id/' + mapid;
+
+  let parseRes = (response) => {
+    let mtMap = {};
+    let resposeJson = JSON.parse(response);
+    if (resposeJson[0]) {
+      mtMap = resposeJson[0];
+      let mapName = mtMap.name;
+      document.getElementById("currentMapName").value = mapName;
+    }
+  };
+
+  sendMtRequest(method, dir, null, parseRes);
+
+}
+
 function createMapCard(mtMap) {
   let lastUpdate = new Date(mtMap.last_mod_time).toLocaleString("en-US");
-  let mapName = mtMap.name.substring(0, 20) + ' ...'; console.log(mapName);
+  let mapName = mtMap.name.substring(0, 20) + ' ...';
   let htmlStr = `
   <div class="col-auto">
         <div class="card" style="width: 15rem; margin-bottom: 1rem;">
@@ -73,7 +102,7 @@ function createMapCard(mtMap) {
                       <i class="bi bi-three-dots"></i>
                     </button>
                     <ul class="dropdown-menu">
-                    <li><button class="dropdown-item share-btn" data-mapid="${mtMap.mapId}">
+                    <li><button class="dropdown-item rename-btn" data-mapid="${mtMap.mapId}">
                         <i class="bi bi-input-cursor-text"></i> Rename
                           </button>
                       </li>
@@ -82,7 +111,7 @@ function createMapCard(mtMap) {
                           </button>
                       </li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><button class="dropdown-item text-danger" data-mapid="${mtMap.mapId}">
+                      <li><button class="dropdown-item text-danger delete-btn" data-mapid="${mtMap.mapId}">
                             <i class="bi bi-trash"></i> Delete
                           </button>
                       </li>

@@ -129,6 +129,7 @@ function initMap() { // Creates a map object with a click listener
             addMtMarker(mtMarker); // DB
             markers.push(newShape); // LOCAL
 
+            // TODO
             //calculateAndDisplayRoute(directionsService, directionsRenderer, markers[markers.length - 2].getPosition(), position);
         }
 
