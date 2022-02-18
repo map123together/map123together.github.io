@@ -28,10 +28,16 @@ function verifyLogin() {
 
       if (resposeJson.uid) {
         getMyMaps(resposeJson.uid);
+        clearTimeout(loginTimeout);
       }
     }
   };
 
+  let redirectBack = () => {
+    window.location.href = "index.html"
+  }
+
+  let loginTimeout = setTimeout(redirectBack, 5000); // Wait for 5 seconds
   sendMtRequest(method, dir, reqBody, parseRes);
 }
 
@@ -139,7 +145,7 @@ function renameSaveBtnFunction() {
     let method = 'POST';
     let dir = 'map/id/' + mapid + '/update-name';
     let reqBody = {
-      "name" : mapName
+      "name": mapName
     };
 
     let parseRes = (response) => {
@@ -163,8 +169,8 @@ function newMapBtnFunction() {
       let resposeJson = JSON.parse(response);
       if (resposeJson[0]) {
         let mapid = responseJson[0].mapId;
-        if(mapid){
-          window.location.href="map.html?mapid=" + mapid;
+        if (mapid) {
+          window.location.href = "map.html?mapid=" + mapid;
         }
       }
     };
