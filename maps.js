@@ -1,9 +1,14 @@
 const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
 const mapid = getAllUrlParams().mapid; // Current Map ID
 
-
 verifyLogin();
 
+// Init Button Functions
+newMapBtnFunction();
+renameSaveBtnFunction();
+deleteBtnFunction();
+
+/** ============================= Page Functions ================================== */
 function verifyLogin() {
 
   let method = 'POST';
@@ -40,12 +45,9 @@ function getMyMaps(uid) {
   let parseRes = (response) => {
     let myMaps = [];
     let resposeJson = JSON.parse(response);
-    //console.log(resposeJson);
     myMaps = resposeJson;
-
     myMaps.forEach(mtMap => {
-      //console.log(mtMap);
-      document.getElementById('mapCardsRow').insertAdjacentHTML('beforeend', createMapCard(mtMap));
+      document.getElementById('mapCardsRow').insertAdjacentHTML('beforeend', generateMapCard(mtMap));
     });
 
     //Rename-Btn
@@ -55,7 +57,7 @@ function getMyMaps(uid) {
         defineRenameBtn(this);
       });
     }
-    
+
     //Delete-Btn
     let deleteBtns = document.getElementsByClassName('delete-btn');
     for (let i = 0; i < deleteBtns.length; i++) {
@@ -73,10 +75,10 @@ function defineDeleteBtn(button) {
 
   var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'), {});
   deleteModal.show();
-  
+
   let method = 'GET';
   let dir = 'map/id/' + mapid;
-  
+
   let parseRes = (response) => {
     let mtMap = {};
     let resposeJson = JSON.parse(response);
@@ -89,14 +91,31 @@ function defineDeleteBtn(button) {
   };
 
   sendMtRequest(method, dir, null, parseRes);
+}
 
+function deleteBtnFunction() {
+  document.getElementById("deleteMapBtn").addEventListener("click", function () {
+    console.log("Deleting Map");
+
+    let mapid = this.dataset.mapid;
+    let method = 'POST';
+    let dir = 'map/id/' + mapid + '/delete-map';
+
+    let parseRes = (response) => {
+      let resposeJson = JSON.parse(response);
+      if (resposeJson[0]) {
+        window.location.reload();
+      }
+    };
+    sendMtRequest(method, dir, null, parseRes);
+  });
 }
 
 function defineRenameBtn(button) {
   let mapid = button.dataset.mapid;
   var renameModal = new bootstrap.Modal(document.getElementById('renameModal'), {});
   renameModal.show();
-  
+
   let method = 'GET';
   let dir = 'map/id/' + mapid;
 
@@ -111,9 +130,49 @@ function defineRenameBtn(button) {
   };
 
   sendMtRequest(method, dir, null, parseRes);
-
 }
-function createMapCard(mtMap) {
+
+function renameSaveBtnFunction() {
+  document.getElementById("saveNameBtn").addEventListener("click", function () {
+    let mapid = this.dataset.mapid;
+    let mapName = document.getElementById("currentMapName").value;
+    let method = 'POST';
+    let dir = 'map/id/' + mapid + '/update-name';
+    let reqBody = {
+      "name" : mapName
+    };
+
+    let parseRes = (response) => {
+      let resposeJson = JSON.parse(response);
+      if (resposeJson[0]) {
+        window.location.reload();
+      }
+    };
+    sendMtRequest(method, dir, reqBody, parseRes);
+  });
+}
+
+function newMapBtnFunction() {
+  document.getElementById("newMapBtn").addEventListener("click", function () {
+    console.log("New Map");
+
+    let method = 'POST';
+    let dir = 'map/new-map';
+
+    let parseRes = (response) => {
+      let resposeJson = JSON.parse(response);
+      if (resposeJson[0]) {
+        let mapid = responseJson[0].mapId;
+        if(mapid){
+          window.location.href="map.html?mapid=" + mapid;
+        }
+      }
+    };
+    sendMtRequest(method, dir, null, parseRes);
+  });
+}
+
+function generateMapCard(mtMap) {
   let lastUpdate = new Date(mtMap.last_mod_time).toLocaleString("en-US");
   let mapName = mtMap.name.substring(0, 20) + ' ...';
   let htmlStr = `
