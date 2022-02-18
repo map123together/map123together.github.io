@@ -84,6 +84,7 @@ function defineDeleteBtn(button) {
       mtMap = resposeJson[0];
       let mapName = mtMap.name;
       document.getElementById("tobeDeletedMapName").innerText = mapName;
+      document.getElementById("deleteMapBtn").dataset.mapid = mapid;
     }
   };
 
