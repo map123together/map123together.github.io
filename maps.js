@@ -1,5 +1,5 @@
 const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
-const mapid = getAllUrlParams().mapid; // Current Map ID
+let guid = '';
 
 verifyLogin();
 
@@ -24,6 +24,7 @@ function verifyLogin() {
     } else {
       if (resposeJson.picture) {
         document.getElementById("mt-user-picture").src = resposeJson.picture;
+        guid = resposeJson.uid;
       }
 
       if (resposeJson.uid) {
@@ -45,7 +46,6 @@ function getMyMaps(uid) {
 
   let method = 'POST';
   let dir = 'map/maps';
-
   let reqBody = { "uid": uid };
 
   let parseRes = (response) => {
@@ -160,21 +160,21 @@ function renameSaveBtnFunction() {
 
 function newMapBtnFunction() {
   document.getElementById("newMapBtn").addEventListener("click", function () {
-    console.log("New Map");
 
     let method = 'POST';
     let dir = 'map/new-map';
+    let reqBody = { "uid": guid };
 
     let parseRes = (response) => {
       let resposeJson = JSON.parse(response);
-      if (resposeJson[0]) {
-        let mapid = responseJson[0].mapId;
+      if (resposeJson) {
+        let mapid = resposeJson.mapId;
         if (mapid) {
           window.location.href = "map.html?mapid=" + mapid;
         }
       }
     };
-    sendMtRequest(method, dir, null, parseRes);
+    sendMtRequest(method, dir, reqBody, parseRes);
   });
 }
 
@@ -190,7 +190,7 @@ function generateMapCard(mtMap) {
             class="card-img-top" alt="default map icon">
             <div class="card-body">
                 <h6 class="card-title">${mapName}</h6>
-                <p class="card-text text-muted"><small>Last Edit: ${lastUpdate}</small></p>
+                <p class="card-text text-muted"><small>${lastUpdate}</small></p>
                 <div class="btn-group">
                   <a href="map.html?mapid=${mtMap.mapId}" class="btn btn-primary">Open</a>
                   <div class="dropdown">
