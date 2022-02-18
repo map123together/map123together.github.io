@@ -41,10 +41,12 @@ function initMap() { // Creates a map object with a click listener
     });
     drawingManager.setMap(gMap);
     drawingManager.setDrawingMode(null);
-    
+
     // Init Direction Service --------------------------------------------------
     const directionsService = new google.maps.DirectionsService();
-    const directionsRenderer = new google.maps.DirectionsRenderer();
+    const directionsRenderer = new google.maps.DirectionsRenderer({
+        suppressMarkers: true
+    });
     directionsRenderer.setMap(gMap);
     //--------------------------------------------------------------------------------------------
     let logoBox = document.createElement('div');
@@ -127,7 +129,7 @@ function initMap() { // Creates a map object with a click listener
             addMtMarker(mtMarker); // DB
             markers.push(newShape); // LOCAL
 
-            calculateAndDisplayRoute(directionsService, directionsRenderer);
+            calculateAndDisplayRoute(directionsService, directionsRenderer, markers[markers.length - 2].getPosition(), position);
         }
 
         if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
@@ -137,23 +139,21 @@ function initMap() { // Creates a map object with a click listener
     });
 }
 
-function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+function calculateAndDisplayRoute(directionsService, directionsRenderer, startPos, endPos) {
 
     directionsService
-      .route({
-        origin: {
-          query:  "Wellesley, MA",
-        },
-        destination: {
-          query:  "Boston, MA" ,
-        },
-        travelMode: google.maps.TravelMode.DRIVING,
-      })
-      .then((response) => {
-        directionsRenderer.setDirections(response);
-      })
-      .catch((e) => console.log("Directions Request Failed"));
-  }
+        .route({
+            origin: startPos, //{ lat: 41, lng: 101},
+            destination: endPos,
+            travelMode: google.maps.TravelMode.DRIVING,
+        })
+        .then((response) => {
+            console.log(response);
+            //markers.setMap(null);
+            directionsRenderer.setDirections(response);
+        })
+        .catch((e) => console.log("Directions Request Failed"));
+}
 
 function displayMtMarkers(mtMarkers, gMap) {
     mtMarkers.forEach(mtMarker => {
