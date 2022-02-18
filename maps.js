@@ -106,14 +106,15 @@ function deleteBtnFunction() {
     let mapid = this.dataset.mapid;
     let method = 'POST';
     let dir = 'map/id/' + mapid + '/delete-map';
+    let reqBody = { "uid": guid };
 
     let parseRes = (response) => {
       let resposeJson = JSON.parse(response);
-      if (resposeJson[0]) {
+      if (resposeJson) {
         window.location.reload();
       }
     };
-    sendMtRequest(method, dir, null, parseRes);
+    sendMtRequest(method, dir, reqBody, parseRes);
   });
 }
 
@@ -132,6 +133,7 @@ function defineRenameBtn(button) {
       mtMap = resposeJson[0];
       let mapName = mtMap.name;
       document.getElementById("currentMapName").value = mapName;
+      document.getElementById("saveNameBtn").dataset.mapid = mapid;
     }
   };
 
@@ -150,7 +152,7 @@ function renameSaveBtnFunction() {
 
     let parseRes = (response) => {
       let resposeJson = JSON.parse(response);
-      if (resposeJson[0]) {
+      if (resposeJson) {
         window.location.reload();
       }
     };
