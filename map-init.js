@@ -49,8 +49,7 @@ function initMap() { // Creates a map object with a click listener
     });
     directionsRenderer.setMap(gMap);
     //--------------------------------------------------------------------------------------------
-    let logoBox = document.createElement('div');
-    makeLogoBox(logoBox);
+    const logoBox = document.getElementById("logoBox");
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
 
     //--------------------------------------------------------------------------------------------
@@ -228,34 +227,6 @@ function panToMapCenter(center, zoom, gMap) { // Pan to center
 }
 
 /* ========================= UI Elements ========================= */
-
-function makeLogoBox(controlDiv) {
-    let logoBox = `
-        <div style="
-            border: 0px solid #ffffff;
-            border-radius: 2px;
-            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-            background-color:#ffffff;
-            margin-top: 10px;
-            margin-left: 10px;
-            margin-bottom: 10px;
-            text-align : center;
-            height: 40px;
-            width:auto;">
-            <a href="maps.html">
-                <img style="
-                margin-left: auto;
-                margin-right: auto;
-                height: 40px;
-                width: auto;
-                " src="./images/Banner-sm.png"
-                />
-            </a>
-        </div>`;//src="./ms-icon-144x144.png"
-    let controlUI = createElementFromHTML(logoBox);
-    controlDiv.appendChild(controlUI);
-}
-
 function makeUserBox(controlDiv) {
     let pictureUrl = readCookie('gUserPicture');
     let userBox = `
