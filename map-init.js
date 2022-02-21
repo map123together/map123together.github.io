@@ -131,7 +131,15 @@ function initMap() { // Creates a map object with a click listener
         gMap.fitBounds(bounds);
     });
 
-    // Tool Box --------------------------------------------------------------------------------------------
+    // Direction Box -------------------------------------------------------------
+    document.getElementById('getDirBtn').addEventListener('click', ()=>{
+        // TODO
+        calculateAndDisplayRoute(directionsService, directionsRenderer, 
+            markers[markers.length - 2].getPosition(), 
+            markers[markers.length - 1].getPosition());
+    });
+
+    // Tool Box -----------------------------------------------------------------------
     let toolBox = document.getElementById('toolbox');
     gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(toolBox);
 
@@ -165,9 +173,6 @@ function initMap() { // Creates a map object with a click listener
             let mtMarker = { "position": position, "timestamp": Date.now() };
             addMtMarker(mtMarker); // DB
             markers.push(newShape); // LOCAL
-
-            // TODO
-            //calculateAndDisplayRoute(directionsService, directionsRenderer, markers[markers.length - 2].getPosition(), position);
         }
 
         if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
@@ -200,8 +205,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer, startPo
             travelMode: google.maps.TravelMode.DRIVING,
         })
         .then((response) => {
-            console.log(response);
-            //markers.setMap(null);
+            //console.log(response);
             directionsRenderer.setDirections(response);
         })
         .catch((e) => console.log("Directions Request Failed"));
