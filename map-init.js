@@ -48,6 +48,11 @@ function initMap() { // Creates a map object with a click listener
         suppressMarkers: true
     });
     directionsRenderer.setMap(gMap);
+
+    //--------------------------------------------------------------------------------------------
+    const markerListBox = document.getElementById("markerListBox");
+    gMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(markerListBox);
+
     //--------------------------------------------------------------------------------------------
     const logoBox = document.getElementById("logoBox");
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
