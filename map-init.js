@@ -34,6 +34,12 @@ function initMap() { // Creates a map object with a click listener
                 google.maps.drawing.OverlayType.POLYLINE
             ],
         },
+        markerOptions: {
+            label: {
+                color: 'white',
+                text: '1',
+            }
+        },
         polylineOptions: {
             strokeColor: "#3389e5",
             strokeWeight: 5,
@@ -143,9 +149,13 @@ function initMap() { // Creates a map object with a click listener
     google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
 
         let newShape = event.overlay;
-       
+
         // Save Symbols ---
         if (event.type == google.maps.drawing.OverlayType.MARKER) {
+            // Update marker text
+            let label = newShape.label;
+            label.text = getNextMarkerIndex();
+
             // Save Marker
             let position = { lat: newShape.getPosition().lat(), lng: newShape.getPosition().lng() };
             let mtMarker = { "position": position, "timestamp": Date.now() };
@@ -206,7 +216,10 @@ function displayMtMarkers(mtMarkers, gMap) {
         if (!isExMarker) {
             let newMarker = new google.maps.Marker({
                 position: mtMarker.position,
-                label: '',
+                label: {
+                    'text': getNextMarkerIndex(),
+                    'color': 'white'
+                },
                 map: gMap,
             });
             markers.push(newMarker);
@@ -245,4 +258,17 @@ function panToMapCenter(center, zoom, gMap) { // Pan to center
     gMap.setZoom(zoom);
 }
 
-/* ========================= UI Elements ========================= */
+/* ========================= Utility ========================= */
+function getNextMarkerIndex() {
+    let avaIndexes = [
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+        'k', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
+    ];
+    let numMarkers = markers.length;
+    let nextIndex = '';
+    if (numMarkers <= avaIndexes.length && avaIndexes[numMarkers]) {
+        nextIndex = avaIndexes[numMarkers];
+    }
+
+    return nextIndex;
+}
