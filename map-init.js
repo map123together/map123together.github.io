@@ -53,8 +53,11 @@ function initMap() { // Creates a map object with a click listener
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
 
     //--------------------------------------------------------------------------------------------
-    let userBox = document.createElement('div');
-    makeUserBox(userBox);
+    const userBox = document.getElementById("userIconBox");
+    let pictureUrl = readCookie('gUserPicture');
+    if(pictureUrl){
+        document.getElementById("mt-user-picture").src = pictureUrl;
+    }
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
 
     // Search box --------------------------------------------------------------------------------------------
@@ -227,40 +230,3 @@ function panToMapCenter(center, zoom, gMap) { // Pan to center
 }
 
 /* ========================= UI Elements ========================= */
-function makeUserBox(controlDiv) {
-    let pictureUrl = readCookie('gUserPicture');
-    let userBox = `
-        <div style="
-            border: 0px solid #ffffff;
-            border-radius: 2px;
-            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
-            background-color:#ffffff;
-            margin-top: 10px;
-            margin-left: 10px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            text-align : center;
-            height: 40px;
-            width: 40px;">
-            <div data-bs-toggle="modal" data-bs-target="#logoutModal" onMouseOver="this.style.cursor='pointer'">
-                <img
-                id="mt-user-picture" 
-                style="
-                margin-left: auto;
-                margin-right: auto;
-                margin-top: 1px;
-                height: 37px;
-                width: 37px;"
-                src="${pictureUrl}"
-                onerror="event.target.src = './images/default-user.png';"/>
-            </div>
-        </div>`;
-    let controlUI = createElementFromHTML(userBox);
-    controlDiv.appendChild(controlUI);
-}
-
-function createElementFromHTML(htmlString) {
-    let div = document.createElement('div');
-    div.innerHTML = htmlString.trim();
-    return div.firstChild;
-}

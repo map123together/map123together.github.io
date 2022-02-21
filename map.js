@@ -1,7 +1,7 @@
 const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
 const mapid = getAllUrlParams().mapid; // Current Map ID
 
-//verifyLogin(); // TODO
+verifyLogin(); // TODO
 initMtMap();
 
 function initMtMap() {
@@ -124,8 +124,17 @@ function verifyLogin() {
       if (resposeJson.picture) {
         document.cookie = "gUserPicture=" + resposeJson.picture;
       }
+
+      if (resposeJson.uid) {
+        clearTimeout(loginTimeout);
+      }
     }
   };
 
+  let redirectBack = () => {
+    window.location.href = "index.html"
+  }
+
+  let loginTimeout = setTimeout(redirectBack, 5000); // Wait for 5 seconds
   sendMtRequest(method, dir, reqBody, parseRes);
 }
