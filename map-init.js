@@ -55,7 +55,7 @@ function initMap() { // Creates a map object with a click listener
     //--------------------------------------------------------------------------------------------
     const userBox = document.getElementById("userIconBox");
     let pictureUrl = readCookie('gUserPicture');
-    if(pictureUrl){
+    if (pictureUrl) {
         document.getElementById("mt-user-picture").src = pictureUrl;
     }
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
@@ -138,11 +138,8 @@ function initMap() { // Creates a map object with a click listener
     google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
 
         let newShape = event.overlay;
-        google.maps.event.addListener(newShape, 'dblclick', () => {
-            newShape.setMap(null);
-            removeMarker(newShape); // LOCAL
-        });
-
+       
+        // Save Symbols ---
         if (event.type == google.maps.drawing.OverlayType.MARKER) {
             // Save Marker
             let position = { lat: newShape.getPosition().lat(), lng: newShape.getPosition().lng() };
@@ -158,6 +155,20 @@ function initMap() { // Creates a map object with a click listener
             // Save Polyline
             console.log(newShape.getPath().getArray());
         }
+
+        // Remove Symbols ---
+        google.maps.event.addListener(newShape, 'dblclick', () => {
+            if (event.type == google.maps.drawing.OverlayType.MARKER) {
+                newShape.setMap(null);
+                removeMarker(newShape); // LOCAL
+            }
+
+            if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
+                newShape.setMap(null);
+                // TODO: remove polyline locally
+            }
+
+        });
     });
 }
 
