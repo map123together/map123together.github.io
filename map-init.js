@@ -3,6 +3,10 @@ let markers = []; // Google Map Markers
 let isEditing = false; // UI Update Lock
 let initPosition = { center: { lat: 41.35576312110632, lng: -101.91683651331762 }, zoom: 4 };
 let drawingManager;
+let avaIndexes = [
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+    'k', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
+];
 
 function initMap() { // Creates a map object with a click listener
     gMap = new google.maps.Map(document.getElementById('map'), {
