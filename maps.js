@@ -185,10 +185,10 @@ function newMapBtnFunction() {
 
 function generateMapCard(mtMap) {
   let lastUpdate = new Date(mtMap.last_mod_time).toLocaleString("en-US");
-  let mapName = mtMap.name.substring(0, 20) + ' ...';
+  let mapName = mtMap.name.substring(0, 20);
   let htmlStr = `
   <div class="col-auto">
-        <div class="card" style="width: 15rem; margin-bottom: 1rem;">
+        <div class="card" style="width: 12rem; margin-bottom: 1rem;">
             <img src="https://maps.googleapis.com/maps/api/staticmap?center=${mtMap.center.lat},${mtMap.center.lng}
             &zoom=${mtMap.zoom}&size=200x200&key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8" 
             onerror="event.target.src = 'new-map-icon.png';"
