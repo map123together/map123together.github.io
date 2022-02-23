@@ -46,7 +46,7 @@ function initMap() { // Creates a map object with a click listener
         markerOptions: {
             label: {
                 color: 'white',
-                text: '1',
+                text: '',
             }
         }
     });
@@ -151,7 +151,12 @@ function initMap() { // Creates a map object with a click listener
 
     // Add Button Function ------------------------------------------
     document.getElementById("btnradio1").addEventListener("click", () => {
-        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
+        if (markers.length <= 15) {
+            drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
+        } else {
+            drawingManager.setDrawingMode(null);
+            document.getElementById("btnradio0").checked = true;
+        }
     });
 
     google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
@@ -169,6 +174,19 @@ function initMap() { // Creates a map object with a click listener
             let mtMarker = { "position": position, "label": newShape.label.text };
             addMtMarker(mtMarker); // DB
             markers.push(newShape); // LOCAL
+
+            // Display Marker&Directions list
+            let markerList = document.getElementById('markerList');
+            let listItem = `
+                <li class="list-group-item"
+                    id="markerListItem-${newShape.label.text}">
+                    ${newShape.label.text}. 
+                    <input type="text" class="markerListItem" 
+                    data-desc="" 
+                    data-label="${newShape.label.text}"/>
+                </li>
+            `;
+            markerList.insertAdjacentHTML('beforeend', listItem);
         }
 
         // Remove Symbols ---
@@ -176,6 +194,7 @@ function initMap() { // Creates a map object with a click listener
             if (event.type == google.maps.drawing.OverlayType.MARKER) {
                 newShape.setMap(null);
                 removeMarker(newShape); // LOCAL
+                document.getElementById("markerListItem-" + newShape.label.text).remove();
             }
         });
     });
@@ -214,6 +233,11 @@ function displayMtMarkers(mtMarkers, gMap) {
             } else {
                 labelTxt = getNextMarkerIndex();
             }
+            let labelDesc = '';
+            if (mtMarker.desc) {
+                labelDesc = mtMarker.desc;
+            }
+
             let newMarker = new google.maps.Marker({
                 position: mtMarker.position,
                 label: {
@@ -224,9 +248,23 @@ function displayMtMarkers(mtMarkers, gMap) {
             });
             markers.push(newMarker);
 
+            // Display Marker&Directions list
+            let markerList = document.getElementById('markerList');
+            let listItem = `
+                <li class="list-group-item" 
+                    id="markerListItem-${labelTxt}">
+                    ${labelTxt}. 
+                    <input type="text" class="markerListItem" 
+                        data-desc="${labelDesc}" 
+                        data-label="${labelTxt}"/>
+                </li>
+            `;
+            markerList.insertAdjacentHTML('beforeend', listItem);
+
             // Double-click Listener: Remove Marker
             newMarker.addListener("dblclick", function (e) {
                 removeMarker(this);
+                document.getElementById("markerListItem-" + labelTxt).remove();
             })
         }
     });
