@@ -135,9 +135,7 @@ function initMap() { // Creates a map object with a click listener
     // Direction Box -------------------------------------------------------------
     document.getElementById('getDirBtn').addEventListener('click', () => {
         // TODO
-        calculateAndDisplayRoute(directionsService, directionsRenderer,
-            markers[markers.length - 2].getPosition(),
-            markers[markers.length - 1].getPosition());
+        getDirections(directionsService, directionsRenderer, markers);
     });
 
     // Tool Box -----------------------------------------------------------------------
@@ -151,7 +149,7 @@ function initMap() { // Creates a map object with a click listener
 
     // Add Button Function ------------------------------------------
     document.getElementById("btnradio1").addEventListener("click", () => {
-        if (markers.length <= 15) {
+        if (markers.length <= 10) {
             drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
         } else {
             drawingManager.setDrawingMode(null);
@@ -175,7 +173,7 @@ function initMap() { // Creates a map object with a click listener
             addMtMarker(mtMarker); // DB
             markers.push(newShape); // LOCAL
 
-            if (markers.length >= 15) {
+            if (markers.length >= 10) {
                 drawingManager.setDrawingMode(null);
                 document.getElementById("btnradio0").checked = true;
             }
@@ -206,20 +204,32 @@ function initMap() { // Creates a map object with a click listener
 }
 
 /** ============================ Sub-Functions ========================================== */
-
-function calculateAndDisplayRoute(directionsService, directionsRenderer, startPos, endPos) {
-
-    directionsService
-        .route({
-            origin: startPos, //{ lat: 41, lng: 101},
-            destination: endPos,
-            travelMode: google.maps.TravelMode.DRIVING,
-        })
-        .then((response) => {
-            //console.log(response);
-            directionsRenderer.setDirections(response);
-        })
-        .catch((e) => console.log("Directions Request Failed"));
+function getDirections(directionsService, directionsRenderer, markers) {
+    if (markers.length > 1) {
+        let startPos = markers[0].getPosition();
+        let endPos = markers[markers.length - 1].getPosition();
+        let waypts = [];
+        for (let i = 1; i < markers.length - 1; i++) {
+            waypts.push({
+                location: markers[i].getPosition(),
+                stopover: true,
+            });
+        }
+        console.log(waypts);
+        directionsService
+            .route({
+                origin: startPos, //{ lat: 41, lng: 101},
+                destination: endPos,
+                waypoints: waypts,
+                optimizeWaypoints: true,
+                travelMode: google.maps.TravelMode.DRIVING,
+            })
+            .then((response) => {
+                //console.log(response);
+                directionsRenderer.setDirections(response);
+            })
+            .catch((e) => console.log("Directions Request Failed"));
+    }
 }
 
 function displayMtMarkers(mtMarkers, gMap) {
