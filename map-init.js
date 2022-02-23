@@ -39,8 +39,7 @@ function initMap() { // Creates a map object with a click listener
         drawingControlOptions: {
             position: google.maps.ControlPosition.TOP_CENTER,
             drawingModes: [
-                google.maps.drawing.OverlayType.MARKER,
-                google.maps.drawing.OverlayType.POLYLINE
+                google.maps.drawing.OverlayType.MARKER
             ],
         },
         markerOptions: {
@@ -48,10 +47,6 @@ function initMap() { // Creates a map object with a click listener
                 color: 'white',
                 text: '1',
             }
-        },
-        polylineOptions: {
-            strokeColor: "#3389e5",
-            strokeWeight: 5,
         }
     });
     drawingManager.setMap(gMap);
@@ -158,11 +153,6 @@ function initMap() { // Creates a map object with a click listener
         drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
     });
 
-    // Add Button Function  ------------------------------------------ 
-    document.getElementById("btnradio2").addEventListener("click", () => {
-        drawingManager.setDrawingMode(google.maps.drawing.OverlayType.POLYLINE);
-    });
-
     google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
 
         let newShape = event.overlay;
@@ -180,23 +170,12 @@ function initMap() { // Creates a map object with a click listener
             markers.push(newShape); // LOCAL
         }
 
-        if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
-            // Save Polyline
-            console.log(newShape.getPath().getArray());
-        }
-
         // Remove Symbols ---
         google.maps.event.addListener(newShape, 'dblclick', () => {
             if (event.type == google.maps.drawing.OverlayType.MARKER) {
                 newShape.setMap(null);
                 removeMarker(newShape); // LOCAL
             }
-
-            if (event.type == google.maps.drawing.OverlayType.POLYLINE) {
-                newShape.setMap(null);
-                // TODO: remove polyline locally
-            }
-
         });
     });
 }
