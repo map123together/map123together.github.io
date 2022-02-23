@@ -5,7 +5,8 @@ let initPosition = { center: { lat: 41.35576312110632, lng: -101.91683651331762 
 let drawingManager;
 let avaIndexes = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-    'k', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
+    'k', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+    'U', 'V', 'W', 'X', 'Y', 'Z'
 ];
 
 function initMap() { // Creates a map object with a click listener
@@ -132,10 +133,10 @@ function initMap() { // Creates a map object with a click listener
     });
 
     // Direction Box -------------------------------------------------------------
-    document.getElementById('getDirBtn').addEventListener('click', ()=>{
+    document.getElementById('getDirBtn').addEventListener('click', () => {
         // TODO
-        calculateAndDisplayRoute(directionsService, directionsRenderer, 
-            markers[markers.length - 2].getPosition(), 
+        calculateAndDisplayRoute(directionsService, directionsRenderer,
+            markers[markers.length - 2].getPosition(),
             markers[markers.length - 1].getPosition());
     });
 
