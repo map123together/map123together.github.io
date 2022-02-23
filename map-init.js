@@ -174,6 +174,11 @@ function initMap() { // Creates a map object with a click listener
             let mtMarker = { "position": position, "label": newShape.label.text };
             addMtMarker(mtMarker); // DB
             markers.push(newShape); // LOCAL
+            
+            if(markers.length >= 15){
+                drawingManager.setDrawingMode(null);
+                document.getElementById("btnradio0").checked = true;
+            }
 
             // Display Marker&Directions list
             let markerList = document.getElementById('markerList');
