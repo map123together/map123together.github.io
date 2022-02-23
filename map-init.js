@@ -165,7 +165,7 @@ function initMap() { // Creates a map object with a click listener
 
             // Save Marker
             let position = { lat: newShape.getPosition().lat(), lng: newShape.getPosition().lng() };
-            let mtMarker = { "position": position, "timestamp": Date.now() };
+            let mtMarker = { "position": position, "label": newShape.label.text };
             addMtMarker(mtMarker); // DB
             markers.push(newShape); // LOCAL
         }
@@ -206,10 +206,16 @@ function displayMtMarkers(mtMarkers, gMap) {
         });
 
         if (!isExMarker) {
+            let labelTxt = '';
+            if (mtMarker.label) {
+                labelTxt = mtMarker.label
+            } else {
+                labelTxt = getNextMarkerIndex();
+            }
             let newMarker = new google.maps.Marker({
                 position: mtMarker.position,
                 label: {
-                    'text': getNextMarkerIndex(),
+                    'text': labelTxt,
                     'color': 'white'
                 },
                 map: gMap,
