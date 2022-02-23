@@ -1,9 +1,13 @@
 let gMap; // Google Map
 let markers = []; // Google Map Markers
-let isEditing = false; // UI Update Lock
-let initPosition = { center: { lat: 41.35576312110632, lng: -101.91683651331762 }, zoom: 4 };
 let drawingManager;
-let avaIndexes = [
+const initPosition = {
+    center: {
+        lat: 41.35576312110632,
+        lng: -101.91683651331762
+    }, zoom: 4
+};
+const avaIndexes = [
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
     'k', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
     'U', 'V', 'W', 'X', 'Y', 'Z'
