@@ -252,10 +252,6 @@ function panToMapCenter(center, zoom, gMap) { // Pan to center
 
 /* ========================= Utility ========================= */
 function getNextMarkerIndex() {
-    let avaIndexes = [
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-        'k', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
-    ];
     let numMarkers = markers.length;
     let nextIndex = '';
     if (numMarkers <= avaIndexes.length && avaIndexes[numMarkers]) {
