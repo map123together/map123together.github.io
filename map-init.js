@@ -12,6 +12,7 @@ const avaIndexes = [
     'k', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
     'U', 'V', 'W', 'X', 'Y', 'Z'
 ];
+let usedIndexes = [];
 
 function initMap() { // Creates a map object with a click listener
     gMap = new google.maps.Map(document.getElementById('map'), {
@@ -208,7 +209,8 @@ function displayMtMarkers(mtMarkers, gMap) {
         if (!isExMarker) {
             let labelTxt = '';
             if (mtMarker.label) {
-                labelTxt = mtMarker.label
+                labelTxt = mtMarker.label;
+                usedIndexes.push(labelTxt);
             } else {
                 labelTxt = getNextMarkerIndex();
             }
@@ -258,10 +260,11 @@ function panToMapCenter(center, zoom, gMap) { // Pan to center
 
 /* ========================= Utility ========================= */
 function getNextMarkerIndex() {
-    let numMarkers = markers.length;
+    let difference = avaIndexes.filter(x => !usedIndexes.includes(x));
     let nextIndex = '';
-    if (numMarkers <= avaIndexes.length && avaIndexes[numMarkers]) {
-        nextIndex = avaIndexes[numMarkers];
+    if (difference[0]) {
+        nextIndex = difference[0];
+        usedIndexes.push(nextIndex);
     }
 
     return nextIndex;
