@@ -15,6 +15,7 @@ const avaIndexes = [
 let usedIndexes = [];
 
 function initMap() { // Creates a map object with a click listener
+    // Init Map --------------------------------------------------
     gMap = new google.maps.Map(document.getElementById('map'), {
         mapTypeControl: false,
         zoomControlOptions: {
@@ -33,7 +34,7 @@ function initMap() { // Creates a map object with a click listener
         streetViewControl: false,
     });
 
-    // Init Drawing Tools --------------------------------------------------
+    // Init DrawingManager -------------------------------------------
     drawingManager = new google.maps.drawing.DrawingManager({
         drawingMode: google.maps.drawing.OverlayType.MARKER,
         drawingControl: false,
@@ -53,22 +54,18 @@ function initMap() { // Creates a map object with a click listener
     drawingManager.setMap(gMap);
     drawingManager.setDrawingMode(null);
 
-    // Init Direction Service --------------------------------------------------
+    // Init Direction Service ----------------------------------------
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer({
         suppressMarkers: true
     });
     directionsRenderer.setMap(gMap);
 
-    //--------------------------------------------------------------------------------------------
-    const markerListBox = document.getElementById("markerListBox");
-    gMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(markerListBox);
-
-    //--------------------------------------------------------------------------------------------
+    // Logo Box ------------------------------------------------------
     const logoBox = document.getElementById("logoBox");
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(logoBox);
 
-    //--------------------------------------------------------------------------------------------
+    // Avatar Box -----------------------------------------------------
     const userBox = document.getElementById("userIconBox");
     let pictureUrl = readCookie('gUserPicture');
     if (pictureUrl) {
@@ -76,13 +73,94 @@ function initMap() { // Creates a map object with a click listener
     }
     gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
 
-    // Search box --------------------------------------------------------------------------------------------
+    // Tool Box -------------------------------------------------------
+    let toolBox = document.getElementById('toolbox');
+    gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(toolBox);
+    initToolButtonFunctions();
+
+    // Search Box ------------------------------------------------------------
     const searchInput = document.getElementById("pac-input");
     const searchBox = new google.maps.places.SearchBox(searchInput);
-
     gMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(searchInput);
+    initSearchBoxFunction(searchBox);
 
-    // Bias the SearchBox results towards current map's viewport.
+    // Markers & Directions Box -----------------------------------------------
+    const markerListBox = document.getElementById("markerListBox");
+    gMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(markerListBox);
+    document.getElementById('getDirBtn').addEventListener('click', () => {
+        getDirections(directionsService, directionsRenderer, markers);
+    });
+}
+
+/** ============================ Sub-Functions ========================================== */
+function initToolButtonFunctions() {
+    // Add Hand Button Function ------------------------------------------
+    document.getElementById("btnradio0").addEventListener("click", () => {
+        drawingManager.setDrawingMode(null);
+    });
+
+    // Add Marker Button Function ------------------------------------------
+    document.getElementById("btnradio1").addEventListener("click", () => {
+        if (markers.length <= 10) {
+            drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
+        } else {
+            drawingManager.setDrawingMode(null);
+            document.getElementById("btnradio0").checked = true;
+        }
+    });
+
+    // After Drawing ------------------------------------------
+    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
+
+        let newShape = event.overlay;
+
+        // Save Symbols ---
+        if (event.type == google.maps.drawing.OverlayType.MARKER) {
+            // Update marker text
+            let label = newShape.label;
+            label.text = getNextMarkerIndex();
+
+            // Save Marker
+            let position = { lat: newShape.getPosition().lat(), lng: newShape.getPosition().lng() };
+            let mtMarker = { "position": position, "label": newShape.label.text };
+            addMtMarker(mtMarker); // DB
+            markers.push(newShape); // LOCAL
+
+            if (markers.length >= 10) {
+                drawingManager.setDrawingMode(null);
+                document.getElementById("btnradio0").checked = true;
+            }
+
+            // Display Marker&Directions list
+            let markerList = document.getElementById('markerList');
+            let listItem = `
+                <li class="list-group-item"
+                    id="markerListItem-${newShape.label.text}">
+                    ${newShape.label.text}. 
+                    <input type="text" class="markerListItem" 
+                    data-desc="" 
+                    data-label="${newShape.label.text}"/>
+                </li>
+            `;
+            markerList.insertAdjacentHTML('beforeend', listItem);
+            slist(document.getElementById("markerList"));
+
+            updateMtLabelOrder();
+        }
+
+        // Remove Marker ---
+        google.maps.event.addListener(newShape, 'dblclick', () => {
+            if (event.type == google.maps.drawing.OverlayType.MARKER) {
+                newShape.setMap(null);
+                removeMarker(newShape); // LOCAL
+                document.getElementById("markerListItem-" + newShape.label.text).remove();
+                slist(document.getElementById("markerList"));
+            }
+        });
+    });
+}
+
+function initSearchBoxFunction(searchBox) {
     gMap.addListener("bounds_changed", () => {
         searchBox.setBounds(gMap.getBounds());
     });
@@ -131,83 +209,8 @@ function initMap() { // Creates a map object with a click listener
 
         gMap.fitBounds(bounds);
     });
-
-    // Direction Box -------------------------------------------------------------
-    document.getElementById('getDirBtn').addEventListener('click', () => {
-        // TODO
-        getDirections(directionsService, directionsRenderer, markers);
-    });
-
-    // Tool Box -----------------------------------------------------------------------
-    let toolBox = document.getElementById('toolbox');
-    gMap.controls[google.maps.ControlPosition.TOP_CENTER].push(toolBox);
-
-    // Add Button Function ------------------------------------------
-    document.getElementById("btnradio0").addEventListener("click", () => {
-        drawingManager.setDrawingMode(null);
-    });
-
-    // Add Button Function ------------------------------------------
-    document.getElementById("btnradio1").addEventListener("click", () => {
-        if (markers.length <= 10) {
-            drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
-        } else {
-            drawingManager.setDrawingMode(null);
-            document.getElementById("btnradio0").checked = true;
-        }
-    });
-
-    google.maps.event.addListener(drawingManager, 'overlaycomplete', function (event) {
-
-        let newShape = event.overlay;
-
-        // Save Symbols ---
-        if (event.type == google.maps.drawing.OverlayType.MARKER) {
-            // Update marker text
-            let label = newShape.label;
-            label.text = getNextMarkerIndex();
-
-            // Save Marker
-            let position = { lat: newShape.getPosition().lat(), lng: newShape.getPosition().lng() };
-            let mtMarker = { "position": position, "label": newShape.label.text };
-            addMtMarker(mtMarker); // DB
-            markers.push(newShape); // LOCAL
-
-            if (markers.length >= 10) {
-                drawingManager.setDrawingMode(null);
-                document.getElementById("btnradio0").checked = true;
-            }
-
-            // Display Marker&Directions list
-            let markerList = document.getElementById('markerList');
-            let listItem = `
-                <li class="list-group-item"
-                    id="markerListItem-${newShape.label.text}">
-                    ${newShape.label.text}. 
-                    <input type="text" class="markerListItem" 
-                    data-desc="" 
-                    data-label="${newShape.label.text}"/>
-                </li>
-            `;
-            markerList.insertAdjacentHTML('beforeend', listItem);
-            slist(document.getElementById("markerList"));
-            
-            updateMtLabelOrder();
-        }
-
-        // Remove Symbols ---
-        google.maps.event.addListener(newShape, 'dblclick', () => {
-            if (event.type == google.maps.drawing.OverlayType.MARKER) {
-                newShape.setMap(null);
-                removeMarker(newShape); // LOCAL
-                document.getElementById("markerListItem-" + newShape.label.text).remove();
-                slist(document.getElementById("markerList"));
-            }
-        });
-    });
 }
 
-/** ============================ Sub-Functions ========================================== */
 function getDirections(directionsService, directionsRenderer, markers) {
     if (markers.length > 1) {
         let startPos = markers[0].getPosition();
@@ -222,7 +225,7 @@ function getDirections(directionsService, directionsRenderer, markers) {
         console.log(waypts);
         directionsService
             .route({
-                origin: startPos, //{ lat: 41, lng: 101},
+                origin: startPos,
                 destination: endPos,
                 waypoints: waypts,
                 optimizeWaypoints: true,
@@ -269,7 +272,7 @@ function displayMtMarkers(mtMarkers, gMap) {
             });
             markers.push(newMarker);
 
-            // Display Marker&Directions list
+            // Display Marker List
             let markerList = document.getElementById('markerList');
             let listItem = `
                 <li class="list-group-item" 
@@ -282,7 +285,7 @@ function displayMtMarkers(mtMarkers, gMap) {
             `;
             markerList.insertAdjacentHTML('beforeend', listItem);
 
-            // Double-click Listener: Remove Marker
+            // Double-click: Remove Marker
             newMarker.addListener("dblclick", function (e) {
                 removeMarker(this);
                 document.getElementById("markerListItem-" + labelTxt).remove();
