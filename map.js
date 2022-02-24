@@ -28,6 +28,7 @@ function initMtMap() {
 
     setInterval(getExistingMtMarkers, 5000);
     setInterval(updateMtCenter, 5000);
+    setInterval(updateMtLabelOrder, 5000);
   };
 
   sendMtRequest(method, dir, null, afterMapViewSet);
@@ -85,6 +86,25 @@ function removeMtMarker(markerPos) {
   };
   isEditing = true;
   sendMtRequest(method, dir, markerPos, parseRes);
+}
+
+function updateMtLabelOrder() {
+
+  let method = 'POST';
+  let dir = 'map/id/' + mapid + '/update-markers-order';
+
+  let orderedList = getOrderedMarkerList();
+  console.log(orderedList);
+ 
+  let parseRes = (response) => {
+    isEditing = false;
+    let resposeJson = JSON.parse(response);
+    if (resposeJson) {
+      //console.log(resposeJson);
+    }
+  };
+  isEditing = true;
+  sendMtRequest(method, dir, orderedList, parseRes);
 }
 
 function updateMtCenter() {

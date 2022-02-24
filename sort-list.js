@@ -54,6 +54,18 @@ function slist(target) {
                     i.parentNode.insertBefore(current, i);
                 }
             }
+
+
         };
     }
+}
+
+function getOrderedMarkerList() {
+    let orderedMarkerList = document.getElementsByClassName('markerListItem');
+    let orderedMarkers = [];
+    for (let mli of orderedMarkerList) {
+        orderedMarkers.push(mli.dataset.label);
+    }
+
+    return orderedMarkers;
 }

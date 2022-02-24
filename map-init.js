@@ -190,6 +190,7 @@ function initMap() { // Creates a map object with a click listener
                 </li>
             `;
             markerList.insertAdjacentHTML('beforeend', listItem);
+            slist(document.getElementById("markerList"));
         }
 
         // Remove Symbols ---
@@ -198,6 +199,7 @@ function initMap() { // Creates a map object with a click listener
                 newShape.setMap(null);
                 removeMarker(newShape); // LOCAL
                 document.getElementById("markerListItem-" + newShape.label.text).remove();
+                slist(document.getElementById("markerList"));
             }
         });
     });
@@ -286,9 +288,7 @@ function displayMtMarkers(mtMarkers, gMap) {
         }
     });
 
-    
     slist(document.getElementById("markerList"));
-  
 }
 
 function removeMarker(oldMarker) {
