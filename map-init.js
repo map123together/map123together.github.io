@@ -117,44 +117,27 @@ function initToolButtonFunctions() {
         // Save Symbols ---
         if (event.type == google.maps.drawing.OverlayType.MARKER) {
             // Update marker text
-            let label = newShape.label;
-            label.text = getNextMarkerIndex();
+            newShape.label.text = getNextMarkerIndex();
 
             // Save Marker
             let position = { lat: newShape.getPosition().lat(), lng: newShape.getPosition().lng() };
             let mtMarker = { "position": position, "label": newShape.label.text };
-            addMtMarker(mtMarker); // DB
-            markers.push(newShape); // LOCAL
+            addMtMarker(mtMarker);
+            markers.push(newShape); 
 
             if (markers.length >= 10) {
                 drawingManager.setDrawingMode(null);
                 document.getElementById("btnradio0").checked = true;
             }
 
-            // Display Marker&Directions list
-            let markerList = document.getElementById('markerList');
-            let listItem = `
-                <li class="list-group-item"
-                    id="markerListItem-${newShape.label.text}">
-                    ${newShape.label.text}. 
-                    <input type="text" class="markerListItem" 
-                    data-desc="" 
-                    data-label="${newShape.label.text}"/>
-                </li>
-            `;
-            markerList.insertAdjacentHTML('beforeend', listItem);
-            slist(document.getElementById("markerList"));
-
-            updateMtLabelOrder();
+            // Refresh Marker List
+            addMarkerToMarkerList(newShape.label.text, true);
         }
 
         // Remove Marker ---
         google.maps.event.addListener(newShape, 'dblclick', () => {
             if (event.type == google.maps.drawing.OverlayType.MARKER) {
-                newShape.setMap(null);
-                removeMarker(newShape); // LOCAL
-                document.getElementById("markerListItem-" + newShape.label.text).remove();
-                slist(document.getElementById("markerList"));
+                removeMarker(newShape);
             }
         });
     });
@@ -273,22 +256,11 @@ function displayMtMarkers(mtMarkers, gMap) {
             markers.push(newMarker);
 
             // Display Marker List
-            let markerList = document.getElementById('markerList');
-            let listItem = `
-                <li class="list-group-item" 
-                    id="markerListItem-${labelTxt}">
-                    ${labelTxt}. 
-                    <input type="text" class="markerListItem" 
-                        data-desc="${labelDesc}" 
-                        data-label="${labelTxt}"/>
-                </li>
-            `;
-            markerList.insertAdjacentHTML('beforeend', listItem);
+            addMarkerToMarkerList(labelTxt, false);
 
-            // Double-click: Remove Marker
+            // Remove Marker
             newMarker.addListener("dblclick", function (e) {
                 removeMarker(this);
-                document.getElementById("markerListItem-" + labelTxt).remove();
             })
         }
     });
@@ -296,12 +268,36 @@ function displayMtMarkers(mtMarkers, gMap) {
     slist(document.getElementById("markerList"));
 }
 
+function addMarkerToMarkerList(labelTxt, updateMtDB = true) {
+    let markerList = document.getElementById('markerList');
+    let listItem = `
+        <li class="list-group-item"
+            id="markerListItem-${labelTxt}">
+            ${labelTxt}. 
+            <input type="text" class="markerListItem" 
+            data-desc="" 
+            data-label="${labelTxt}"/>
+        </li>
+    `;
+    markerList.insertAdjacentHTML('beforeend', listItem);
+    slist(document.getElementById("markerList"));
+
+    if (updateMtDB) {
+        updateMtLabelOrder();
+    }
+}
+
 function removeMarker(oldMarker) {
     let newMarkers = [];
     markers.forEach(marker => {
-        if (oldMarker.getPosition().lat() == marker.getPosition().lat()
-            && oldMarker.getPosition().lng() == marker.getPosition().lng()) {
-            marker.setMap(null);
+        if (
+            oldMarker.getPosition().lat() == marker.getPosition().lat()
+            && oldMarker.getPosition().lng() == marker.getPosition().lng()
+            ) {
+            
+            marker.setMap(null);// Remove marker from map
+            document.getElementById("markerListItem-" + oldMarker.label.text).remove(); // Remove marker from list
+            
             let mtMarker = {
                 "position": {
                     "lat": oldMarker.getPosition().lat(),
@@ -313,6 +309,7 @@ function removeMarker(oldMarker) {
             newMarkers.push(marker);
         }
     });
+    updateMtLabelOrder();
     markers = newMarkers;
 }
 
