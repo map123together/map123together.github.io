@@ -67,5 +67,11 @@ function getOrderedMarkerList() {
         orderedMarkers.push(mli.dataset.label);
     }
 
+    if(orderedMarkerList.length == 0){
+        document.getElementById('markerListBox').style.display = "none";
+    } else {
+        document.getElementById('markerListBox').style.display = "block";
+    }
+
     return orderedMarkers;
 }

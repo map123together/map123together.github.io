@@ -266,6 +266,7 @@ function displayMtMarkers(mtMarkers, gMap) {
     });
 
     slist(document.getElementById("markerList"));
+    getOrderedMarkerList();
 }
 
 function addMarkerToMarkerList(labelTxt, updateMtDB = true) {
