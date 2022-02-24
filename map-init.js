@@ -296,7 +296,8 @@ function removeMarker(oldMarker) {
             ) {
             
             marker.setMap(null);// Remove marker from map
-            document.getElementById("markerListItem-" + oldMarker.label.text).remove(); // Remove marker from list
+            // Remove marker from list
+            document.getElementById("markerListItem-" + oldMarker.label.text).remove(); 
             
             let mtMarker = {
                 "position": {
