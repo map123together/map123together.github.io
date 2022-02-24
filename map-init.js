@@ -285,6 +285,10 @@ function displayMtMarkers(mtMarkers, gMap) {
             })
         }
     });
+
+    
+    slist(document.getElementById("markerList"));
+  
 }
 
 function removeMarker(oldMarker) {
