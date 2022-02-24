@@ -319,7 +319,6 @@ function panToMapCenter(center, zoom, gMap) { // Pan to center
     gMap.setZoom(zoom);
 }
 
-/* ========================= Utility ========================= */
 function getNextMarkerIndex() {
     let difference = avaIndexes.filter(x => !usedIndexes.includes(x));
     let nextIndex = '';

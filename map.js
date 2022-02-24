@@ -28,7 +28,7 @@ function initMtMap() {
 
     setInterval(getExistingMtMarkers, 5000);
     setInterval(updateMtCenter, 5000);
-    //setInterval(updateMtLabelOrder, 5000);
+
   };
 
   sendMtRequest(method, dir, null, afterMapViewSet);
@@ -46,7 +46,7 @@ function getExistingMtMarkers() {
       mtMap = resposeJson[0];
       if (mtMap.markers) {
         displayMtMarkers(mtMap.markers, gMap);
-        console.log("Fetched MT Markers: " + mtMap.markers.length);
+        //console.log("Fetched MT Markers: " + mtMap.markers.length);
       }
     }
   };
@@ -95,7 +95,7 @@ function updateMtLabelOrder() {
 
   let orderedList = getOrderedMarkerList();
   console.log(orderedList);
- 
+
   let parseRes = (response) => {
     isEditing = false;
     let resposeJson = JSON.parse(response);
@@ -155,6 +155,6 @@ function verifyLogin() {
     window.location.href = "index.html"
   }
 
-  let loginTimeout = setTimeout(redirectBack, 5000); // Wait for 5 seconds
+  let loginTimeout = setTimeout(redirectBack, 5000);
   sendMtRequest(method, dir, reqBody, parseRes);
 }
