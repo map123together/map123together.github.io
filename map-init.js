@@ -191,6 +191,8 @@ function initMap() { // Creates a map object with a click listener
             `;
             markerList.insertAdjacentHTML('beforeend', listItem);
             slist(document.getElementById("markerList"));
+            
+            updateMtLabelOrder();
         }
 
         // Remove Symbols ---

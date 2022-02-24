@@ -55,7 +55,7 @@ function slist(target) {
                 }
             }
 
-
+            updateMtLabelOrder();
         };
     }
 }
