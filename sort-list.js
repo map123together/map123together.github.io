@@ -8,7 +8,7 @@ function slist(target) {
         // (B1) ATTACH DRAGGABLE
         i.draggable = true;
 
-        // (B2) DRAG START - YELLOW HIGHLIGHT DROPZONES
+        // (B2) DRAG START - HIGHLIGHT DROPZONES
         i.ondragstart = (ev) => {
             current = i;
             for (let it of items) {
@@ -18,7 +18,7 @@ function slist(target) {
             }
         };
 
-        // (B3) DRAG ENTER - RED HIGHLIGHT DROPZONE
+        // (B3) DRAG ENTER - HIGHLIGHT DROPZONE
         i.ondragenter = (ev) => {
             if (i != current) { i.classList.add("active"); }
         };

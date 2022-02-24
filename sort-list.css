@@ -12,6 +12,14 @@
     background: #f5f5f5;
   }
   */
+  .slist li {
+    cursor: grab;
+  }
+
+  .slist li:active {
+    cursor: grabbing;
+  }
+
   /* (B) DRAG-AND-DROP HINT */
   .slist li.hint {
     border: 1px solid #e0e0e0;
@@ -21,3 +29,4 @@
     border: 1px solid #d1d1d1;
     background: #d1d1d1;
   }
+
