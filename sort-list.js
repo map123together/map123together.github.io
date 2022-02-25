@@ -21,7 +21,7 @@ function slist(target) {
 
         // (B3) DRAG ENTER - HIGHLIGHT DROPZONE
         i.ondragenter = (ev) => {
-            if (i != current) { 
+            if (i != current) {
                 i.classList.add("active");
             }
         };
@@ -52,28 +52,29 @@ function slist(target) {
                     if (current == items[it]) { currentpos = it; }
                     if (i == items[it]) { droppedpos = it; }
                 }
-                if (currentpos < droppedpos) {
-                    console.log(current);
-                    i.parentNode.insertBefore(current, i.nextSibling);
-                } else {
-                    i.parentNode.insertBefore(current, i);
+                if (current) {
+                    if (currentpos < droppedpos) {
+                        i.parentNode.insertBefore(current, i.nextSibling);
+                    } else {
+                        i.parentNode.insertBefore(current, i);
+                    }
                 }
             }
-
+            
             updateMtLabelOrder();
         };
     }
 }
 
 function getOrderedMarkerList() {
-    
+
     let orderedMarkerList = document.getElementsByClassName('markerListItem');
     let orderedMarkers = [];
     for (let mli of orderedMarkerList) {
         orderedMarkers.push(mli.dataset.label);
     }
 
-    if(orderedMarkerList.length == 0){
+    if (orderedMarkerList.length == 0) {
         document.getElementById('markerListBox').style.display = "none";
     } else {
         document.getElementById('markerListBox').style.display = "block";
