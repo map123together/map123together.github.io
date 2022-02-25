@@ -200,8 +200,8 @@ function getDirections(directionsService, directionsRenderer) {
 
   if (markers.length > 1) {
 
+    // Reorder Markers
     markersOrder.forEach(orderedLabel => {
-      
       markers.forEach(marker => {
         if (marker.label.text == orderedLabel) {
           orderedMarkers.push(marker);
@@ -233,11 +233,13 @@ function getDirections(directionsService, directionsRenderer) {
         let legs = response.routes[0].legs;
         let directionLegSpans = document.getElementsByClassName('directionLegSpan');
         //console.log(directionLegSpans);
-        for (let i = 0; i < directionLegSpans.length - 1; i++) {
+        for (let i = 0; i < directionLegSpans.length; i++) {
           directionLegSpans[i].innerHTML = '';
+          directionLegSpans[i].style.display = 'none';
         }
         for (let i = 0; i < directionLegSpans.length - 1; i++) {
-          directionLegSpans[i].innerHTML = 'Distance: ' + legs[i].distance.text + ' (' + legs[i].duration.text + ')';
+          directionLegSpans[i].style.display = 'block';
+          directionLegSpans[i].innerHTML = 'Distance: ' + legs[i].distance.text + ' (' + legs[i].duration.text + ') <i class="bi bi-arrow-down"></i>';
         };
       })
       .catch((e) => console.log("Directions Request Failed"));
@@ -315,9 +317,9 @@ function addMarkerToMarkerList(labelTxt, updateMtDB = true) {
             <input type="text" class="markerListItem" 
             data-desc="" 
             data-label="${labelTxt}"/>&emsp;<i class="bi bi-justify"></i>
-            <br><br>
-            <div style="text-align:center;">
-                <span class="directionLegSpan"></span>
+            
+            <div class="directionLegSpan" style="text-align:center;display: none; margin-top: 8px">
+                <br>
             </div>
         </li>
     `;
