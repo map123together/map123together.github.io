@@ -49,14 +49,18 @@
             margin-bottom: 10px;
             text-align : center;
             height: auto;
-            width:180px;">
-            <h6 class="text-muted" style="margin-top: 8px;">Markers & Directions</h6>
-            <button id="getDirBtn" class="btn btn-sm btn-link">
-                <i class="bi bi-arrow-90deg-right"></i> 
-                Get Directions
-            </button>
-        <ul id="markerList" class="list-group" style="text-align: left !important;">
-        </ul>
+            width:  auto;">
+        <h6 class="text-muted" style="margin-top: 8px;">Markers & Directions</h6>
+        <button id="getDirBtn" class="btn btn-sm btn-link">
+            <i class="bi bi-arrow-90deg-right"></i>
+            Get Directions
+        </button>
+        <div class="row">
+            <div class="col-auto">
+                <ul id="markerList" class="list-group" style="text-align: left !important; margin-top: 5px;">
+                </ul>
+            </div>
+        </div>
     </div>
     <div id="userIconBox" style="
             border: 0px solid #ffffff;
@@ -137,10 +141,10 @@
     <script src="map-init.js"></script>
     <script defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8&libraries=visualization,places,drawing&callback=initMap">
-    </script>
+        </script>
     <script src="sort-list.js"></script>
     <script src="map.js"></script>
-    
+
 </body>
 
 </html>

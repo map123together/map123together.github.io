@@ -289,10 +289,10 @@ function addMarkerToMarkerList(labelTxt, updateMtDB = true) {
     let listItem = `
         <li class="list-group-item"
             id="markerListItem-${labelTxt}">
-            ${labelTxt}. 
+            <tt>${labelTxt}.</tt>
             <input type="text" class="markerListItem" 
             data-desc="" 
-            data-label="${labelTxt}"/>
+            data-label="${labelTxt}"/>&emsp;<i class="bi bi-justify"></i>
         </li>
     `;
     markerList.insertAdjacentHTML('beforeend', listItem);
