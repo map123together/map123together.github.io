@@ -46,7 +46,6 @@ function getExistingMtMarkers() {
       mtMap = resposeJson[0];
       if (mtMap.markers) {
         displayMtMarkers(mtMap, gMap);
-        //console.log("Fetched MT Markers: " + mtMap.markers.length);
       }
     }
   };
