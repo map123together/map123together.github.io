@@ -253,13 +253,17 @@ function displayMtMarkers(mtMap, gMap) {
 
   // Reorder Markers
   let orderedMtMarkers = [];
-  mtMarkersOrder.forEach(orderedLabel => {
-    mtMarkers.forEach(mtMarker => {
-      if (mtMarker.label == orderedLabel) {
-        orderedMtMarkers.push(mtMarker);
-      }
+  if(mtMarkersOrder){
+    mtMarkersOrder.forEach(orderedLabel => {
+      mtMarkers.forEach(mtMarker => {
+        if (mtMarker.label == orderedLabel) {
+          orderedMtMarkers.push(mtMarker);
+        }
+      });
     });
-  });
+  } else {
+    orderedMtMarkers = mtMarkers;
+  }
 
   // Display
   orderedMtMarkers.forEach(mtMarker => {
@@ -306,6 +310,7 @@ function displayMtMarkers(mtMap, gMap) {
   });
 
   slist(document.getElementById("markerList"));
+  getOrderedMarkerList();
 }
 
 function addMarkerToMarkerList(labelTxt, updateMtDB = true) {
