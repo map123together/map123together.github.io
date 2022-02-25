@@ -20,7 +20,9 @@ function slist(target) {
 
         // (B3) DRAG ENTER - HIGHLIGHT DROPZONE
         i.ondragenter = (ev) => {
-            if (i != current) { i.classList.add("active"); }
+            if (i != current) { 
+                i.classList.add("active");
+            }
         };
 
         // (B4) DRAG LEAVE - REMOVE RED HIGHLIGHT
@@ -33,6 +35,7 @@ function slist(target) {
             for (let it of items) {
                 it.classList.remove("hint");
                 it.classList.remove("active");
+                it.style.cursor = 'grab';
             }
         };
 
@@ -49,6 +52,7 @@ function slist(target) {
                     if (i == items[it]) { droppedpos = it; }
                 }
                 if (currentpos < droppedpos) {
+                    console.log(current);
                     i.parentNode.insertBefore(current, i.nextSibling);
                 } else {
                     i.parentNode.insertBefore(current, i);

@@ -74,7 +74,11 @@ body {
 
 .slist li {
     cursor: grab;
-  }
+}
+
+.slist li:active {
+    cursor: grabbing;
+}
 
 .slist li.hint {
     border: 1px solid #e0e0e0;
