@@ -93,7 +93,7 @@ function updateMtLabelOrder() {
   let dir = 'map/id/' + mapid + '/update-markers-order';
 
   let orderedList = getOrderedMarkerList();
-  console.log(orderedList);
+  //console.log(orderedList);
 
   let parseRes = (response) => {
     isEditing = false;

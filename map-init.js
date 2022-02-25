@@ -195,13 +195,26 @@ function initSearchBoxFunction(searchBox) {
 }
 
 function getDirections(directionsService, directionsRenderer) {
+  let markersOrder = getOrderedMarkerList();
+  let orderedMarkers = [];
+
   if (markers.length > 1) {
-    let startPos = markers[0].getPosition();
-    let endPos = markers[markers.length - 1].getPosition();
+
+    markersOrder.forEach(orderedLabel => {
+      
+      markers.forEach(marker => {
+        if (marker.label.text == orderedLabel) {
+          orderedMarkers.push(marker);
+        }
+      });
+    });
+    
+    let startPos = orderedMarkers[0].getPosition();
+    let endPos = orderedMarkers[orderedMarkers.length - 1].getPosition();
     let waypts = [];
-    for (let i = 1; i < markers.length - 1; i++) {
+    for (let i = 1; i < orderedMarkers.length - 1; i++) {
       waypts.push({
-        location: markers[i].getPosition(),
+        location: orderedMarkers[i].getPosition(),
         stopover: true,
       });
     }
