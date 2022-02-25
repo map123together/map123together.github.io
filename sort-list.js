@@ -1,7 +1,7 @@
 function slist(target) {
     // (A) SET CSS + GET ALL LIST ITEMS
     target.classList.add("slist");
-    let items = target.getElementsByTagName("li")
+    let items = target.getElementsByTagName("li");
     let current = null;
 
     // (B) MAKE ITEMS DRAGGABLE + SORTABLE
@@ -60,7 +60,8 @@ function slist(target) {
                     }
                 }
             }
-            
+
+            // Update DB
             updateMtLabelOrder();
         };
     }

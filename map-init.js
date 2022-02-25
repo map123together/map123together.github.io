@@ -88,7 +88,7 @@ function initMap() { // Creates a map object with a click listener
     const markerListBox = document.getElementById("markerListBox");
     gMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(markerListBox);
     document.getElementById('getDirBtn').addEventListener('click', () => {
-        getDirections(directionsService, directionsRenderer, markers);
+        getDirections(directionsService, directionsRenderer);
     });
 }
 
@@ -194,7 +194,7 @@ function initSearchBoxFunction(searchBox) {
     });
 }
 
-function getDirections(directionsService, directionsRenderer, markers) {
+function getDirections(directionsService, directionsRenderer) {
     if (markers.length > 1) {
         let startPos = markers[0].getPosition();
         let endPos = markers[markers.length - 1].getPosition();
@@ -205,7 +205,7 @@ function getDirections(directionsService, directionsRenderer, markers) {
                 stopover: true,
             });
         }
-        console.log(waypts);
+
         directionsService
             .route({
                 origin: startPos,
@@ -215,8 +215,17 @@ function getDirections(directionsService, directionsRenderer, markers) {
                 travelMode: google.maps.TravelMode.DRIVING,
             })
             .then((response) => {
-                //console.log(response);
                 directionsRenderer.setDirections(response);
+               
+                let legs = response.routes[0].legs;
+                let directionLegSpans = document.getElementsByClassName('directionLegSpan');
+                //console.log(directionLegSpans);
+                for (let i=0; i< directionLegSpans.length -1; i++) {
+                    directionLegSpans[i].innerHTML = '';
+                }
+                for (let i=0; i< directionLegSpans.length -1; i++) {
+                    directionLegSpans[i].innerHTML = 'Distance: ' + legs[i].distance.text + ' (' +legs[i].duration.text  + ')';
+                };
             })
             .catch((e) => console.log("Directions Request Failed"));
     }
@@ -227,7 +236,7 @@ function displayMtMarkers(mtMap, gMap) {
     let mtMarkers = mtMap.markers;
     let mtMarkersOrder = mtMap['markers-order'];
     
-    // Reorder
+    // Reorder Markers
     let orderedMtMarkers = [];
     mtMarkersOrder.forEach(orderedLabel=> {
         mtMarkers.forEach(mtMarker => {
@@ -293,6 +302,10 @@ function addMarkerToMarkerList(labelTxt, updateMtDB = true) {
             <input type="text" class="markerListItem" 
             data-desc="" 
             data-label="${labelTxt}"/>&emsp;<i class="bi bi-justify"></i>
+            <br><br>
+            <div style="text-align:center;">
+                <span class="directionLegSpan"></span>
+            </div>
         </li>
     `;
     markerList.insertAdjacentHTML('beforeend', listItem);
