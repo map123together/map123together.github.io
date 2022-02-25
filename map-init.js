@@ -90,6 +90,9 @@ function initMap() { // Creates a map object with a click listener
   document.getElementById('getDirBtn').addEventListener('click', () => {
     getDirections(directionsService, directionsRenderer);
   });
+  // Chat Box -----------------------------------------------
+  const chatBox = document.getElementById("chatBox");
+  gMap.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(chatBox);
 }
 
 /** ============================ Sub-Functions ========================================== */
