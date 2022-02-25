@@ -17,7 +17,7 @@ function initMtMap() {
 
       if (mtMap) {
         // Get existing markers
-        displayMtMarkers(mtMap.markers, gMap);
+        displayMtMarkers(mtMap, gMap);
         console.log("Init MT Markers: " + mtMap.markers.length);
         // Pan to the last position
         panToMapCenter(mtMap.center, mtMap.zoom, gMap);
@@ -45,7 +45,7 @@ function getExistingMtMarkers() {
     if (resposeJson[0]) {
       mtMap = resposeJson[0];
       if (mtMap.markers) {
-        displayMtMarkers(mtMap.markers, gMap);
+        displayMtMarkers(mtMap, gMap);
         //console.log("Fetched MT Markers: " + mtMap.markers.length);
       }
     }

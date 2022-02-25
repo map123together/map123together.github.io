@@ -222,8 +222,23 @@ function getDirections(directionsService, directionsRenderer, markers) {
     }
 }
 
-function displayMtMarkers(mtMarkers, gMap) {
-    mtMarkers.forEach(mtMarker => {
+function displayMtMarkers(mtMap, gMap) {
+    
+    let mtMarkers = mtMap.markers;
+    let mtMarkersOrder = mtMap['markers-order'];
+    
+    // Reorder
+    let orderedMtMarkers = [];
+    mtMarkersOrder.forEach(orderedLabel=> {
+        mtMarkers.forEach(mtMarker => {
+            if(mtMarker.label == orderedLabel){
+                orderedMtMarkers.push(mtMarker);
+            }
+        });
+    });
+
+    // Display
+    orderedMtMarkers.forEach(mtMarker => {
         let isExMarker = false;
         markers.forEach(marker => {
             if (mtMarker.position.lat == marker.getPosition().lat()
@@ -253,6 +268,7 @@ function displayMtMarkers(mtMarkers, gMap) {
                 },
                 map: gMap,
             });
+
             markers.push(newMarker);
 
             // Display Marker List
@@ -266,7 +282,6 @@ function displayMtMarkers(mtMarkers, gMap) {
     });
 
     slist(document.getElementById("markerList"));
-    getOrderedMarkerList();
 }
 
 function addMarkerToMarkerList(labelTxt, updateMtDB = true) {

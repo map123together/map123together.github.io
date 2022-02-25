@@ -1,7 +1,8 @@
 function slist(target) {
     // (A) SET CSS + GET ALL LIST ITEMS
     target.classList.add("slist");
-    let items = target.getElementsByTagName("li"), current = null;
+    let items = target.getElementsByTagName("li")
+    let current = null;
 
     // (B) MAKE ITEMS DRAGGABLE + SORTABLE
     for (let i of items) {
@@ -65,6 +66,7 @@ function slist(target) {
 }
 
 function getOrderedMarkerList() {
+    
     let orderedMarkerList = document.getElementsByClassName('markerListItem');
     let orderedMarkers = [];
     for (let mli of orderedMarkerList) {
