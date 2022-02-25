@@ -99,15 +99,15 @@
             aria-label="Basic radio toggle button group">
 
             <input type="radio" class="btn-check" name="btnradio" id="btnradio0" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="btnradio0"><i class="bi bi-hand-index"></i></label>
+            <label class="btn btn-outline-primary" for="btnradio0"><i class="bi bi-hand-index-thumb"></i></label>
 
             <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
             <label class="btn btn-outline-primary" for="btnradio1"><i class="bi bi-pin"></i></label>
             |
-            <input type="button" class="btn-check" id="btnradio5" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio5"><i class="bi bi-grid"></i></label>
-            <input type="button" class="btn-check" id="btnradio5" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio5"><i class="bi bi-share"></i></label>
+            <input type="checkbox" class="btn-check" id="chatonoffBtn" autocomplete="off">
+            <label class="btn btn-outline-primary" for="chatonoffBtn"><i class="bi bi-chat"></i></label>
+            <input type="button" class="btn-check" id="shareBtn" autocomplete="off">
+            <label class="btn btn-outline-primary" for="shareBtn"><i class="bi bi-share"></i></label>
         </div>
     </div>
     <div id="chatBox" style="
@@ -123,14 +123,16 @@
             width:  auto;">
         <div class="row">
             <div class="col-auto">
-                <ul style="text-align: left; margin-top: 10px;">
-                    <li>First message</li>
-                    <li>second message</li>
-                    <li>3rd message</li>
-                </ul>
-                <div class="input-group mb-5" style="margin-bottom: 0px !important;">
-                    <input type="text" class="form-control" placeholder="Chat" aria-label="Chat" aria-describedby="Chat">
-                    <button class="btn btn-primary" type="button" id="chatEnterBtn">Enter</button>
+                <table class="table" style="text-align: left; margin-bottom: 0px;">
+                    <tr><td>Message</td></tr>
+                    <tr><td>Message</td></tr>
+                    <tr><td>Message</td></tr>
+                    <tr><td>Message</td></tr>
+                    <tr><td>Message</td></tr>
+                </table>
+                <div class="input-group mb-7" style="margin-bottom: 0px !important;">
+                    <input type="text" class="form-control input-sm" placeholder="Chat" aria-label="Chat" aria-describedby="Chat">
+                    <button class="btn btn-sm btn-primary" type="button" id="chatEnterBtn"><i class="bi bi-send"></i></button>
                   </div>
             </div>
         </div>
