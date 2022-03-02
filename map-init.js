@@ -93,6 +93,12 @@ function initMap() { // Creates a map object with a click listener
   // Chat Box -----------------------------------------------
   const chatBox = document.getElementById("chatBox");
   gMap.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(chatBox);
+
+  // UI Event
+  /*
+  gMap.addListener("idle", () => {
+    console.log("IDLE");
+  });*/
 }
 
 /** ============================ Sub-Functions ========================================== */
