@@ -82,6 +82,8 @@ function initMap() { // Creates a map object with a click listener
     document.getElementById("mt-user-picture").src = pictureUrl;
   }
   gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
+  const userBox2 = document.getElementById("userIconBox2");
+  gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox2);
 
   // Tool Box -------------------------------------------------------
   let toolBox = document.getElementById('toolbox');
@@ -104,6 +106,10 @@ function initMap() { // Creates a map object with a click listener
   // Chat Box -----------------------------------------------
   const chatBox = document.getElementById("chatBox");
   gMap.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(chatBox);
+
+  gMap.addListener("click", () => {
+    console.log(this);
+  });
 }
 
 /** ============================ Sub-Functions ========================================== */
