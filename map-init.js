@@ -1,6 +1,8 @@
 let gMap; // Google Map
 let markers = []; // Google Map Markers
 let drawingManager;
+let lastFetchTime = new Date().getTime();
+
 const initPosition = {
   center: {
     lat: 41.35576312110632,

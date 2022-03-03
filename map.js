@@ -26,7 +26,7 @@ function initMtMap() {
       window.location.href = 'maps.html';
     }
 
-    setInterval(getExistingMtMarkers, 5000);
+    setInterval(getExistingMtMarkers, 2000);
     setInterval(updateMtCenter, 5000);
 
   };
@@ -37,7 +37,7 @@ function initMtMap() {
 function getExistingMtMarkers() {
 
   let method = 'GET';
-  let dir = 'map/id/' + mapid;
+  let dir = 'map/id/' + mapid + '?lft=' + lastFetchTime;
 
   let parseRes = (response) => {
     let mtMap = {};
@@ -45,7 +45,10 @@ function getExistingMtMarkers() {
     if (resposeJson[0]) {
       mtMap = resposeJson[0];
       if (mtMap.markers) {
+        lastFetchTime = mtMap.last_fetch_time;
         displayMtMarkers(mtMap, gMap);
+      } else {
+        console.log("No Updates");
       }
     }
   };
