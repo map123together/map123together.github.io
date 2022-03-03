@@ -415,7 +415,6 @@ function displayMessageList(mtMessages) {
     messages.forEach(message => {
       if (mtMessage.uid == message.uid && mtMessage.content == message.content) {
         isDup = true;
-        console.log("isdup");
       }
     });
     if (!isDup) {
