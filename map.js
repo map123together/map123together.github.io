@@ -22,8 +22,8 @@ function initMtMap() {
         console.log("Init MT Markers: " + mtMap.markers.length);
         // Pan to the last position
         panToMapCenter(mtMap.center, mtMap.zoom, gMap);
-        let spanDiv = document.getElementById("chatScrollDiv");
-  spanDiv.scrollTop = spanDiv.scrollHeight - spanDiv.clientHeight;
+
+        document.title = mtMap.name;
       }
     } else {
       window.location.href = 'maps.html';
