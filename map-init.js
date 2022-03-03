@@ -1,5 +1,7 @@
+let uid;
 let gMap; // Google Map
 let markers = []; // Google Map Markers
+let messages = [];
 let drawingManager;
 let lastFetchTime = new Date().getTime();
 
@@ -7,7 +9,8 @@ const initPosition = {
   center: {
     lat: 41.35576312110632,
     lng: -101.91683651331762
-  }, zoom: 4
+  },
+  zoom: 4
 };
 const avaIndexes = [
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -25,13 +28,18 @@ function initMap() { // Creates a map object with a click listener
     },
     fullscreenControl: false,
     styles: [{
-      featureType: 'poi',
-      stylers: [{ visibility: 'off' }]  // Turn off POI.
-    },
-    {
-      featureType: 'transit.station',
-      stylers: [{ visibility: 'off' }]  // Turn off bus, train stations etc.
-    }],
+        featureType: 'poi',
+        stylers: [{
+          visibility: 'off'
+        }] // Turn off POI.
+      },
+      {
+        featureType: 'transit.station',
+        stylers: [{
+          visibility: 'off'
+        }] // Turn off bus, train stations etc.
+      }
+    ],
     disableDoubleClickZoom: true,
     streetViewControl: false,
   });
@@ -92,15 +100,10 @@ function initMap() { // Creates a map object with a click listener
   document.getElementById('getDirBtn').addEventListener('click', () => {
     getDirections(directionsService, directionsRenderer);
   });
+
   // Chat Box -----------------------------------------------
   const chatBox = document.getElementById("chatBox");
   gMap.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(chatBox);
-
-  // UI Event
-  /*
-  gMap.addListener("idle", () => {
-    console.log("IDLE");
-  });*/
 }
 
 /** ============================ Sub-Functions ========================================== */
@@ -124,11 +127,23 @@ function initToolButtonFunctions() {
   document.getElementById("chatonoffBtn").addEventListener("click", () => {
     let isChatOn = document.getElementById("chatonoffBtn").checked;
     let chatBox = document.getElementById("chatBox");
-    if(isChatOn){
+    if (isChatOn) {
       chatBox.style.display = 'block';
     } else {
       chatBox.style.display = 'none';
     }
+  });
+
+  document.getElementById("messageEnterBtn").addEventListener("click", () => {
+    let newMessageInput = document.getElementById("newMessage");
+    let newMessage = newMessageInput.value.trim();
+    newMessageInput.value = '';
+
+    let message = {
+      "uid": uid,
+      content: newMessage
+    };
+    addMtMessage(message);
   });
 
   // After Drawing ------------------------------------------
@@ -142,8 +157,14 @@ function initToolButtonFunctions() {
       newShape.label.text = getNextMarkerIndex();
 
       // Save Marker
-      let position = { lat: newShape.getPosition().lat(), lng: newShape.getPosition().lng() };
-      let mtMarker = { "position": position, "label": newShape.label.text };
+      let position = {
+        lat: newShape.getPosition().lat(),
+        lng: newShape.getPosition().lng()
+      };
+      let mtMarker = {
+        "position": position,
+        "label": newShape.label.text
+      };
       addMtMarker(mtMarker);
       markers.push(newShape);
 
@@ -230,7 +251,7 @@ function getDirections(directionsService, directionsRenderer) {
         }
       });
     });
-    
+
     let startPos = orderedMarkers[0].getPosition();
     let endPos = orderedMarkers[orderedMarkers.length - 1].getPosition();
     let waypts = [];
@@ -275,7 +296,7 @@ function displayMtMarkers(mtMap, gMap) {
 
   // Reorder Markers
   let orderedMtMarkers = [];
-  if(mtMarkersOrder){
+  if (mtMarkersOrder) {
     mtMarkersOrder.forEach(orderedLabel => {
       mtMarkers.forEach(mtMarker => {
         if (mtMarker.label == orderedLabel) {
@@ -291,8 +312,8 @@ function displayMtMarkers(mtMap, gMap) {
   orderedMtMarkers.forEach(mtMarker => {
     let isExMarker = false;
     markers.forEach(marker => {
-      if (mtMarker.position.lat == marker.getPosition().lat()
-        && mtMarker.position.lng == marker.getPosition().lng()) {
+      if (mtMarker.position.lat == marker.getPosition().lat() &&
+        mtMarker.position.lng == marker.getPosition().lng()) {
         isExMarker = true;
       }
     });
@@ -362,11 +383,11 @@ function removeMarker(oldMarker) {
   let newMarkers = [];
   markers.forEach(marker => {
     if (
-      oldMarker.getPosition().lat() == marker.getPosition().lat()
-      && oldMarker.getPosition().lng() == marker.getPosition().lng()
+      oldMarker.getPosition().lat() == marker.getPosition().lat() &&
+      oldMarker.getPosition().lng() == marker.getPosition().lng()
     ) {
 
-      marker.setMap(null);// Remove marker from map
+      marker.setMap(null); // Remove marker from map
       // Remove marker from list
       document.getElementById("markerListItem-" + oldMarker.label.text).remove();
 
@@ -383,6 +404,41 @@ function removeMarker(oldMarker) {
   });
   updateMtLabelOrder();
   markers = newMarkers;
+}
+
+function displayMessageList(mtMessages) {
+  let messageList = document.getElementById('messageList');
+
+  // Remove duplicate
+  mtMessages.forEach(mtMessage => {
+    let isDup = false;
+    messages.forEach(message => {
+      if (mtMessage.uid == message.uid && mtMessage.content == message.content) {
+        isDup = true;
+        console.log("isdup");
+      }
+    });
+    if (!isDup) {
+      messages.push(mtMessage);
+
+      // Display
+      let listItem = '';
+      if (uid == mtMessage.uid) {
+        listItem += `
+            <tr>
+              <td style="text-align: right;">${mtMessage.content}</td>
+            </tr>
+        `;
+      } else {
+        listItem += `
+            <tr>
+              <td>${mtMessage.content}</td>
+            </tr>
+        `;
+      }
+      messageList.insertAdjacentHTML('beforeend', listItem);
+    }
+  });
 }
 
 function panToMapCenter(center, zoom, gMap) { // Pan to center

@@ -18,9 +18,12 @@ function initMtMap() {
       if (mtMap) {
         // Get existing markers
         displayMtMarkers(mtMap, gMap);
+        displayMessageList(mtMap.messages);
         console.log("Init MT Markers: " + mtMap.markers.length);
         // Pan to the last position
         panToMapCenter(mtMap.center, mtMap.zoom, gMap);
+        let spanDiv = document.getElementById("chatScrollDiv");
+  spanDiv.scrollTop = spanDiv.scrollHeight - spanDiv.clientHeight;
       }
     } else {
       window.location.href = 'maps.html';
@@ -47,8 +50,7 @@ function getExistingMtMarkers() {
       if (mtMap.markers) {
         lastFetchTime = mtMap.last_fetch_time;
         displayMtMarkers(mtMap, gMap);
-      } else {
-        console.log("No Updates");
+        displayMessageList(mtMap.messages);
       }
     }
   };
@@ -65,12 +67,25 @@ function addMtMarker(marker) {
     isEditing = false;
     let resposeJson = JSON.parse(response);
     if (resposeJson) {
-      // TODO: Get Current Markers
-      //console.log(resposeJson);
     }
   };
   isEditing = true;
   sendMtRequest(method, dir, marker, parseRes);
+}
+
+function addMtMessage(message) {
+
+  let method = 'POST';
+  let dir = 'map/id/' + mapid + '/add-message';
+
+  let parseRes = (response) => {
+    isEditing = false;
+    let resposeJson = JSON.parse(response);
+    if (resposeJson) {
+    }
+  };
+  isEditing = true;
+  sendMtRequest(method, dir, message, parseRes);
 }
 
 function removeMtMarker(markerPos) {
@@ -82,8 +97,6 @@ function removeMtMarker(markerPos) {
     isEditing = false;
     let resposeJson = JSON.parse(response);
     if (resposeJson) {
-      // TODO: Get Current Markers
-      //console.log(resposeJson);
     }
   };
   isEditing = true;
@@ -148,6 +161,7 @@ function verifyLogin() {
       }
 
       if (resposeJson.uid) {
+        uid = resposeJson.uid;
         clearTimeout(loginTimeout);
       }
     }

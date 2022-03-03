@@ -14,6 +14,17 @@
     <link rel="stylesheet" href="map.css">
 
     <title>Map Together - My Maps</title>
+
+    <style>
+        .pane {
+            display: flex;
+            /*overflow-y: scroll;*/
+            overflow: auto;
+            max-height:200px;
+            width: 100%;
+            flex-direction: column-reverse;
+        }
+    </style>
 </head>
 
 <body>
@@ -23,7 +34,7 @@
             border: 0px solid #ffffff;
             border-radius: 5px;
             box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.9);
             margin-top: 10px;
             margin-left: 10px;
             margin-bottom: 10px;
@@ -43,7 +54,7 @@
             border: 0px solid #ffffff;
             border-radius: 5px;
             box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.9);
             margin-top: 0px;
             margin-left: 10px;
             margin-bottom: 10px;
@@ -88,7 +99,7 @@
             border: 0px solid #ffffff;
             border-radius: 5px;
             box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.9);
             margin-top: 10px;
             margin-left: 10px;
             margin-right: 10px;
@@ -114,7 +125,7 @@
             border: 0px solid #ffffff;
             border-radius: 5px;
             box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-            background-color: rgba(255, 255, 255, 0.8);   
+            background-color: rgba(255, 255, 255, 0.9);   
             margin-top: 0px;
             margin-right: -330px;
             margin-bottom: 25px;
@@ -123,16 +134,15 @@
             width:  auto;">
         <div class="row">
             <div class="col-auto">
-                <table class="table" style="text-align: left; margin-bottom: 0px;">
-                    <tr><td>Message</td></tr>
-                    <tr><td>Message</td></tr>
-                    <tr><td>Message</td></tr>
-                    <tr><td>Message</td></tr>
-                    <tr><td>Message</td></tr>
-                </table>
+                <div id="chatScrollDiv" class="pane">
+                    <table id="chatScrollTable" class="table" style="text-align: left; margin-bottom: -1px;">
+                        <tbody id="messageList">
+                        </tbody>
+                    </table>
+                </div>
                 <div class="input-group mb-7" style="margin-bottom: 0px !important;">
-                    <input type="text" class="form-control input-sm" placeholder="Chat" aria-label="Chat" aria-describedby="Chat">
-                    <button class="btn btn-sm btn-primary" type="button" id="chatEnterBtn"><i class="bi bi-send"></i></button>
+                    <input id="newMessage" type="text" class="form-control input-sm" placeholder="New Message" aria-label="Chat" aria-describedby="Chat">
+                    <button id="messageEnterBtn" class="btn btn-sm btn-primary" type="button"><i class="bi bi-send"></i></button>
                   </div>
             </div>
         </div>
