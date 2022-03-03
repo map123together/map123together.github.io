@@ -105,18 +105,29 @@ function initMap() { // Creates a map object with a click listener
 
 /** ============================ Sub-Functions ========================================== */
 function initToolButtonFunctions() {
-  // Add Hand Button Function ------------------------------------------
+  // Hand Button Function ------------------------------------------
   document.getElementById("btnradio0").addEventListener("click", () => {
     drawingManager.setDrawingMode(null);
   });
 
-  // Add Marker Button Function ------------------------------------------
+  // Marker Button Function ------------------------------------------
   document.getElementById("btnradio1").addEventListener("click", () => {
     if (markers.length <= 10) {
       drawingManager.setDrawingMode(google.maps.drawing.OverlayType.MARKER);
     } else {
       drawingManager.setDrawingMode(null);
       document.getElementById("btnradio0").checked = true;
+    }
+  });
+
+  // Chat Button Function ------------------------------------------
+  document.getElementById("chatonoffBtn").addEventListener("click", () => {
+    let isChatOn = document.getElementById("chatonoffBtn").checked;
+    let chatBox = document.getElementById("chatBox");
+    if(isChatOn){
+      chatBox.style.display = 'block';
+    } else {
+      chatBox.style.display = 'none';
     }
   });
 
