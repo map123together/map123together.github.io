@@ -275,15 +275,26 @@ function getDirections(directionsService, directionsRenderer) {
 
         let legs = response.routes[0].legs;
         let directionLegSpans = document.getElementsByClassName('directionLegSpan');
-        //console.log(directionLegSpans);
+
         for (let i = 0; i < directionLegSpans.length; i++) {
           directionLegSpans[i].innerHTML = '';
           directionLegSpans[i].style.display = 'none';
         }
+        let totalDistance = 0;
+        let totalDuration = 0;
         for (let i = 0; i < directionLegSpans.length - 1; i++) {
           directionLegSpans[i].style.display = 'block';
           directionLegSpans[i].innerHTML = 'Distance: ' + legs[i].distance.text + ' (' + legs[i].duration.text + ') <i class="bi bi-arrow-down"></i>';
+
+          totalDistance += legs[i].distance.value;
+          totalDuration += legs[i].duration.value;
         };
+
+        totalDistance = Math.round(parseInt(totalDistance) / 1585.88 * 10) / 10;
+        totalDuration = Math.floor(parseInt(totalDuration) / 60);
+
+        directionLegSpans[directionLegSpans.length - 1].style.display = 'block';
+        directionLegSpans[directionLegSpans.length - 1].innerHTML = '<strong>Total Distance: ' + totalDistance + ' mi</strong> (' + totalDuration + ' mins)';
       })
       .catch((e) => console.log("Directions Request Failed"));
   }
