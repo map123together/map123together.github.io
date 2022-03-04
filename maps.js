@@ -23,11 +23,11 @@ function verifyLogin() {
       window.location.href = 'index.html';
     } else {
       if (resposeJson.picture) {
-        document.getElementById("mt-user-picture").src = resposeJson.picture;
-        guid = resposeJson.uid;
+        document.getElementById("mt-user-picture").src = resposeJson.picture;  
       }
 
       if (resposeJson.uid) {
+        guid = resposeJson.uid;
         getMyMaps(resposeJson.uid);
         clearTimeout(loginTimeout);
       }
