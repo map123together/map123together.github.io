@@ -1,4 +1,4 @@
-const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
+const baseUrl = 'https://1and2.xyz/'; // MT API Base URL
 const mapid = getAllUrlParams().mapid; // Current Map ID
 
 verifyLogin(); // TODO
@@ -19,6 +19,7 @@ function initMtMap() {
         // Get existing markers
         displayMtMarkers(mtMap, gMap);
         displayMessageList(mtMap.messages);
+        displaySharedUserPicture(mtMap.sharedWith);
         console.log("Init MT Markers: " + mtMap.markers.length);
         // Pan to the last position
         panToMapCenter(mtMap.center, mtMap.zoom, gMap);
@@ -51,6 +52,7 @@ function getExistingMtMarkers() {
         lastFetchTime = mtMap.last_fetch_time;
         displayMtMarkers(mtMap, gMap);
         displayMessageList(mtMap.messages);
+        displaySharedUserPicture(mtMap.sharedWith);
       }
     }
   };
@@ -66,8 +68,7 @@ function addMtMarker(marker) {
   let parseRes = (response) => {
     isEditing = false;
     let resposeJson = JSON.parse(response);
-    if (resposeJson) {
-    }
+    if (resposeJson) {}
   };
   isEditing = true;
   sendMtRequest(method, dir, marker, parseRes);
@@ -81,8 +82,7 @@ function addMtMessage(message) {
   let parseRes = (response) => {
     isEditing = false;
     let resposeJson = JSON.parse(response);
-    if (resposeJson) {
-    }
+    if (resposeJson) {}
   };
   isEditing = true;
   sendMtRequest(method, dir, message, parseRes);
@@ -96,8 +96,7 @@ function removeMtMarker(markerPos) {
   let parseRes = (response) => {
     isEditing = false;
     let resposeJson = JSON.parse(response);
-    if (resposeJson) {
-    }
+    if (resposeJson) {}
   };
   isEditing = true;
   sendMtRequest(method, dir, markerPos, parseRes);
@@ -128,7 +127,10 @@ function updateMtCenter() {
   let dir = 'map/id/' + mapid + '/update-center';
 
   let position = {};
-  position.center = { lat: gMap.center.lat(), lng: gMap.center.lng() };
+  position.center = {
+    lat: gMap.center.lat(),
+    lng: gMap.center.lng()
+  };
   position.zoom = gMap.zoom;
 
   let parseRes = (response) => {
@@ -142,12 +144,36 @@ function updateMtCenter() {
   sendMtRequest(method, dir, position, parseRes);
 }
 
+function getUserPicture2(uid) {
+  document.getElementById("mt-user-picture-2").src = 'https://lh3.googleusercontent.com/a-/AOh14GjTkrYDEGQ1UENis_7yXolyA-14Tm18HOvBrkI1Bw=s96-c';
+  // TODO
+  /*
+  let method = 'GET';
+  let dir = 'user/id/' + uid;
+ 
+  let parseRes = (response) => {
+    let resposeJson = JSON.parse(response);
+      if (resposeJson.picture) {
+        document.getElementById("mt-user-picture-2").src = resposeJson.picture;
+        document.getElementById("userIconBox2").style.display = 'block';
+      } else {
+        document.getElementById("mt-user-picture-2").src = '';
+        document.getElementById("userIconBox2").style.display = 'none';
+      }
+  };
+
+  sendMtRequest(method, dir, reqBody, parseRes);
+  */
+}
+
 function verifyLogin() {
 
   let method = 'POST';
   let dir = 'login';
   let gUserCredential = readCookie('gUserCredential');
-  let reqBody = { "gUserCredential": gUserCredential };
+  let reqBody = {
+    "gUserCredential": gUserCredential
+  };
 
   let parseRes = (response) => {
     let resposeJson = JSON.parse(response);

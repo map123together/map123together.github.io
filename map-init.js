@@ -1,5 +1,6 @@
 let uid;
 let gMap; // Google Map
+let sharedWith = [];
 let markers = []; // Google Map Markers
 let messages = [];
 let drawingManager;
@@ -81,9 +82,13 @@ function initMap() { // Creates a map object with a click listener
   if (pictureUrl) {
     document.getElementById("mt-user-picture").src = pictureUrl;
   }
+
   gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
   const userBox2 = document.getElementById("userIconBox2");
   gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox2);
+
+
+  getUserPicture2();
 
   // Tool Box -------------------------------------------------------
   let toolBox = document.getElementById('toolbox');
@@ -107,9 +112,6 @@ function initMap() { // Creates a map object with a click listener
   const chatBox = document.getElementById("chatBox");
   gMap.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(chatBox);
 
-  gMap.addListener("click", () => {
-    console.log(this);
-  });
 }
 
 /** ============================ Sub-Functions ========================================== */
@@ -427,34 +429,48 @@ function displayMessageList(mtMessages) {
   let messageList = document.getElementById('messageList');
 
   // Remove duplicate
-  mtMessages.forEach(mtMessage => {
-    let isDup = false;
-    messages.forEach(message => {
-      if (mtMessage.uid == message.uid && mtMessage.content == message.content) {
-        isDup = true;
-      }
-    });
-    if (!isDup) {
-      messages.push(mtMessage);
+  if (mtMessages) {
+    mtMessages.forEach(mtMessage => {
+      let isDup = false;
+      messages.forEach(message => {
+        if (mtMessage.uid == message.uid && mtMessage.content == message.content) {
+          isDup = true;
+        }
+      });
+      if (!isDup) {
+        messages.push(mtMessage);
 
-      // Display
-      let listItem = '';
-      if (uid == mtMessage.uid) {
-        listItem += `
+        // Display
+        let listItem = '';
+        if (uid == mtMessage.uid) {
+          listItem += `
             <tr>
               <td style="text-align: right;">${mtMessage.content}</td>
             </tr>
         `;
-      } else {
-        listItem += `
+        } else {
+          listItem += `
             <tr>
               <td>${mtMessage.content}</td>
             </tr>
         `;
+        }
+        messageList.insertAdjacentHTML('beforeend', listItem);
       }
-      messageList.insertAdjacentHTML('beforeend', listItem);
+    });
+  }
+}
+
+function displaySharedUserPicture(mtSharedWith) {
+  for (let i = 0; i < mtSharedWith.length; i++) {
+    if (mtSharedWith[i] != uid) {
+      getUserPicture2(mtSharedWith[i]);
+      document.getElementById("userIconBox2").style.display = 'block';
     }
-  });
+  }
+  if (mtSharedWith.length < 2) {
+    document.getElementById("userIconBox2").style.display = 'none';
+  }
 }
 
 function panToMapCenter(center, zoom, gMap) { // Pan to center
