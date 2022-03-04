@@ -283,17 +283,21 @@ function getDirections(directionsService, directionsRenderer) {
 
         let legs = response.routes[0].legs;
         let directionLegSpans = document.getElementsByClassName('directionLegSpan');
+        let markerDescs = document.getElementsByClassName('markerListItem');
 
         for (let i = 0; i < directionLegSpans.length; i++) {
           directionLegSpans[i].innerHTML = '';
           directionLegSpans[i].style.display = 'none';
+          markerDescs[i].value = '';
         }
         let totalDistance = 0;
         let totalDuration = 0;
-        for (let i = 0; i < directionLegSpans.length - 1; i++) {
+        let i;
+        for (i = 0; i < directionLegSpans.length - 1; i++) {
           directionLegSpans[i].style.display = 'block';
           directionLegSpans[i].innerHTML = 'Distance: ' + legs[i].distance.text + ' (' + legs[i].duration.text + ') <i class="bi bi-arrow-down"></i>';
-
+          markerDescs[i].value = legs[i].start_address;
+          
           totalDistance += legs[i].distance.value;
           totalDuration += legs[i].duration.value;
         };
@@ -303,8 +307,9 @@ function getDirections(directionsService, directionsRenderer) {
 
         directionLegSpans[directionLegSpans.length - 1].style.display = 'block';
         directionLegSpans[directionLegSpans.length - 1].innerHTML = '<strong>Total Distance: ' + totalDistance + ' mi</strong> (' + totalDuration + ' mins)';
+        markerDescs[markerDescs.length - 1].value = legs[i-1].end_address;
       })
-      .catch((e) => console.log("Directions Request Failed"));
+      .catch((e) => console.log("Directions Service Failed"));
   }
 }
 
