@@ -1,4 +1,4 @@
-const baseUrl = 'https://1and2.xyz/';  // MT API Base URL
+const baseUrl = 'https://1and2.xyz/'; // MT API Base URL
 let guid = '';
 
 verifyLogin();
@@ -14,7 +14,9 @@ function verifyLogin() {
   let method = 'POST';
   let dir = 'login';
   let gUserCredential = readCookie('gUserCredential');
-  let reqBody = { "gUserCredential": gUserCredential };
+  let reqBody = {
+    "gUserCredential": gUserCredential
+  };
 
   let parseRes = (response) => {
     let resposeJson = JSON.parse(response);
@@ -23,12 +25,12 @@ function verifyLogin() {
       window.location.href = 'index.html';
     } else {
       if (resposeJson.picture) {
-        document.getElementById("mt-user-picture").src = resposeJson.picture;  
+        document.getElementById("mt-user-picture").src = resposeJson.picture;
       }
 
       if (resposeJson.uid) {
         guid = resposeJson.uid;
-        getMyMaps(resposeJson.uid);
+        initMyMaps(resposeJson.uid);
         clearTimeout(loginTimeout);
       }
     }
@@ -42,24 +44,26 @@ function verifyLogin() {
   sendMtRequest(method, dir, reqBody, parseRes);
 }
 
-function getMyMaps(uid) {
+function initMyMaps(uid) {
 
   let method = 'POST';
   let dir = 'map/maps';
-  let reqBody = { "uid": uid };
+  let reqBody = {
+    "uid": uid
+  };
 
   let parseRes = (response) => {
     let myMaps = [];
     let resposeJson = JSON.parse(response);
     myMaps = resposeJson;
-    if(myMaps.length >= 10){
+    if (myMaps.length >= 10) {
       document.getElementById("newMapCard").style.display = "none";
     }
     myMaps.forEach(mtMap => {
       document.getElementById('mapCardsRow').insertAdjacentHTML('beforeend', generateMapCard(mtMap));
     });
 
-    //Rename-Btn
+    // Rename-Btn
     let renameBtns = document.getElementsByClassName('rename-btn');
     for (let i = 0; i < renameBtns.length; i++) {
       renameBtns[i].addEventListener("click", function () {
@@ -67,7 +71,15 @@ function getMyMaps(uid) {
       });
     }
 
-    //Delete-Btn
+    // Sharing-Btn
+    let sharingBtns = document.getElementsByClassName('sharing-btn');
+    for (let i = 0; i < sharingBtns.length; i++) {
+      sharingBtns[i].addEventListener("click", function () {
+        defineSharingBtn(this);
+      });
+    }
+
+    // Delete-Btn
     let deleteBtns = document.getElementsByClassName('delete-btn');
     for (let i = 0; i < deleteBtns.length; i++) {
       deleteBtns[i].addEventListener("click", function () {
@@ -109,7 +121,9 @@ function deleteBtnFunction() {
     let mapid = this.dataset.mapid;
     let method = 'POST';
     let dir = 'map/id/' + mapid + '/delete-map';
-    let reqBody = { "uid": guid };
+    let reqBody = {
+      "uid": guid
+    };
 
     let parseRes = (response) => {
       let resposeJson = JSON.parse(response);
@@ -163,12 +177,22 @@ function renameSaveBtnFunction() {
   });
 }
 
+function defineSharingBtn(button) {
+  let mapid = button.dataset.mapid;
+  var sharingModal = new bootstrap.Modal(document.getElementById('sharingModal'), {});
+  sharingModal.show();
+  document.getElementById("sharingMapBtn").dataset.mapid = mapid;
+
+}
+
 function newMapBtnFunction() {
   document.getElementById("newMapBtn").addEventListener("click", function () {
 
     let method = 'POST';
     let dir = 'map/new-map';
-    let reqBody = { "uid": guid };
+    let reqBody = {
+      "uid": guid
+    };
 
     let parseRes = (response) => {
       let resposeJson = JSON.parse(response);
@@ -207,7 +231,7 @@ function generateMapCard(mtMap) {
                         <i class="bi bi-input-cursor-text"></i> Rename
                           </button>
                       </li>
-                      <li><button class="dropdown-item share-btn" data-mapid="${mtMap.mapId}">
+                      <li><button class="dropdown-item sharing-btn" data-mapid="${mtMap.mapId}">
                             <i class="bi bi-share"></i> Share
                           </button>
                       </li>
@@ -222,6 +246,6 @@ function generateMapCard(mtMap) {
             </div>
         </div>
     </div>
-  `;//<div class="col-xs-6 col-sm-4 col-md-4 col-lg-auto">
+  `; //<div class="col-xs-6 col-sm-4 col-md-4 col-lg-auto">
   return htmlStr;
 }
