@@ -82,12 +82,10 @@ function initMap() { // Creates a map object with a click listener
   if (pictureUrl) {
     document.getElementById("mt-user-picture").src = pictureUrl;
   }
-
   gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
+  
   const userBox2 = document.getElementById("userIconBox2");
   gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox2);
-
-
   getUserPicture2();
 
   // Tool Box -------------------------------------------------------
@@ -146,12 +144,19 @@ function initToolButtonFunctions() {
     let newMessageInput = document.getElementById("newMessage");
     let newMessage = newMessageInput.value.trim();
     newMessageInput.value = '';
+    newMessageInput.placeholder = 'Sending...';
+    setTimeout(() =>{
+      newMessageInput.value = '';
+      newMessageInput.placeholder = 'New Message';
+    }, 1000);
 
     let message = {
       "uid": uid,
       content: newMessage
     };
+    
     addMtMessage(message);
+
   });
 
   // After Drawing ------------------------------------------
@@ -185,7 +190,6 @@ function initToolButtonFunctions() {
       addMarkerToMarkerList(newShape.label.text, true);
     }
 
-    // Remove Marker ---
     google.maps.event.addListener(newShape, 'dblclick', () => {
       if (event.type == google.maps.drawing.OverlayType.MARKER) {
         removeMarker(newShape);

@@ -82,7 +82,9 @@ function addMtMessage(message) {
   let parseRes = (response) => {
     isEditing = false;
     let resposeJson = JSON.parse(response);
-    if (resposeJson) {}
+    if (resposeJson) {
+      // Nothing
+    }
   };
   isEditing = true;
   sendMtRequest(method, dir, message, parseRes);
