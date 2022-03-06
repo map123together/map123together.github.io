@@ -127,11 +127,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control" id="shareWith" placeholder="Google Account" />
+                    <input type="text" class="form-control" id="sharableLink" placeholder="Link to share"
+                        value="https://map123together.github.io/maps.html?mapid=12345&token=67890" disabled />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="sharingMapBtn" data-mapid="">Share</Button>
+                    <button type="button" class="btn btn-danger" id="stopSharingBtn" data-mapid="">Stop sharing</button>
+                    <button type="button" class="btn btn-primary" id="sharingBtn" data-mapid="">Get a sharable link</Button>
                 </div>
             </div>
         </div>
