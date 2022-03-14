@@ -41,6 +41,7 @@ function initMtMap() {
 function getExistingMtMarkers() {
 
   let method = 'GET';
+  lastFetchTime = new Date().getTime();
   let dir = 'map/id/' + mapid + '?lft=' + lastFetchTime;
 
   let parseRes = (response) => {
