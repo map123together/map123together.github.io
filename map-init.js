@@ -4,7 +4,7 @@ let sharedWith = [];
 let markers = []; // Google Map Markers
 let messages = [];
 let drawingManager;
-let lastFetchTime = new Date().getTime();
+let fetchTime = new Date().getTime();
 
 const initPosition = {
   center: {
@@ -16,7 +16,8 @@ const initPosition = {
 const avaIndexes = [
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
   'k', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-  'U', 'V', 'W', 'X', 'Y', 'Z'
+  'U', 'V', 'W', 'X', 'Y', 'Z',
+  'AA', 'AB', 'AC', 'AD', 'AE', 'AF', 'AG', 'AH', 'AI'
 ];
 let usedIndexes = [];
 
@@ -29,17 +30,17 @@ function initMap() { // Creates a map object with a click listener
     },
     fullscreenControl: false,
     styles: [{
-        featureType: 'poi',
-        stylers: [{
-          visibility: 'off'
-        }] // Turn off POI.
-      },
-      {
-        featureType: 'transit.station',
-        stylers: [{
-          visibility: 'off'
-        }] // Turn off bus, train stations etc.
-      }
+      featureType: 'poi',
+      stylers: [{
+        visibility: 'off'
+      }] // Turn off POI.
+    },
+    {
+      featureType: 'transit.station',
+      stylers: [{
+        visibility: 'off'
+      }] // Turn off bus, train stations etc.
+    }
     ],
     disableDoubleClickZoom: true,
     streetViewControl: false,
@@ -83,7 +84,7 @@ function initMap() { // Creates a map object with a click listener
     document.getElementById("mt-user-picture").src = pictureUrl;
   }
   gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox);
-  
+
   const userBox2 = document.getElementById("userIconBox2");
   gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox2);
   getUserPicture2();
@@ -145,7 +146,7 @@ function initToolButtonFunctions() {
     let newMessage = newMessageInput.value.trim();
     newMessageInput.value = '';
     newMessageInput.placeholder = 'Sending...';
-    setTimeout(() =>{
+    setTimeout(() => {
       newMessageInput.value = '';
       newMessageInput.placeholder = 'New Message';
     }, 1000);
@@ -154,7 +155,7 @@ function initToolButtonFunctions() {
       "uid": uid,
       content: newMessage
     };
-    
+
     addMtMessage(message);
 
   });
@@ -301,7 +302,7 @@ function getDirections(directionsService, directionsRenderer) {
           directionLegSpans[i].style.display = 'block';
           directionLegSpans[i].innerHTML = 'Distance: ' + legs[i].distance.text + ' (' + legs[i].duration.text + ') <i class="bi bi-arrow-down"></i>';
           markerDescs[i].value = legs[i].start_address;
-          
+
           totalDistance += legs[i].distance.value;
           totalDuration += legs[i].duration.value;
         };
@@ -311,77 +312,96 @@ function getDirections(directionsService, directionsRenderer) {
 
         directionLegSpans[directionLegSpans.length - 1].style.display = 'block';
         directionLegSpans[directionLegSpans.length - 1].innerHTML = '<strong>Total Distance: ' + totalDistance + ' mi</strong> (' + totalDuration + ' mins)';
-        markerDescs[markerDescs.length - 1].value = legs[i-1].end_address;
+        markerDescs[markerDescs.length - 1].value = legs[i - 1].end_address;
       })
       .catch((e) => console.log("Directions Service Failed"));
   }
 }
 
 function displayMtMarkers(mtMap, gMap) {
-
+  let lastFetchTime = mtMap.last_fetch_time;
   let mtMarkers = mtMap.markers;
   let mtMarkersOrder = mtMap['markers-order'];
+console.log(lastFetchTime);
+console.log(fetchTime);
+console.log(' ');
+  if (lastFetchTime >= fetchTime) {
 
-  // Reorder Markers
-  let orderedMtMarkers = [];
-  if (mtMarkersOrder) {
-    mtMarkersOrder.forEach(orderedLabel => {
-      mtMarkers.forEach(mtMarker => {
-        if (mtMarker.label == orderedLabel) {
-          orderedMtMarkers.push(mtMarker);
+    // Reorder Markers
+    let orderedMtMarkers = [];
+    if (mtMarkersOrder) {
+      mtMarkersOrder.forEach(orderedLabel => {
+        mtMarkers.forEach(mtMarker => {
+          if (mtMarker.label == orderedLabel) {
+            orderedMtMarkers.push(mtMarker);
+          }
+        });
+      });
+    } else {
+      orderedMtMarkers = mtMarkers;
+    }
+
+    // Remove older markers
+    markers.forEach(marker => {
+      let toberemoved = true;
+      orderedMtMarkers.forEach(mtMarker => {
+        if (mtMarker.position.lat == marker.getPosition().lat() &&
+          mtMarker.position.lng == marker.getPosition().lng()) {
+          toberemoved = false;
         }
       });
-    });
-  } else {
-    orderedMtMarkers = mtMarkers;
-  }
-
-  // Display
-  orderedMtMarkers.forEach(mtMarker => {
-    let isExMarker = false;
-    markers.forEach(marker => {
-      if (mtMarker.position.lat == marker.getPosition().lat() &&
-        mtMarker.position.lng == marker.getPosition().lng()) {
-        isExMarker = true;
+      if (toberemoved) {
+        removeMarker(marker);
       }
     });
 
-    if (!isExMarker) {
-      let labelTxt = '';
-      if (mtMarker.label) {
-        labelTxt = mtMarker.label;
-        usedIndexes.push(labelTxt);
-      } else {
-        labelTxt = getNextMarkerIndex();
-      }
-      let labelDesc = '';
-      if (mtMarker.desc) {
-        labelDesc = mtMarker.desc;
-      }
-
-      let newMarker = new google.maps.Marker({
-        position: mtMarker.position,
-        label: {
-          'text': labelTxt,
-          'color': 'white'
-        },
-        map: gMap,
+    // Display
+    orderedMtMarkers.forEach(mtMarker => {
+      let isExMarker = false;
+      markers.forEach(marker => {
+        if (mtMarker.position.lat == marker.getPosition().lat() &&
+          mtMarker.position.lng == marker.getPosition().lng()) {
+          isExMarker = true;
+        }
       });
 
-      markers.push(newMarker);
+      if (!isExMarker) {
+        let labelTxt = '';
+        if (mtMarker.label) {
+          labelTxt = mtMarker.label;
+          usedIndexes.push(labelTxt);
+        } else {
+          labelTxt = getNextMarkerIndex();
+        }
+        let labelDesc = '';
+        if (mtMarker.desc) {
+          labelDesc = mtMarker.desc;
+        }
 
-      // Display Marker List
-      addMarkerToMarkerList(labelTxt, false);
+        let newMarker = new google.maps.Marker({
+          position: mtMarker.position,
+          label: {
+            'text': labelTxt,
+            'color': 'white'
+          },
+          map: gMap,
+        });
 
-      // Remove Marker
-      newMarker.addListener("dblclick", function (e) {
-        removeMarker(this);
-      })
-    }
-  });
+        markers.push(newMarker);
 
-  slist(document.getElementById("markerList"));
-  getOrderedMarkerList();
+        // Display Marker List
+        addMarkerToMarkerList(labelTxt, false);
+
+        // Remove Marker
+        newMarker.addListener("dblclick", function (e) {
+          removeMarker(this);
+        })
+      }
+    });
+
+    slist(document.getElementById("markerList"));
+    getOrderedMarkerList();
+  }
 }
 
 function addMarkerToMarkerList(labelTxt, updateMtDB = true) {
