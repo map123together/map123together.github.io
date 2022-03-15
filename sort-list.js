@@ -61,6 +61,12 @@ function slist(target) {
         }
       }
 
+      let directionLegSpans = document.getElementsByClassName('directionLegSpan');
+      for (let i = 0; i < directionLegSpans.length; i++) {
+        directionLegSpans[i].innerHTML = '';
+        directionLegSpans[i].style.display = 'none';
+      }
+
       // Update DB
       updateMtLabelOrder();
     };
