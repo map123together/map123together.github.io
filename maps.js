@@ -179,9 +179,29 @@ function renameSaveBtnFunction() {
 
 function defineSharingBtn(button) {
   let mapid = button.dataset.mapid;
+  console.log(mapid);
   var sharingModal = new bootstrap.Modal(document.getElementById('sharingModal'), {});
   sharingModal.show();
-  document.getElementById("sharingMapBtn").dataset.mapid = mapid;
+
+  document.getElementById("getNewTokenBtn").dataset.mapid = mapid;
+
+  let method = 'GET';
+  fetchTime = new Date().getTime();
+  let dir = 'map/id/' + mapid + '?lft=' + fetchTime;
+
+  let parseRes = (response) => {
+    let mtMap = {};
+    let sharingToken = '';
+    let resposeJson = JSON.parse(response);
+    if (resposeJson[0]) {
+      mtMap = resposeJson[0];
+      sharingToken = mtMap.sharingToken;
+      document.getElementById("sharableLink").value = window.location.href + '?mapid=' + mapid + '&token=' + sharingToken;
+    }
+  };
+
+  sendMtRequest(method, dir, null, parseRes);
+
 
 }
 

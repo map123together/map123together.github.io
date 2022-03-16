@@ -123,16 +123,17 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Share Map</h5>
+                    <h5 class="modal-title">Copy Link to Share</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control" id="sharableLink" placeholder="Link to share"
-                        value="https://map123together.github.io/maps.html?mapid=12345&token=67890" disabled />
+                    <input type="text" class="form-control" id="sharableLink" 
+                        placeholder="Link to share"
+                        value="" disabled 
+                        style="font-size:12px;overflow:auto;"/>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" id="stopSharingBtn" data-mapid="">Stop sharing</button>
-                    <button type="button" class="btn btn-primary" id="sharingBtn" data-mapid="">Get a sharable link</Button>
+                    <button type="button" class="btn btn-secondary" id="getNewTokenBtn" data-mapid="">Revoke & Re-generate</button>
                 </div>
             </div>
         </div>
