@@ -196,7 +196,8 @@ function defineSharingBtn(button) {
     if (resposeJson[0]) {
       mtMap = resposeJson[0];
       sharingToken = mtMap.sharingToken;
-      document.getElementById("sharableLink").value = window.location.href + '?mapid=' + mapid + '&token=' + sharingToken;
+      let sharableLink = window.location.host + '/map.html?mapid=' + mapid + '&token=' + sharingToken;
+      document.getElementById("sharableLink").value = sharableLink;
     }
   };
 
