@@ -12,7 +12,7 @@ deleteBtnFunction();
 function verifyLogin() {
 
   let method = 'POST';
-  let dir = 'login';
+  let dir = 'user/login';
   let gUserCredential = readCookie('gUserCredential');
   let reqBody = {
     "gUserCredential": gUserCredential
