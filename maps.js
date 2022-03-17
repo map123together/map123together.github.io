@@ -8,6 +8,7 @@ newMapBtnFunction();
 renameSaveBtnFunction();
 deleteBtnFunction();
 revokeTokenBtnFunction();
+copyLinkBtnFunction();
 
 /** ============================= Page Functions ================================== */
 function verifyLogin() {
@@ -221,6 +222,15 @@ function revokeTokenBtnFunction() {
       }
     };
     sendMtRequest(method, dir, reqBody, parseRes);
+  });
+}
+
+function copyLinkBtnFunction() {
+  document.getElementById("copyLinkBtn").addEventListener("click", () => {
+    let copyText = document.getElementById("sharableLink");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
   });
 }
 

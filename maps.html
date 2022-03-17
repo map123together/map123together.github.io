@@ -127,10 +127,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="input-group mb-3">
                     <input type="text" class="form-control" id="sharableLink" 
                         placeholder="Link to share"
                         value="" disabled 
                         style="font-size:12px;overflow:auto;"/>
+                        <button class="btn btn-outline-secondary" type="button" id="copyLinkBtn">Copy</button>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="revokeTokenBtn" data-mapid="">Revoke & Re-generate</button>
