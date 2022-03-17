@@ -21,6 +21,20 @@ function initMtMap() {
         displayMessageList(mtMap.messages);
         displaySharedUserPicture(mtMap.sharedWith);
         console.log("Init MT Markers: " + mtMap.markers.length);
+
+
+        let hasSharedwith = mtMap.sharedWith.includes(uid);
+        if (!hasSharedwith) {
+          let urlParams = getAllUrlParams(window.location.href);
+          if (mtMap.sharingToken == urlParams.token) {
+            // Add uid to sharedWith
+            addMtSharedwith(uid);
+          } else {
+            removeMtSharedwith(uid);
+            window.location.href = "maps.html";
+          }
+        }
+
         // Pan to the last position
         panToMapCenter(mtMap.center, mtMap.zoom, gMap);
 
@@ -51,7 +65,7 @@ function getExistingMtMarkers() {
       mtMap = resposeJson[0];
       if (mtMap.markers) {
         lastFetchTime = mtMap.last_fetch_time;
-        
+
         displayMtMarkers(mtMap, gMap);
         displayMessageList(mtMap.messages);
       }
@@ -67,13 +81,46 @@ function addMtMarker(marker) {
   let dir = 'map/id/' + mapid + '/add-marker';
 
   let parseRes = (response) => {
-    isEditing = false;
+
     let resposeJson = JSON.parse(response);
-    if (resposeJson) {}
+    if (resposeJson) { }
   };
-  isEditing = true;
+
   sendMtRequest(method, dir, marker, parseRes);
 }
+
+function addMtSharedwith(uid) {
+
+  let method = 'POST';
+  let dir = 'map/id/' + mapid + '/add-sharedwith';
+
+  let parseRes = (response) => {
+
+    let resposeJson = JSON.parse(response);
+    if (resposeJson) { }
+  };
+
+  let reqBody = { "uid": uid }
+
+  sendMtRequest(method, dir, reqBody, parseRes);
+}
+
+function removeMtSharedwith(uid) {
+
+  let method = 'POST';
+  let dir = 'map/id/' + mapid + '/delete-sharedwith';
+
+  let parseRes = (response) => {
+
+    let resposeJson = JSON.parse(response);
+    if (resposeJson) { }
+  };
+
+  let reqBody = { "uid": uid }
+
+  sendMtRequest(method, dir, reqBody, parseRes);
+}
+
 
 function addMtMessage(message) {
 
@@ -81,13 +128,13 @@ function addMtMessage(message) {
   let dir = 'map/id/' + mapid + '/add-message';
 
   let parseRes = (response) => {
-    isEditing = false;
+
     let resposeJson = JSON.parse(response);
     if (resposeJson) {
       // Nothing
     }
   };
-  isEditing = true;
+
   sendMtRequest(method, dir, message, parseRes);
 }
 
@@ -97,11 +144,11 @@ function removeMtMarker(markerPos) {
   let dir = 'map/id/' + mapid + '/delete-marker';
 
   let parseRes = (response) => {
-    isEditing = false;
+
     let resposeJson = JSON.parse(response);
-    if (resposeJson) {}
+    if (resposeJson) { }
   };
-  isEditing = true;
+
   sendMtRequest(method, dir, markerPos, parseRes);
 }
 
@@ -114,13 +161,13 @@ function updateMtLabelOrder() {
   //console.log(orderedList);
 
   let parseRes = (response) => {
-    isEditing = false;
+
     let resposeJson = JSON.parse(response);
     if (resposeJson) {
       //console.log(resposeJson);
     }
   };
-  isEditing = true;
+
   sendMtRequest(method, dir, orderedList, parseRes);
 }
 
@@ -137,13 +184,13 @@ function updateMtCenter() {
   position.zoom = gMap.zoom;
 
   let parseRes = (response) => {
-    isEditing = false;
+
     let resposeJson = JSON.parse(response);
     if (resposeJson) {
       //console.log(resposeJson);
     }
   };
-  isEditing = true;
+
   sendMtRequest(method, dir, position, parseRes);
 }
 

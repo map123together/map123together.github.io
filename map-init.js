@@ -322,11 +322,8 @@ function displayMtMarkers(mtMap, gMap) {
   let lastFetchTime = mtMap.last_fetch_time;
   let mtMarkers = mtMap.markers;
   let mtMarkersOrder = mtMap['markers-order'];
-console.log(lastFetchTime);
-console.log(fetchTime);
-console.log(' ');
-  if (lastFetchTime >= fetchTime) {
 
+  if (lastFetchTime >= fetchTime) {
     // Reorder Markers
     let orderedMtMarkers = [];
     if (mtMarkersOrder) {
