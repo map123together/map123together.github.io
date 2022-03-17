@@ -7,6 +7,7 @@ verifyLogin();
 newMapBtnFunction();
 renameSaveBtnFunction();
 deleteBtnFunction();
+revokeTokenBtnFunction();
 
 /** ============================= Page Functions ================================== */
 function verifyLogin() {
@@ -183,7 +184,7 @@ function defineSharingBtn(button) {
   var sharingModal = new bootstrap.Modal(document.getElementById('sharingModal'), {});
   sharingModal.show();
 
-  document.getElementById("getNewTokenBtn").dataset.mapid = mapid;
+  document.getElementById("revokeTokenBtn").dataset.mapid = mapid;
 
   let method = 'GET';
   fetchTime = new Date().getTime();
@@ -202,8 +203,25 @@ function defineSharingBtn(button) {
   };
 
   sendMtRequest(method, dir, null, parseRes);
+}
 
+function revokeTokenBtnFunction() {
+  document.getElementById("revokeTokenBtn").addEventListener("click", function () {
+    let mapid = this.dataset.mapid;
+    let method = 'POST';
+    let dir = 'map/id/' + mapid + '/revoke-token';
+    let reqBody = {
+      "uid": guid
+    };
 
+    let parseRes = (response) => {
+      let resposeJson = JSON.parse(response);
+      if (resposeJson) {
+        window.location.reload();
+      }
+    };
+    sendMtRequest(method, dir, reqBody, parseRes);
+  });
 }
 
 function newMapBtnFunction() {
