@@ -118,7 +118,6 @@ function defineDeleteBtn(button) {
 
 function deleteBtnFunction() {
   document.getElementById("deleteMapBtn").addEventListener("click", function () {
-    console.log("Deleting Map");
 
     let mapid = this.dataset.mapid;
     let method = 'POST';
@@ -181,7 +180,6 @@ function renameSaveBtnFunction() {
 
 function defineSharingBtn(button) {
   let mapid = button.dataset.mapid;
-  console.log(mapid);
   var sharingModal = new bootstrap.Modal(document.getElementById('sharingModal'), {});
   sharingModal.show();
 
