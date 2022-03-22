@@ -4,7 +4,7 @@ let sharedWith = [];
 let markers = []; // Google Map Markers
 let messages = [];
 let drawingManager;
-let fetchTime = new Date().getTime();
+let fetchTime = 0;
 
 const initPosition = {
   center: {
@@ -323,7 +323,7 @@ function displayMtMarkers(mtMap, gMap) {
   let mtMarkers = mtMap.markers;
   let mtMarkersOrder = mtMap['markers-order'];
 
-  if (true) {//lastFetchTime >= fetchTime
+  if (lastFetchTime >= fetchTime) {
     // Reorder Markers
     let orderedMtMarkers = [];
     if (mtMarkersOrder) {
