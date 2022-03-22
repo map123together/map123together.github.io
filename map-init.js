@@ -323,7 +323,7 @@ function displayMtMarkers(mtMap, gMap) {
   let mtMarkers = mtMap.markers;
   let mtMarkersOrder = mtMap['markers-order'];
 
-  if (lastFetchTime >= fetchTime) {
+  if (true) {//lastFetchTime >= fetchTime
     // Reorder Markers
     let orderedMtMarkers = [];
     if (mtMarkersOrder) {
@@ -336,6 +336,7 @@ function displayMtMarkers(mtMap, gMap) {
       });
     } else {
       orderedMtMarkers = mtMarkers;
+      
     }
 
     // Remove older markers
