@@ -527,20 +527,22 @@ function defineExportBtn(legs) {
     let html = '';
     let totalDistance = 0;
     let totalDuration = 0;
+    html += '<ul>';
+    for (i = 0; i < this.legs.length; i++) {
 
-    for (i = 0; i < this.legs.length - 1; i++) {
-
-      html += '<br>' + this.legs[i].start_address;
-      html += '<br><br>' + this.legs[i].distance.text + ' (' + this.legs[i].duration.text + ') &darr;<br>';
+      html += '<li>' + this.legs[i].start_address;
+      html += '<br>' + this.legs[i].distance.text + ' (' + this.legs[i].duration.text + ') &darr;<br></li>';
 
       totalDistance += this.legs[i].distance.value;
       totalDuration += this.legs[i].duration.value;
     };
 
+    html += '<li>' + this.legs[i-1].end_address + '</li>';
+    html += '</ul>';
     totalDistance = Math.round(parseInt(totalDistance) / 1585.88 * 10) / 10;
     totalDuration = Math.floor(parseInt(totalDuration) / 60);
 
-    html += '<br><strong>Total: ' + totalDistance + ' mi (' + totalDuration + ' mins)</strong>';
+    html += '<br><br><strong>Total: ' + totalDistance + ' mi (' + totalDuration + ' mins)</strong>';
 
     let mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
