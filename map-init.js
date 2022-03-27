@@ -312,7 +312,10 @@ function getDirections(directionsService, directionsRenderer) {
 
         directionLegSpans[directionLegSpans.length - 1].style.display = 'block';
         directionLegSpans[directionLegSpans.length - 1].innerHTML = '<strong>Total Distance: ' + totalDistance + ' mi</strong> (' + totalDuration + ' mins)';
+        directionLegSpans[directionLegSpans.length - 1].innerHTML += '<br><button id="exportDirBtn" class="btn btn-sm btn-link">Print</button>';
         markerDescs[markerDescs.length - 1].value = legs[i - 1].end_address;
+
+        defineExportBtn(legs);
       })
       .catch((e) => console.log("Directions Service Failed"));
   }
@@ -336,7 +339,7 @@ function displayMtMarkers(mtMap, gMap) {
       });
     } else {
       orderedMtMarkers = mtMarkers;
-      
+
     }
 
     // Remove older markers
@@ -515,4 +518,45 @@ function getNextMarkerIndex() {
   }
 
   return nextIndex;
+}
+
+function defineExportBtn(legs) {
+  let expBtn = document.getElementById('exportDirBtn');
+  expBtn.legs = legs;
+  expBtn.addEventListener('click', function () {
+    let html = '';
+    let totalDistance = 0;
+    let totalDuration = 0;
+
+    for (i = 0; i < this.legs.length - 1; i++) {
+
+      html += '<br>' + this.legs[i].start_address;
+      html += '<br><br>' + this.legs[i].distance.text + ' (' + this.legs[i].duration.text + ') &darr;<br>';
+
+      totalDistance += this.legs[i].distance.value;
+      totalDuration += this.legs[i].duration.value;
+    };
+
+    totalDistance = Math.round(parseInt(totalDistance) / 1585.88 * 10) / 10;
+    totalDuration = Math.floor(parseInt(totalDuration) / 60);
+
+    html += '<br><strong>Total: ' + totalDistance + ' mi (' + totalDuration + ' mins)</strong>';
+
+    let mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+    mywindow.document.write('<html><head><title>' + document.title + '</title>');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write('<h3>' + document.title + '</h3>');
+    mywindow.document.write(html);
+    mywindow.document.write('<p><button onclick="self.close()">Close</button></p></body></html>');
+
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+
+    //mywindow.print();
+    //mywindow.close();
+
+    return true;
+  });
+
 }
