@@ -60,7 +60,8 @@ function initMap() { // Creates a map object with a click listener
       label: {
         color: 'white',
         text: '',
-      }
+      },
+      icon: './images/Pin-Purple.png'
     }
   });
   drawingManager.setMap(gMap);
@@ -385,6 +386,7 @@ function displayMtMarkers(mtMap, gMap) {
             'text': labelTxt,
             'color': 'white'
           },
+          'icon' : './images/Pin-Blue.png',
           map: gMap,
         });
 
