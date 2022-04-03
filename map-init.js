@@ -296,7 +296,7 @@ function getDirections(directionsService, directionsRenderer) {
         for (let i = 0; i < directionLegSpans.length; i++) {
           directionLegSpans[i].innerHTML = '';
           directionLegSpans[i].style.display = 'none';
-          markerDescs[i].value = '';
+          //markerDescs[i].value = '';
         }
         let totalDistance = 0;
         let totalDuration = 0;
@@ -304,7 +304,10 @@ function getDirections(directionsService, directionsRenderer) {
         for (i = 0; i < directionLegSpans.length - 1; i++) {
           directionLegSpans[i].style.display = 'block';
           directionLegSpans[i].innerHTML = 'Distance: ' + legs[i].distance.text + ' (' + legs[i].duration.text + ') <i class="bi bi-arrow-down"></i>';
-          markerDescs[i].value = legs[i].start_address;
+          
+          if(markerDescs[i].value == ''){
+            markerDescs[i].value = legs[i].start_address;
+          }
 
           totalDistance += legs[i].distance.value;
           totalDuration += legs[i].duration.value;
@@ -316,7 +319,11 @@ function getDirections(directionsService, directionsRenderer) {
         directionLegSpans[directionLegSpans.length - 1].style.display = 'block';
         directionLegSpans[directionLegSpans.length - 1].innerHTML = '<strong>Total Distance: ' + totalDistance + ' mi</strong> (' + totalDuration + ' mins)';
         directionLegSpans[directionLegSpans.length - 1].innerHTML += '<br><button id="exportDirBtn" class="btn btn-sm btn-link">Print</button>';
-        markerDescs[markerDescs.length - 1].value = legs[i - 1].end_address;
+        
+        if(markerDescs[markerDescs.length - 1].value == ''){
+          markerDescs[markerDescs.length - 1].value = legs[i - 1].end_address;
+        }
+        
 
         defineExportBtn(legs);
       })
