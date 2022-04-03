@@ -429,6 +429,10 @@ function addMarkerToMarkerList(labelTxt, labelDesc, updateMtDB = true) {
   markerList.insertAdjacentHTML('beforeend', listItem);
   slist(document.getElementById("markerList"));
 
+  document.getElementById("markerDesc-" + labelTxt).addEventListener('change',function(){
+    updateMtLabelOrder();
+  });
+
   if (updateMtDB) {
     updateMtLabelOrder();
   }
