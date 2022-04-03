@@ -180,7 +180,7 @@ function renameSaveBtnFunction() {
 
 function defineSharingBtn(button) {
   let mapid = button.dataset.mapid;
-  var sharingModal = new bootstrap.Modal(document.getElementById('sharingModal'), {});
+  let sharingModal = new bootstrap.Modal(document.getElementById('sharingModal'), {});
   sharingModal.show();
 
   document.getElementById("revokeTokenBtn").dataset.mapid = mapid;

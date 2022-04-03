@@ -17,6 +17,7 @@ function initMtMap() {
 
       if (mtMap) {
         // Get existing markers
+        sharingToken = mtMap.sharingToken;
         displayMtMarkers(mtMap, gMap);
         displayMessageList(mtMap.messages);
         displaySharedUserPicture(mtMap.sharedWith);

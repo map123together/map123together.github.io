@@ -144,8 +144,8 @@
             |
             <input type="checkbox" class="btn-check" id="chatonoffBtn" autocomplete="off" checked>
             <label class="btn btn-outline-primary" for="chatonoffBtn"><i class="bi bi-chat"></i></label>
-            <input type="button" class="btn-check" id="shareBtn" autocomplete="off">
-            <label class="btn btn-outline-primary" for="shareBtn"><i class="bi bi-share"></i></label>
+            <input type="button" class="btn-check" id="getSharingLinkBtn" autocomplete="off">
+            <label class="btn btn-outline-primary" for="getSharingLinkBtn"><i class="bi bi-share"></i></label>
         </div>
     </div>
     <div id="chatBox" style="
@@ -193,6 +193,24 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <a type="button" class="btn btn-danger" href="index.html">Log out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="sharingModal" tabindex="-1" aria-labelledby="sharingModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Copy Link to Share</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="sharableLink" placeholder="Link to share" value=""
+                            disabled style="font-size:12px;overflow:auto;" />
+                        <button class="btn btn-outline-secondary" type="button" id="copyLinkBtn">Copy</button>
+                    </div>
                 </div>
             </div>
         </div>

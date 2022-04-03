@@ -3,6 +3,7 @@ let gMap; // Google Map
 let sharedWith = [];
 let markers = []; // Google Map Markers
 let messages = [];
+let sharingToken;
 let drawingManager;
 let fetchTime = 0;
 
@@ -140,6 +141,17 @@ function initToolButtonFunctions() {
     } else {
       chatBox.style.display = 'none';
     }
+  });
+
+  document.getElementById("getSharingLinkBtn").addEventListener("click", () => {
+    let sharingModal = new bootstrap.Modal(document.getElementById('sharingModal'), {});
+
+    let sharableLink = window.location.host + '/map.html?mapid=' + mapid + '&token=' + sharingToken;
+    document.getElementById("sharableLink").value = sharableLink;
+
+    sharingModal.show();
+    copyLinkBtnFunction();
+
   });
 
   document.getElementById("messageEnterBtn").addEventListener("click", () => {
@@ -304,8 +316,8 @@ function getDirections(directionsService, directionsRenderer) {
         for (i = 0; i < directionLegSpans.length - 1; i++) {
           directionLegSpans[i].style.display = 'block';
           directionLegSpans[i].innerHTML = 'Distance: ' + legs[i].distance.text + ' (' + legs[i].duration.text + ') <i class="bi bi-arrow-down"></i>';
-          
-          if(markerDescs[i].value == ''){
+
+          if (markerDescs[i].value == '') {
             markerDescs[i].value = legs[i].start_address;
           }
 
@@ -319,11 +331,11 @@ function getDirections(directionsService, directionsRenderer) {
         directionLegSpans[directionLegSpans.length - 1].style.display = 'block';
         directionLegSpans[directionLegSpans.length - 1].innerHTML = '<strong>Total Distance: ' + totalDistance + ' mi</strong> (' + totalDuration + ' mins)';
         directionLegSpans[directionLegSpans.length - 1].innerHTML += '<br><button id="exportDirBtn" class="btn btn-sm btn-link">Print</button>';
-        
-        if(markerDescs[markerDescs.length - 1].value == ''){
+
+        if (markerDescs[markerDescs.length - 1].value == '') {
           markerDescs[markerDescs.length - 1].value = legs[i - 1].end_address;
         }
-        
+
 
         defineExportBtn(legs);
       })
@@ -396,7 +408,7 @@ function displayMtMarkers(mtMap, gMap) {
             'text': labelTxt,
             'color': 'white'
           },
-          'icon' : './images/Pin-Blue.png',
+          'icon': './images/Pin-Blue.png',
           map: gMap,
         });
 
@@ -438,7 +450,7 @@ function addMarkerToMarkerList(labelTxt, labelDesc, updateMtDB = true) {
   markerList.insertAdjacentHTML('beforeend', listItem);
   slist(document.getElementById("markerList"));
 
-  document.getElementById("markerDesc-" + labelTxt).addEventListener('change',function(){
+  document.getElementById("markerDesc-" + labelTxt).addEventListener('change', function () {
     updateMtLabelOrder();
   });
 
@@ -556,7 +568,7 @@ function defineExportBtn(legs) {
       totalDuration += this.legs[i].duration.value;
     };
 
-    html += '<li>' + this.legs[i-1].end_address + '</li>';
+    html += '<li>' + this.legs[i - 1].end_address + '</li>';
     html += '</ul>';
     totalDistance = Math.round(parseInt(totalDistance) / 1585.88 * 10) / 10;
     totalDuration = Math.floor(parseInt(totalDuration) / 60);
@@ -580,4 +592,14 @@ function defineExportBtn(legs) {
     return true;
   });
 
+}
+
+function copyLinkBtnFunction() {
+  document.getElementById("copyLinkBtn").addEventListener("click", () => {
+    let copyText = document.getElementById("sharableLink");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
+    document.getElementById("copyLinkBtn").innerText = 'Copied';
+  });
 }
