@@ -176,6 +176,7 @@ function initToolButtonFunctions() {
         lat: newShape.getPosition().lat(),
         lng: newShape.getPosition().lng()
       };
+
       let mtMarker = {
         "position": position,
         "label": newShape.label.text
@@ -189,7 +190,7 @@ function initToolButtonFunctions() {
       }
 
       // Refresh Marker List
-      addMarkerToMarkerList(newShape.label.text, true);
+      addMarkerToMarkerList(newShape.label.text, '', true);
     }
 
     google.maps.event.addListener(newShape, 'dblclick', () => {
@@ -252,6 +253,7 @@ function initSearchBoxFunction(searchBox) {
 }
 
 function getDirections(directionsService, directionsRenderer) {
+
   let markersOrder = getOrderedMarkerList();
   let orderedMarkers = [];
 
@@ -260,7 +262,7 @@ function getDirections(directionsService, directionsRenderer) {
     // Reorder Markers
     markersOrder.forEach(orderedLabel => {
       markers.forEach(marker => {
-        if (marker.label.text == orderedLabel) {
+        if (marker.label.text == orderedLabel.label) {
           orderedMarkers.push(marker);
         }
       });
@@ -333,7 +335,8 @@ function displayMtMarkers(mtMap, gMap) {
     if (mtMarkersOrder) {
       mtMarkersOrder.forEach(orderedLabel => {
         mtMarkers.forEach(mtMarker => {
-          if (mtMarker.label == orderedLabel) {
+          if (mtMarker.label == orderedLabel.label) {
+            mtMarker.desc = orderedLabel.desc;
             orderedMtMarkers.push(mtMarker);
           }
         });
@@ -393,7 +396,7 @@ function displayMtMarkers(mtMap, gMap) {
         markers.push(newMarker);
 
         // Display Marker List
-        addMarkerToMarkerList(labelTxt, false);
+        addMarkerToMarkerList(labelTxt, labelDesc, false);
 
         // Remove Marker
         newMarker.addListener("dblclick", function (e) {
@@ -407,14 +410,15 @@ function displayMtMarkers(mtMap, gMap) {
   }
 }
 
-function addMarkerToMarkerList(labelTxt, updateMtDB = true) {
+function addMarkerToMarkerList(labelTxt, labelDesc, updateMtDB = true) {
   let markerList = document.getElementById('markerList');
   let listItem = `
         <li class="list-group-item"
             id="markerListItem-${labelTxt}">
             <tt>${labelTxt}.</tt>
             <input type="text" class="markerListItem" 
-            data-desc="" 
+            id="markerDesc-${labelTxt}"
+            value="${labelDesc}"
             data-label="${labelTxt}"/>&emsp;<i class="bi bi-justify"></i>
             
             <div class="directionLegSpan" style="text-align:center;display: none; margin-top: 8px">

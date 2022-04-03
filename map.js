@@ -121,7 +121,6 @@ function removeMtSharedwith(uid) {
   sendMtRequest(method, dir, reqBody, parseRes);
 }
 
-
 function addMtMessage(message) {
 
   let method = 'POST';

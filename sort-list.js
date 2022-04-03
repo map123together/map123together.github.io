@@ -78,7 +78,9 @@ function getOrderedMarkerList() {
   let orderedMarkerList = document.getElementsByClassName('markerListItem');
   let orderedMarkers = [];
   for (let mli of orderedMarkerList) {
-    orderedMarkers.push(mli.dataset.label);
+    //console.log(mli.value);
+    let listItem = {'label': mli.dataset.label, 'desc': mli.value};
+    orderedMarkers.push(listItem);
   }
 
   if (orderedMarkerList.length == 0) {
