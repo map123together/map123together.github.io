@@ -31,7 +31,7 @@ function initMtMap() {
             addMtSharedwith(uid);
           } else {
             removeMtSharedwith(uid);
-            window.location.href = "maps.html";
+            window.location.href = "my-maps.html";
           }
         }
 
@@ -41,7 +41,7 @@ function initMtMap() {
         document.title = mtMap.name;
       }
     } else {
-      window.location.href = 'maps.html';
+      window.location.href = 'my-maps.html';
     }
 
     setInterval(getExistingMtMarkers, 3000);
