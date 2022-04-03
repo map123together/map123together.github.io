@@ -68,7 +68,7 @@ body {
     border: 1px solid #adb5bd;
     border-radius: 2px;
     text-overflow: ellipsis;
-    height: 30px;
+    height: 25px;
     width: 180px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 4px -1px;
 }
