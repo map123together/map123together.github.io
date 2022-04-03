@@ -426,9 +426,11 @@ function addMarkerToMarkerList(labelTxt, labelDesc, updateMtDB = true) {
             <input type="text" class="markerListItem" 
             id="markerDesc-${labelTxt}"
             value="${labelDesc}"
-            data-label="${labelTxt}"/>&emsp;<i class="bi bi-justify"></i>
+            data-label="${labelTxt}" draggable="false" />
+            &emsp;<i class="bi bi-justify"></i>
             
-            <div class="directionLegSpan" style="text-align:center;display: none; margin-top: 8px">
+            <div class="directionLegSpan" 
+              style="text-align:center;display: none; margin-top: 8px">
                 <br>
             </div>
         </li>
