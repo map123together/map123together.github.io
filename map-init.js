@@ -31,17 +31,17 @@ function initMap() { // Creates a map object with a click listener
     },
     fullscreenControl: false,
     styles: [{
-      featureType: 'poi',
-      stylers: [{
-        visibility: 'off'
-      }] // Turn off POI.
-    },
-    {
-      featureType: 'transit.station',
-      stylers: [{
-        visibility: 'off'
-      }] // Turn off bus, train stations etc.
-    }
+        featureType: 'poi',
+        stylers: [{
+          visibility: 'on'
+        }] // Turn off POI.
+      },
+      {
+        featureType: 'transit.station',
+        stylers: [{
+          visibility: 'off'
+        }] // Turn off bus, train stations etc.
+      }
     ],
     disableDoubleClickZoom: true,
     streetViewControl: false,
@@ -129,6 +129,46 @@ function initToolButtonFunctions() {
     } else {
       drawingManager.setDrawingMode(null);
       document.getElementById("btnradio0").checked = true;
+    }
+  });
+
+  // Landmarkers Button Function ------------------------------------------
+  document.getElementById("landmarkersonoffBtn").addEventListener("click", () => {
+    let islandmarkersOn = document.getElementById("landmarkersonoffBtn").checked;
+    console.log(islandmarkersOn);
+
+    if (islandmarkersOn) {
+      gMap.setOptions({
+        styles: [{
+            featureType: 'poi',
+            stylers: [{
+              visibility: 'on'
+            }]
+          },
+          {
+            featureType: 'transit.station',
+            stylers: [{
+              visibility: 'off'
+            }]
+          }
+        ]
+      });
+    } else {
+      gMap.setOptions({
+        styles: [{
+            featureType: 'poi',
+            stylers: [{
+              visibility: 'off'
+            }] 
+          },
+          {
+            featureType: 'transit.station',
+            stylers: [{
+              visibility: 'off'
+            }]
+          }
+        ]
+      });
     }
   });
 
