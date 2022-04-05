@@ -242,7 +242,7 @@ function initToolButtonFunctions() {
       }
 
       // Refresh Marker List
-      addMarkerToMarkerList(newShape.label.text, '', true);
+      addMarkerToMarkerList(newShape.label.text, '', position, true);
     }
 
     google.maps.event.addListener(newShape, 'dblclick', () => {
@@ -455,7 +455,7 @@ function displayMtMarkers(mtMap, gMap) {
         markers.push(newMarker);
 
         // Display Marker List
-        addMarkerToMarkerList(labelTxt, labelDesc, false);
+        addMarkerToMarkerList(labelTxt, labelDesc, mtMarker.position, false);
 
         // Remove Marker
         newMarker.addListener("dblclick", function (e) {
@@ -469,7 +469,7 @@ function displayMtMarkers(mtMap, gMap) {
   }
 }
 
-function addMarkerToMarkerList(labelTxt, labelDesc, updateMtDB = true) {
+function addMarkerToMarkerList(labelTxt, labelDesc, markerPos, updateMtDB = true) {
   let markerList = document.getElementById('markerList');
   let listItem = `
         <li class="list-group-item"
@@ -492,6 +492,11 @@ function addMarkerToMarkerList(labelTxt, labelDesc, updateMtDB = true) {
 
   document.getElementById("markerDesc-" + labelTxt).addEventListener('change', function () {
     updateMtLabelOrder();
+  });
+
+  document.getElementById("markerDesc-" + labelTxt).addEventListener('focus', function () {
+    let googleLatAndLong = new google.maps.LatLng(markerPos.lat, markerPos.lng);
+    gMap.panTo(googleLatAndLong);
   });
 
   if (updateMtDB) {
