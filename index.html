@@ -11,30 +11,125 @@
       integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
    <title>Map Together</title>
+   <style type="text/css">
+      @import url('https://themes.googleusercontent.com/fonts/css?kit=MedYkKT3utfxGSzGKvb6Pw');
+
+      ol {
+         margin: 0;
+         padding: 0
+      }
+
+      table td,
+      table th {
+         padding: 0
+      }
+
+      .c3 {
+         color: #000000;
+         font-weight: 400;
+         text-decoration: none;
+         vertical-align: baseline;
+         font-size: 11pt;
+         font-family: "Arial";
+         font-style: normal
+      }
+
+      .c5 {
+         font-size: 52pt;
+         font-family: "Lato";
+         color: #212121;
+         font-weight: 900
+      }
+
+      .c1 {
+         font-size: 52pt;
+         font-family: "Lato";
+         color: #a64d79;
+         font-weight: 900
+      }
+
+      .c9 {
+         font-size: 52pt;
+         font-family: "Lato";
+         color: #e69138;
+         font-weight: 900
+      }
+
+      .c7 {
+         font-size: 52pt;
+         font-family: "Lato";
+         color: #674ea7;
+         font-weight: 900
+      }
+
+      .c0 {
+         font-size: 52pt;
+         font-family: "Lato";
+         color: #e06666;
+         font-weight: 900
+      }
+
+      .c6 {
+         font-size: 52pt;
+         font-family: "Lato";
+         color: #3d85c6;
+         font-weight: 900
+      }
+
+      .c10 {
+         font-size: 52pt;
+         font-family: "Lato";
+         color: #45818e;
+         font-weight: 900
+      }
+
+      .c8 {
+         padding-top: 0pt;
+         padding-bottom: 0pt;
+         line-height: 1.0;
+         text-align: left;
+         overflow-wrap: break-word;
+      }
+
+      .c2 {
+         font-size: 52pt;
+         font-family: "Lato";
+         color: #6aa84f;
+         font-weight: 900
+      }
+
+      .c4 {
+         background-color: #ffffff;
+         max-width: 468pt;
+         padding: 72pt 72pt 72pt 72pt
+      }
+   </style>
 </head>
 
 <body style="background-color: #f8f9fa;">
    <!--jumbotron d-flex align-items-center min-vh-100-->
    <div style="padding-top: 15%;">
       <div class="container">
-         <div class="row justify-content-around">
-            <div class="col-5">
+         <div class="row  justify-content-center">
+            <div class="col-sm-8 align-self-center">
                <div class="row">
-                  <div class="col">
-                     <img src="./images/Banner.png" class="img-fluid">
-                  </div>
+                  <p class="c8"><span class="c1">M</span><span class="c0">a</span><span class="c2">p</span><span
+                        class="c5">&nbsp;</span><span class="c6">T</span><span class="c7">o</span><span
+                        class="c2">g</span><span class="c10">e</span><span class="c0">t</span><span
+                        class="c1">h</span><span class="c2">e</span><span class="c9">r</span></p>
+                  <p class="lead">Map Together is an online map editor. It allows multiple
+                     users to create customized maps with markers and directions, and share with friends in real time.
+                  </p>
+
                </div>
 
                <div class="row">
-                  <div class="col">
-                     <h1 class="text-right text-muted" style="padding-left: 10px;">Sign In</h1>
-                  </div>
-                  <p></p>
+                  <h2 class="text-right text-muted">Sign In</h2>
                </div>
 
                <!-- Signin with Google -->
                <script src="https://accounts.google.com/gsi/client" async defer></script>
-               <div class="row" style="padding-left: 10px;">
+               <div class="row">
                   <div class="col-8">
                      <div id="g_id_onload"
                         data-client_id="830441803592-akdqipgoripfd6vt3ra95g5pmeujvj7c.apps.googleusercontent.com"
@@ -47,19 +142,6 @@
                   </div>
                </div>
             </div>
-
-            <div class="col-1">
-               <div class="d-flex" style="height: 200px;">
-                  <div class="vr"></div>
-               </div>
-            </div>
-
-            <div class="col-6">
-               <p class="lead" style="padding-top: 5%;">Map Together is an online map editor. It allows multiple
-                  users to create customized maps with markers and lines, and share with friends in real time. </p>
-            </div>
-
-
          </div>
       </div>
    </div>
