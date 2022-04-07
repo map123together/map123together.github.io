@@ -85,7 +85,7 @@ function addMtMarker(marker) {
   let parseRes = (response) => {
 
     let resposeJson = JSON.parse(response);
-    if (resposeJson) { }
+    if (resposeJson) {}
   };
 
   sendMtRequest(method, dir, marker, parseRes);
@@ -99,10 +99,12 @@ function addMtSharedwith(uid) {
   let parseRes = (response) => {
 
     let resposeJson = JSON.parse(response);
-    if (resposeJson) { }
+    if (resposeJson) {}
   };
 
-  let reqBody = { "uid": uid }
+  let reqBody = {
+    "uid": uid
+  }
 
   sendMtRequest(method, dir, reqBody, parseRes);
 }
@@ -115,10 +117,12 @@ function removeMtSharedwith(uid) {
   let parseRes = (response) => {
 
     let resposeJson = JSON.parse(response);
-    if (resposeJson) { }
+    if (resposeJson) {}
   };
 
-  let reqBody = { "uid": uid }
+  let reqBody = {
+    "uid": uid
+  }
 
   sendMtRequest(method, dir, reqBody, parseRes);
 }
@@ -147,7 +151,7 @@ function removeMtMarker(markerPos) {
   let parseRes = (response) => {
 
     let resposeJson = JSON.parse(response);
-    if (resposeJson) { }
+    if (resposeJson) {}
   };
 
   sendMtRequest(method, dir, markerPos, parseRes);
@@ -195,26 +199,25 @@ function updateMtCenter() {
   sendMtRequest(method, dir, position, parseRes);
 }
 
-function getUserPicture2(uid) {
-  document.getElementById("mt-user-picture-2").src = 'https://lh3.googleusercontent.com/a-/AOh14GjTkrYDEGQ1UENis_7yXolyA-14Tm18HOvBrkI1Bw=s96-c';
-  // TODO
-  /*
+function getUserPicture(uid) {
+
   let method = 'GET';
   let dir = 'user/id/' + uid;
- 
+
   let parseRes = (response) => {
     let resposeJson = JSON.parse(response);
-      if (resposeJson.picture) {
-        document.getElementById("mt-user-picture-2").src = resposeJson.picture;
-        document.getElementById("userIconBox2").style.display = 'block';
-      } else {
-        document.getElementById("mt-user-picture-2").src = '';
-        document.getElementById("userIconBox2").style.display = 'none';
-      }
+    if (resposeJson && resposeJson.picture) {
+      document.getElementById("mt-user-picture-2").src = resposeJson.picture;
+      document.getElementById("userIconBox2").style.display = 'block';
+    } else {
+      document.getElementById("mt-user-picture-2").src = '';
+      document.getElementById("userIconBox2").style.display = 'none';
+    }
   };
 
-  sendMtRequest(method, dir, reqBody, parseRes);
-  */
+  //document.getElementById("mt-user-picture-2").src = 'https://lh3.googleusercontent.com/a-/AOh14GjTkrYDEGQ1UENis_7yXolyA-14Tm18HOvBrkI1Bw=s96-c';
+
+  sendMtRequest(method, dir, '', parseRes);
 }
 
 function verifyLogin() {

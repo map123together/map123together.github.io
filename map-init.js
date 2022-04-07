@@ -89,7 +89,6 @@ function initMap() { // Creates a map object with a click listener
 
   const userBox2 = document.getElementById("userIconBox2");
   gMap.controls[google.maps.ControlPosition.TOP_LEFT].push(userBox2);
-  getUserPicture2();
 
   // Tool Box -------------------------------------------------------
   let toolBox = document.getElementById('toolbox');
@@ -568,8 +567,8 @@ function displayMessageList(mtMessages) {
 
 function displaySharedUserPicture(mtSharedWith) {
   for (let i = 0; i < mtSharedWith.length; i++) {
-    if (mtSharedWith[i] != uid) {
-      getUserPicture2(mtSharedWith[i]);
+    if (mtSharedWith[i] && mtSharedWith[i] != uid) {
+      getUserPicture(mtSharedWith[i]);
       document.getElementById("userIconBox2").style.display = 'block';
     }
   }
