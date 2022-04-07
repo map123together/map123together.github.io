@@ -5,6 +5,7 @@ verifyLogin();
 
 // Init Button Functions
 newMapBtnFunction();
+logoutBtnFunction();
 renameSaveBtnFunction();
 deleteBtnFunction();
 revokeTokenBtnFunction();
@@ -39,7 +40,7 @@ function verifyLogin() {
   };
 
   let redirectBack = () => {
-    window.location.href = "index.html"
+    window.location.href = "index.html";
   }
 
   let loginTimeout = setTimeout(redirectBack, 5000); // Wait for 5 seconds
@@ -296,4 +297,11 @@ function generateMapCard(mtMap) {
     </div>
   `; //<div class="col-xs-6 col-sm-4 col-md-4 col-lg-auto">
   return htmlStr;
+}
+
+function logoutBtnFunction() {
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    document.cookie = "gUserCredential=";
+    window.location.href = "index.html";
+  });
 }

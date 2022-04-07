@@ -33,7 +33,7 @@ function initMap() { // Creates a map object with a click listener
     styles: [{
         featureType: 'poi',
         stylers: [{
-          visibility: 'on'
+          visibility: 'off'
         }] // Turn off POI.
       },
       {
@@ -135,8 +135,7 @@ function initToolButtonFunctions() {
   // Landmarkers Button Function ------------------------------------------
   document.getElementById("landmarkersonoffBtn").addEventListener("click", () => {
     let islandmarkersOn = document.getElementById("landmarkersonoffBtn").checked;
-    console.log(islandmarkersOn);
-
+  
     if (islandmarkersOn) {
       gMap.setOptions({
         styles: [{

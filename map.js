@@ -3,6 +3,7 @@ const mapid = getAllUrlParams().mapid; // Current Map ID
 
 verifyLogin(); // TODO
 initMtMap();
+logoutBtnFunction();
 
 function initMtMap() {
 
@@ -249,4 +250,11 @@ function verifyLogin() {
 
   let loginTimeout = setTimeout(redirectBack, 5000);
   sendMtRequest(method, dir, reqBody, parseRes);
+}
+
+function logoutBtnFunction() {
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    document.cookie = "gUserCredential=";
+    window.location.href = "index.html";
+  });
 }
