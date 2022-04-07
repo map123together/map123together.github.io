@@ -20,9 +20,54 @@
             display: flex;
             /*overflow-y: scroll;*/
             overflow: auto;
-            max-height:200px;
+            max-height: 200px;
             width: 100%;
             flex-direction: column-reverse;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #A64D79;
+            border-color: #A64D79;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus,
+        .btn-primary:active,
+        .btn-primary.active,
+        .open>.dropdown-toggle.btn-primary {
+            color: #fff;
+            background-color: #5d2c44;
+            border-color: #5d2c44;
+        }
+
+        .btn-check:active+.btn-outline-primary,
+        .btn-check:checked+.btn-outline-primary,
+        .btn-outline-primary.active,
+        .btn-outline-primary.hover,
+        .btn-outline-primary.focus,
+        .btn-outline-primary.dropdown-toggle.show,
+        .btn-outline-primary:active {
+            color: #fff;
+            background-color: #A64D79;
+            border-color: #A64D79;
+        }
+
+        .btn-check:hover+.btn-outline-primary,
+        .btn-check:focus+.btn-outline-primary,
+        .btn-outline-primary.active,
+        .btn-outline-primary.hover,
+        .btn-outline-primary.focus,
+        .btn-outline-primary.dropdown-toggle.show,
+        .btn-outline-primary:active {
+            color: #fff;
+            background-color: #A64D79;
+            border-color: #A64D79;
+        }
+
+        .btn-outline-primary {
+            color: #A64D79;
+            border-color: #A64D79;
         }
     </style>
 </head>
@@ -63,12 +108,12 @@
             width:  auto;
             display:none;">
         <h6 class="text-muted" style="margin-top: 8px;">Markers & Directions</h6>
-        
-            <button id="getDirBtn" class="btn btn-sm btn-link">
-                <i class="bi bi-arrow-90deg-right"></i>
-                Show Directions
-            </button>
-       
+
+        <button id="getDirBtn" class="btn btn-sm btn-link">
+            <i class="bi bi-arrow-90deg-right"></i>
+            Show Directions
+        </button>
+
         <div class="row">
             <div class="col-auto">
                 <ul id="markerList" class="list-group" style="text-align: left !important; margin-top: 5px;">
@@ -112,44 +157,45 @@
         height: 40px;
         width: 40px;
         display: none">
-    <div>
-        <img id="mt-user-picture-2" style="
+        <div>
+            <img id="mt-user-picture-2" style="
             margin-left: auto;
             margin-right: auto;
             margin-top: 1px;
             height: 37px;
-            width: 37px;" src="./images/default-user.png"
-            onerror="event.target.src = './images/default-user.png';" />
-    </div>
+            width: 37px;" src="./images/default-user.png" onerror="event.target.src = './images/default-user.png';" />
+        </div>
     </div>
     <div id="toolbox" style="
             border: 0px solid #ffffff;
             border-radius: 5px;
             box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px; 
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 1);
+            padding-left: 10px;
             margin-top: 10px;
             margin-left: 10px;
             margin-right: 10px;
             margin-bottom: 10px;
             height: 40px;
-            width: 205px;">
+            width: 225px;">
         <div style="padding-top:5px; margin-left: 5px;" class="btn-group-sm" role="group"
             aria-label="Basic radio toggle button group">
 
             <input type="radio" class="btn-check" name="btnradio0" id="btnradio0" autocomplete="off" checked>
             <label class="btn btn-outline-primary" for="btnradio0"><i class="bi bi-hand-index-thumb"></i></label>
-   
+
             <input type="radio" class="btn-check" name="btnradio0" id="btnradio1" autocomplete="off">
             <label class="btn btn-outline-primary" for="btnradio1"><i class="bi bi-pin"></i></label>
             <span>&nbsp;&nbsp;</span>
             |
             <span>&nbsp;&nbsp;</span>
-            <input type="checkbox" class="btn-check" name="landmarkersonoffBtn" id="landmarkersonoffBtn" autocomplete="off">
+            <input type="checkbox" class="btn-check" name="landmarkersonoffBtn" id="landmarkersonoffBtn"
+                autocomplete="off">
             <label class="btn btn-outline-primary" for="landmarkersonoffBtn"><i class="bi bi-bank"></i></label>
-           
+
             <input type="checkbox" class="btn-check" id="chatonoffBtn" autocomplete="off" checked>
             <label class="btn btn-outline-primary" for="chatonoffBtn"><i class="bi bi-chat"></i></label>
-      
+
             <input type="button" class="btn-check" id="getSharingLinkBtn" autocomplete="off">
             <label class="btn btn-outline-primary" for="getSharingLinkBtn"><i class="bi bi-share"></i></label>
         </div>
@@ -174,16 +220,18 @@
                     </table>
                 </div>
                 <div class="input-group mb-7" style="margin-bottom: 0px !important;">
-                    <input id="newMessage" type="text" class="form-control input-sm" placeholder="New Message" aria-label="Chat" aria-describedby="Chat">
-                    <button id="messageEnterBtn" class="btn btn-sm btn-primary" type="button"><i class="bi bi-send"></i></button>
-                  </div>
+                    <input id="newMessage" type="text" class="form-control input-sm" placeholder="New Message"
+                        aria-label="Chat" aria-describedby="Chat">
+                    <button id="messageEnterBtn" class="btn btn-sm btn-primary" type="button"><i
+                            class="bi bi-send"></i></button>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
 
     <!-- Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModal" aria-hidden="true">
@@ -226,7 +274,7 @@
     <script src="map-init.js"></script>
     <script defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwZQMrJr2VD6WUbIb-ljX8QD_BdfbY1c8&libraries=visualization,places,drawing&callback=initMap">
-        </script>
+    </script>
     <script src="sort-list.js"></script>
     <script src="map.js"></script>
 
