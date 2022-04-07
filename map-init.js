@@ -549,13 +549,13 @@ function displayMessageList(mtMessages) {
         if (uid == mtMessage.uid) {
           listItem += `
             <tr>
-              <td style="text-align: right;">${mtMessage.content}</td>
+              <td style="text-align:right;font-size:14px">${mtMessage.content}</td>
             </tr>
         `;
         } else {
           listItem += `
             <tr>
-              <td style="font-size:14px">${mtMessage.content}</td>
+              <td style="font-size:14px;">${mtMessage.content}</td>
             </tr>
         `;
         }
