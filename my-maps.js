@@ -43,7 +43,7 @@ function verifyLogin() {
     window.location.href = "index.html";
   }
 
-  let loginTimeout = setTimeout(redirectBack, 5000); // Wait for 5 seconds
+  let loginTimeout = setTimeout(redirectBack, 3000); // Wait for 3 seconds
   sendMtRequest(method, dir, reqBody, parseRes);
 }
 
