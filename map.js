@@ -1,7 +1,7 @@
 const baseUrl = 'https://1and2.xyz/'; // MT API Base URL
 const mapid = getAllUrlParams().mapid; // Current Map ID
 
-verifyLogin(); // TODO
+verifyLogin();
 initMtMap();
 logoutBtnFunction();
 
@@ -248,6 +248,7 @@ function verifyLogin() {
   };
 
   let redirectBack = () => {
+    document.cookie = "gUserCredential=";
     window.location.href = "index.html"
   }
 

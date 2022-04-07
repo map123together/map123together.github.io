@@ -40,10 +40,11 @@ function verifyLogin() {
   };
 
   let redirectBack = () => {
+    document.cookie = "gUserCredential=";
     window.location.href = "index.html";
   }
 
-  let loginTimeout = setTimeout(redirectBack, 3000); // Wait for 3 seconds
+  let loginTimeout = setTimeout(redirectBack, 5000); // Wait for 5 seconds
   sendMtRequest(method, dir, reqBody, parseRes);
 }
 
